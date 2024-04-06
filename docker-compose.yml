@@ -1,0 +1,140 @@
+version: '3'
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: Frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - "4200:8080"
+    networks:
+      - rsww-network
+  gateway:
+    container_name: gateway
+    build:
+      context: ./Gateway
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+      - "5080:5005"
+    networks:
+      - rsww-network
+  eureka_server:
+    container_name: eureka_server
+    build:
+      context: ./EurekaServer
+      dockerfile: ./Dockerfile
+    ports:
+      - "8761:8761"
+      - "5761:5005"
+    networks:
+      - rsww-network
+  offer_write:
+    container_name: offer_write
+    build:
+      context: ./OfferWrite
+      dockerfile: ./Dockerfile
+    ports:
+      - "8082:8080"
+      - "5082:5005"
+    networks:
+      - rsww-network
+  offer_read:
+    container_name: offer_read
+    build:
+      context: ./OfferRead
+      dockerfile: ./Dockerfile
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongo_read_model
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: offer_read_model
+    ports:
+      - "8081:8080"
+      - "5081:5005"
+    depends_on:
+      - mongo_read_model
+    networks:
+      - rsww-network
+  mongo_read_model:
+    container_name: mongo_read_model
+    image: mongo:7.0.7
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_read_db:/data/db
+    networks:
+      - rsww-network
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - "8089:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_AUTH_DATABASE: read_model
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo_read_model:27017/
+    networks:
+      - rsww-network
+  event-store:
+    image: eventstore/eventstore
+    # use this image if you're running ARM-based proc like Apple M1
+    # image: eventstore/eventstore:22.10.0-alpha-arm64v8
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - '1113:1113'
+      - '2113:2113'
+    volumes:
+      - type: volume
+        source: eventstore-volume-data
+        target: /var/lib/eventstore
+      - type: volume
+        source: eventstore-volume-logs
+        target: /var/log/eventstore
+  zookeeper:
+    container_name: zookeeper
+    hostname: zookeeper
+    image: 'zookeeper:3.8.2'
+    ports:
+      - '2181:2181'
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - rsww-network
+  kafka:
+    image: 'bitnami/kafka:3.5.1'
+    container_name: kafka
+    hostname: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_MAX_REQUEST_SIZE: 20971520
+      KAFKA_CFG_MAX_REQUEST_SIZE: 20971520
+      KAFKA_CFG_PRODUCER_MAX_REQUEST_SIZE: 20971520
+    networks:
+      - rsww-network
+volumes:
+  mongo_read_db:
+  eventstore-volume-data:
+  eventstore-volume-logs:
+networks:
+  rsww-network:
+    driver: bridge

@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: Gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: '*'
+            allowedMethods: '*'
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: OFFERS_READ
+          uri: lb://offer_read
+          predicates:
+            - Path=/offers/**
+          filters:
+          #            - TokenRelay=
+        - id: NOTIFICATIONS
+          uri: lb://payment
+          predicates:
+            - Path=/ws/**, /notifications/**
+          filters:
+          #            - TokenRelay=
+        - id: ORDERS
+          uri: lb://order
+          predicates:
+            - Path=/orders/**
+          filters:
+#            - TokenRelay=
+        - id: PAYMENTS
+          uri: lb://payments
+          predicates:
+            - Path=/payments/**
+          filters:
+      #            - TokenRelay=
