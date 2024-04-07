@@ -131,10 +131,24 @@ services:
       KAFKA_CFG_PRODUCER_MAX_REQUEST_SIZE: 20971520
     networks:
       - rsww-network
+  postgres:
+    container_name: postgres
+    image: postgres:15.4
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - rsww-network
 volumes:
   mongo_read_db:
   eventstore-volume-data:
   eventstore-volume-logs:
+  postgres_data:
 networks:
   rsww-network:
     driver: bridge
