@@ -25,6 +25,7 @@ public final class HotelRequests {
 
     public record CreateHotel(
             @Nonnull UUID hotelId,
+            @Nonnull String name,
             @Nonnull LocationRequest location,
             @Nonnull Collection<RoomRequest> rooms
     ) {}
