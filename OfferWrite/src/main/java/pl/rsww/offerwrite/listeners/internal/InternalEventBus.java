@@ -9,11 +9,11 @@ import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 @Component
 @RequiredArgsConstructor
 public class InternalEventBus {
-    private final ObjectRequestKafkaProducer objectRequestKafkaProducer;
+//    private final ObjectRequestKafkaProducer objectRequestKafkaProducer;
 
     @EventListener
     public <Event> void onEventSendKafkaMessage(EventEnvelope<Event> event) {
-        objectRequestKafkaProducer.produce("pl.rsww.offer", event);
+//        objectRequestKafkaProducer.produce("pl.rsww.offer", event);
     }
 
 }

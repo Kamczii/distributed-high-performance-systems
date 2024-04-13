@@ -19,7 +19,7 @@ public final class FlightRequests {
             @Nonnull Integer numberOfSeats,
             @Nonnull LocationRequest departure,
             @Nonnull LocationRequest destination,
-            @Nonnull Collection<LocalDate> departures
+            @Nonnull LocalDate date
     ) {}
 
     public record SeatReserved(

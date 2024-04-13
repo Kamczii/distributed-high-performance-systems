@@ -1,7 +1,13 @@
 package pl.rsww.offerwrite.flights;
 
-import java.util.UUID;
+import pl.rsww.offerwrite.common.location.Location;
+
+import java.time.LocalDate;
 
 public sealed interface FlightEvent {
-    record FlightCreated(UUID uuid) implements FlightEvent {}
+    record FlightCreated(Location departure,
+                         Location destination,
+                         String flightNumber,
+                         LocalDate date,
+                         Integer capacity) implements FlightEvent {}
 }

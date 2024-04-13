@@ -10,7 +10,7 @@ import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 public class FlightService {
     private final AggregateStore<Flight, FlightEvent, String> flightStore;
 
-    void create(FlightRequests.CreateFlight create) {
-
+    public void create(FlightRequests.CreateFlight create) {
+        flightStore.add(Flight.create(create));
     }
 }
