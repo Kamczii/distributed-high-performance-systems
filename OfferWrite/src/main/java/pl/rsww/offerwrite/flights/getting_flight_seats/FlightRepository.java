@@ -12,4 +12,5 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
     @Query("select f from Flight f where f.destination = ?1 and f.departure = ?2 and f.date between ?3 and ?4")
     List<Flight> findByDestinationAndDepartureAndDateBetween(Location destination, Location departure, LocalDate dateStart, LocalDate dateEnd);
 
+    Flight findByFlightNumberAndDate(String s, LocalDate date);
 }

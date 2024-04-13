@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="offer projections">
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="log fix">
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/FlightSeatRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/requests/HotelRequests.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/requests/HotelRequests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/Hotel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/hotel_rooms/HotelRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/hotel_rooms/HotelRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/FlightRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/FlightRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelRoomRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelRoomRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -171,8 +169,8 @@
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\test\java\pl\rsww\offerwrite" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="pl.rsww.offerwrite.hotels.getting_hotel_rooms" />
       <recent name="pl.rsww.offerwrite.flights.getting_flight_seats" />
+      <recent name="pl.rsww.offerwrite.hotels.getting_hotel_rooms" />
       <recent name="pl.rsww.offerwrite.api.requests" />
       <recent name="pl.rsww.offerwrite.hotels.hotel_rooms" />
       <recent name="pl.rsww.offerwrite.config" />
@@ -339,7 +337,7 @@
       <workItem from="1712987366915" duration="9403000" />
       <workItem from="1713012791382" duration="2523000" />
       <workItem from="1713015691564" duration="971000" />
-      <workItem from="1713021032179" duration="8862000" />
+      <workItem from="1713021032179" duration="11975000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -381,7 +379,23 @@
       <option name="project" value="LOCAL" />
       <updated>1713030109079</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Room beds and capacity distinction">
+      <option name="closed" value="true" />
+      <created>1713030498434</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1713030498434</updated>
+    </task>
+    <task id="LOCAL-00007" summary="log fix">
+      <option name="closed" value="true" />
+      <created>1713030981803</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1713030981803</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,6 +422,8 @@
     <MESSAGE value="postgres" />
     <MESSAGE value="hotel name" />
     <MESSAGE value="offer projections" />
-    <option name="LAST_COMMIT_MESSAGE" value="offer projections" />
+    <MESSAGE value="Room beds and capacity distinction" />
+    <MESSAGE value="log fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="log fix" />
   </component>
 </project>

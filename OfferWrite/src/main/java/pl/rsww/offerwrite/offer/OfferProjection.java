@@ -3,13 +3,15 @@ package pl.rsww.offerwrite.offer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
 import pl.rsww.offerwrite.flights.FlightEvent;
+import pl.rsww.offerwrite.flights.getting_flight_seats.AvailableSeatState;
 import pl.rsww.offerwrite.flights.getting_flight_seats.Flight;
 import pl.rsww.offerwrite.flights.getting_flight_seats.FlightRepository;
+import pl.rsww.offerwrite.flights.getting_flight_seats.FlightSeatRepository;
 import pl.rsww.offerwrite.hotels.HotelEvent;
-import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRepository;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoom;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoomRepository;
 import pl.rsww.offerwrite.location.Location;
@@ -17,51 +19,79 @@ import pl.rsww.offerwrite.location.LocationRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Stream;
 
-@Component
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class OfferProjection {
-    private final HotelRepository hotelRepository;
+    public static final int MAX_TRIP_DURATION = 15;
+    public static final int MIN_TRIP_DURATION = 1;
+
     private final HotelRoomRepository hotelRoomRepository;
     private final FlightRepository flightRepository;
+    private final FlightSeatRepository flightSeatRepository;
     private final LocationRepository locationRepository;
     //todo przenieść do entity listenera
     @EventListener
     public void handleHotelCreated(EventEnvelope<HotelEvent.HotelCreated> eventEnvelope) {
         log.info(eventEnvelope.data().toString());
+        //todo
     }
 
     @EventListener
     public void handleFlightCreated(EventEnvelope<FlightEvent.FlightCreated> eventEnvelope) {
         log.info(eventEnvelope.data().toString());
-        var data = eventEnvelope.data();
-        LocalDate date = data.date();
-        var destination = getLocation(data.destination());
-        var departure = getLocation(data.departure());
-        var returnFlights = flightRepository.findByDestinationAndDepartureAndDateBetween(departure, destination, date.plusDays(1), date.plusDays(15));
-        var startFlights = flightRepository.findByDestinationAndDepartureAndDateBetween(departure, destination, date.minusDays(15), date.minusDays(1));
+        final var data = eventEnvelope.data();
+        final var date = data.date();
+        final var destination = getLocation(data.destination());
+        final var departure = getLocation(data.departure());
+        final var flight = fetchFlight(data);
 
-        for (var returnFlight : returnFlights) {
-            LocalDate returnDate = returnFlight.getDate();
-            List<HotelRoom> rooms = hotelRoomRepository.find(destination, data.capacity(), date, returnDate);
+        var returnFlights = findFollowingFlights(departure, destination, date)
+                .stream()
+                .map(returnFlight -> Pair.of(flight, returnFlight))
+                .toList();
 
-            for (HotelRoom room : rooms) {
-                log.info(String.format("Oferta: Od %s do %s, z %s do %s dla %d osób. Pokój: %s, %d łóżek",
-                        date, returnDate, departure.toString(), destination.toString(), room.getCapacity(), room.getType(), room.getBeds()));
-            }
-        }
+        var startFlights = findPrecedingFlights(departure, destination, date)
+                .stream()
+                .map(initialFlight -> Pair.of(initialFlight, flight))
+                .toList();
 
-        for (var startFlight : startFlights) {
-            LocalDate startDate = startFlight.getDate();
-            List<HotelRoom> rooms = hotelRoomRepository.find(destination, data.capacity(), startDate, date);
+        Stream.concat(returnFlights.stream(), startFlights.stream())
+                .forEach(this::createOffer);
+    }
 
-            for (HotelRoom room : rooms) {
-                log.info(String.format("Oferta: Od %s do %s, z %s do %s dla %d osób. Pokój: %s, %d łóżek",
-                        startDate, date, departure.toString(), destination.toString(), room.getCapacity(), room.getType(), room.getBeds()));
-            }
-        }
+    private Flight fetchFlight(FlightEvent.FlightCreated data) {
+        return flightRepository.findByFlightNumberAndDate(data.flightNumber(), data.date());
+    }
+
+    private void createOffer(Pair<Flight,Flight> route) {
+        var initialFlight = route.getFirst();
+        var returnFlight = route.getSecond();
+        var maxCapacity = Math.min(countAvailableSeats(initialFlight), countAvailableSeats(returnFlight));
+        findRoomsMatchingFlight(initialFlight.getDestination(), maxCapacity, initialFlight.getDate(), returnFlight.getDate())
+                .forEach(room -> {
+                    log.info(String.format("Oferta: Od %s do %s, z %s do %s dla %d osób. Pokój: %s, %d łóżek",
+                            initialFlight.getDate(), returnFlight.getDate(), initialFlight.getDeparture(), returnFlight.getDeparture(), room.getCapacity(), room.getType(), room.getBeds()));
+                });
+    }
+
+    private List<HotelRoom> findRoomsMatchingFlight(Location location, int maxCapacity, LocalDate checkIn, LocalDate checkout) {
+        return hotelRoomRepository.find(location, maxCapacity, checkIn, checkout);
+    }
+
+    private int countAvailableSeats(Flight departure) {
+        return flightSeatRepository.countByFlightIdAndSeatStateState(departure.getId(), AvailableSeatState.OPEN);
+    }
+
+
+    private List<Flight> findFollowingFlights(Location departure, Location destination, LocalDate date) {
+        return flightRepository.findByDestinationAndDepartureAndDateBetween(departure, destination, date.plusDays(MIN_TRIP_DURATION), date.plusDays(MAX_TRIP_DURATION));
+    }
+
+    private List<Flight> findPrecedingFlights(Location departure, Location destination, LocalDate date) {
+        return flightRepository.findByDestinationAndDepartureAndDateBetween(departure, destination, date.minusDays(MAX_TRIP_DURATION), date.minusDays(MIN_TRIP_DURATION));
     }
 
     private Location getLocation(pl.rsww.offerwrite.common.location.Location destination) {

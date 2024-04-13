@@ -16,7 +16,7 @@ public interface HotelRoomRepository extends JpaRepository<HotelRoom, UUID> {
                 WHERE b.room = r
                   AND (?3 < b.checkOut AND b.checkIn < ?4)
               )""")
-    List<HotelRoom> find(Location location, Integer capacity, LocalDate checkIn, LocalDate checkOut);
+    List<HotelRoom> find(Location location, Integer maxCapacity, LocalDate checkIn, LocalDate checkOut);
 
     @Query("""
             select h from HotelRoom h
