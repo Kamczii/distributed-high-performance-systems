@@ -36,7 +36,7 @@ class HotelProjection extends JPAProjection<Hotel, UUID> {
       hotel.setLastProcessedPosition(eventEnvelope.metadata().logPosition());
       event.rooms().rooms()
               .stream()
-              .map(hotelRoom -> HotelRoom.builder().type(hotelRoom.type()).capacity(hotelRoom.capacity()).build())
+              .map(hotelRoom -> HotelRoom.builder().type(hotelRoom.type()).capacity(hotelRoom.capacity()).beds(hotelRoom.beds()).build())
               .forEach(hotel::addHotelRoom);
       return hotel;
     });

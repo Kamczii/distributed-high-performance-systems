@@ -58,8 +58,8 @@ public class OfferProjection {
             List<HotelRoom> rooms = hotelRoomRepository.find(destination, data.capacity(), startDate, date);
 
             for (HotelRoom room : rooms) {
-                log.info(String.format("Oferta: Od %s do %s, z %s do %s dla %d osób",
-                        startDate, date, departure.toString(), destination.toString(), room.getCapacity()));
+                log.info(String.format("Oferta: Od %s do %s, z %s do %s dla %d osób. Pokój: %s, %d łóżek",
+                        startDate, date, departure.toString(), destination.toString(), room.getCapacity(), room.getType(), room.getBeds()));
             }
         }
     }

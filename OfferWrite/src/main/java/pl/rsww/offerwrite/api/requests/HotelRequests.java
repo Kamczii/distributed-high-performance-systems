@@ -12,6 +12,7 @@ public final class HotelRequests {
     @Validated
     public record RoomRequest(
             @Nonnull String type,
+            @Nonnull Integer capacity,
             @Nonnull Integer beds
     ) {
     }

@@ -26,25 +26,33 @@ public class OfferWriteApplication {
             hotelService.create(new HotelRequests.CreateHotel(UUID.randomUUID(), "Jagódka",
                     new HotelRequests.LocationRequest("Poland", "Gdańsk"),
                     List.of(
-                        new HotelRequests.RoomRequest("Single bed", 1),
-                        new HotelRequests.RoomRequest("Double bed", 2),
-                        new HotelRequests.RoomRequest("Double bed + single bed", 3)
+                        new HotelRequests.RoomRequest("Single bed", 1, 1),
+                        new HotelRequests.RoomRequest("Double bed", 2, 1),
+                        new HotelRequests.RoomRequest("Double bed + single bed", 3, 2)
                     )));
 
             hotelService.create(new HotelRequests.CreateHotel(UUID.randomUUID(), "Borówka",
                     new HotelRequests.LocationRequest("Poland", "Gdańsk"),
                     List.of(
-                            new HotelRequests.RoomRequest("Double bed", 2),
-                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4),
-                            new HotelRequests.RoomRequest("Single bed", 1)
+                            new HotelRequests.RoomRequest("Double bed", 2, 1),
+                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 3),
+                            new HotelRequests.RoomRequest("Single bed", 1, 1)
                     )));
 
             hotelService.create(new HotelRequests.CreateHotel(UUID.randomUUID(), "Kaszanka",
                     new HotelRequests.LocationRequest("Poland", "Gdańsk"),
                     List.of(
-                            new HotelRequests.RoomRequest("Double bed", 2),
-                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4),
-                            new HotelRequests.RoomRequest("Single bed", 1)
+                            new HotelRequests.RoomRequest("Double bed", 2, 1),
+                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 3),
+                            new HotelRequests.RoomRequest("Single bed", 1, 1)
+                    )));
+
+            hotelService.create(new HotelRequests.CreateHotel(UUID.randomUUID(), "Mariot",
+                    new HotelRequests.LocationRequest("Poland", "Warsaw"),
+                    List.of(
+                            new HotelRequests.RoomRequest("Double bed", 2, 1),
+                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 3),
+                            new HotelRequests.RoomRequest("Single bed", 1, 1)
                     )));
 
             flightService.create(new FlightRequests.CreateFlight("GW",

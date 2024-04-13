@@ -4,49 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="hotel name">
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.jpb/jpb-settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/core/config/KafkaProducerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/AvailableSeatState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/Flight.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/FlightProjection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/FlightRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/FlightSeat.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/SeatState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/getting_flight_seats/SeatStateRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/Booking.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/Hotel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelProjection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelRoom.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelRoomRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/location/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/location/LocationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/resources/data.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/test/java/pl/rsww/offerwrite/HotelRoomRepositoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="offer projections">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/requests/FlightRequests.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/requests/FlightRequests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/Flight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightService.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/requests/HotelRequests.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/requests/HotelRequests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/Hotel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/HotelEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/HotelEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/HotelProjection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/hotel_rooms/HotelRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/hotel_rooms/HotelRoom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/InternalEventBus.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/InternalEventBus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/test/java/pl/rsww/offerwrite/FlightTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/test/java/pl/rsww/offerwrite/HotelsTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/test/java/pl/rsww/offerwrite/OfferMatchingTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/test/java/pl/rsww/offerwrite/OfferWriteApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -374,7 +339,7 @@
       <workItem from="1712987366915" duration="9403000" />
       <workItem from="1713012791382" duration="2523000" />
       <workItem from="1713015691564" duration="971000" />
-      <workItem from="1713021032179" duration="8499000" />
+      <workItem from="1713021032179" duration="8862000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -408,11 +373,30 @@
       <option name="project" value="LOCAL" />
       <updated>1712861397684</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="offer projections">
+      <option name="closed" value="true" />
+      <created>1713030109079</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1713030109079</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
@@ -423,6 +407,7 @@
     <MESSAGE value="Incoming events" />
     <MESSAGE value="postgres" />
     <MESSAGE value="hotel name" />
-    <option name="LAST_COMMIT_MESSAGE" value="hotel name" />
+    <MESSAGE value="offer projections" />
+    <option name="LAST_COMMIT_MESSAGE" value="offer projections" />
   </component>
 </project>

@@ -38,7 +38,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
         var location = new Location(create.location().country(), create.location().city());
         var rooms = create.rooms()
                 .stream()
-                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.beds()))
+                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds()))
                 .collect(Collectors.collectingAndThen(Collectors.toList(), HotelRooms::new));
         return new Hotel(create.hotelId(), create.name(), location, rooms);
     }
