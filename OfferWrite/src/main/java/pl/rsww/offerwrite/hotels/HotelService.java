@@ -2,6 +2,7 @@ package pl.rsww.offerwrite.hotels;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.rsww.offerwrite.api.requests.HotelRequests;
 import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 
 import java.util.UUID;
@@ -11,7 +12,7 @@ import java.util.UUID;
 public class HotelService {
     private final AggregateStore<Hotel, HotelEvent, UUID> hotelStore;
 
-    void test() {
-
+    public void create(HotelRequests.CreateHotel create) {
+        hotelStore.add(Hotel.create(create));
     }
 }
