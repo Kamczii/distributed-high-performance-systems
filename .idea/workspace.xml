@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="offer projection refactor">
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/Offer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/OfferRepository.java" afterDir="false" />
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="persist offer">
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/integration/OfferIntegrationEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/domain/AbstractDomainEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/OfferEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/Offer.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/Offer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/InternalEventBus.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/OfferEventBus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/Offer.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/Offer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -337,7 +339,7 @@
       <workItem from="1712987366915" duration="9403000" />
       <workItem from="1713012791382" duration="2523000" />
       <workItem from="1713015691564" duration="971000" />
-      <workItem from="1713021032179" duration="12978000" />
+      <workItem from="1713021032179" duration="15087000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -403,7 +405,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713040591489</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="persist offer">
+      <option name="closed" value="true" />
+      <created>1713041736665</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1713041736665</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -433,6 +443,7 @@
     <MESSAGE value="Room beds and capacity distinction" />
     <MESSAGE value="log fix" />
     <MESSAGE value="offer projection refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="offer projection refactor" />
+    <MESSAGE value="persist offer" />
+    <option name="LAST_COMMIT_MESSAGE" value="persist offer" />
   </component>
 </project>

@@ -84,7 +84,7 @@ public class OfferProjection {
                         .returnFlight(returnFlight)
                         .build())
                 .peek(OfferProjection::log)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), offerRepository::saveAll));
+                .collect(Collectors.collectingAndThen(Collectors.toList(), offerRepository::saveAll)); //todo: Batch insert
     }
 
     private static void log(Offer offer) {
