@@ -12,6 +12,8 @@ import pl.rsww.offerwrite.offer.getting_offers.OfferEvent;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 
+import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_INTEGRATION_TOPIC;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -45,8 +47,7 @@ public class OfferEventBus {
     }
 
     private void publish(OfferIntegrationEvent event) {
-        log.info(event.toString()); //todo kafka
-        objectRequestKafkaProducer.produce("pl.rsww.offerwrite.offer", event);
+        objectRequestKafkaProducer.produce(OFFER_INTEGRATION_TOPIC, event);
     }
 
     private static OfferIntegrationEvent.Hotel mapHotel(Offer offer, OfferIntegrationEvent.Room room) {

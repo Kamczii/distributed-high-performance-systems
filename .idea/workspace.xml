@@ -4,23 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="Offer Integration Event">
-      <change afterPath="$PROJECT_DIR$/Common/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="Introduced Common Module for unified messages&#10;&#10;&#10;- Docker build context changed so Dockerfiles need to be updated">
+      <change afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/offerwrite/api/OfferWriteTopics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferRead/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferRead/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/event/OfferIntegrationEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/offerwrite/api/OfferIntegrationEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/factory/MyKafkaConsumerFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/factory/MyKafkaConsumerFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/OfferReadApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/OfferReadApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/listeners/OfferEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/listeners/OfferEventListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/integration/OfferIntegrationEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/offers/getting_offers/OfferShortInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/offers/getting_offers/OfferShortInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/offers/getting_offers/OfferShortInfoProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/offers/getting_offers/OfferShortInfoProjection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/projections/MongoProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/projections/MongoProjection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/OfferEventBus.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/OfferEventBus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +137,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.EurekaServerApplication.executor": "Run",
     "Spring Boot.GatewayApplication.executor": "Run",
-    "Spring Boot.OfferReadApplication.executor": "Run",
+    "Spring Boot.OfferReadApplication.executor": "Debug",
     "Spring Boot.OfferWriteApplication.executor": "Run",
     "git-widget-placeholder": "master",
     "jdk.selected.JAVA_MODULE": "22",
@@ -201,7 +195,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Docker.docker-compose.yml.offer_read: Compose Deployment">
+  <component name="RunManager" selected="Spring Boot.OfferReadApplication">
     <configuration name="EurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="EurekaServer" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="pl.rsww.eurekaserver.EurekaServerApplication" />
@@ -295,9 +289,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.OfferReadApplication" />
         <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.offer_write: Compose Deployment" />
-        <item itemvalue="Spring Boot.OfferReadApplication" />
         <item itemvalue="Docker.docker-compose.yml.kafka: Compose Deployment" />
         <item itemvalue="Spring Boot.OfferWriteApplication" />
       </list>
@@ -420,7 +414,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713043571845</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Introduced Common Module for unified messages&#10;&#10;&#10;- Docker build context changed so Dockerfiles need to be updated">
+      <option name="closed" value="true" />
+      <created>1713190015657</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1713190015658</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -452,7 +454,8 @@
     <MESSAGE value="offer projection refactor" />
     <MESSAGE value="persist offer" />
     <MESSAGE value="Offer Integration Event" />
-    <option name="LAST_COMMIT_MESSAGE" value="Offer Integration Event" />
+    <MESSAGE value="Introduced Common Module for unified messages&#10;&#10;&#10;- Docker build context changed so Dockerfiles need to be updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduced Common Module for unified messages&#10;&#10;&#10;- Docker build context changed so Dockerfiles need to be updated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -463,9 +466,9 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/factory/MyKafkaConsumerFactory.java</url>
-          <line>17</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/projections/MongoProjection.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
