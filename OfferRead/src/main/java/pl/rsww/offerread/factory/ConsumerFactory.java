@@ -33,6 +33,8 @@ public class ConsumerFactory<T> {
                 JsonDeserializer.class);
         props.put(JsonDeserializer.VALUE_DEFAULT_TYPE,
                 valueClass.getCanonicalName());
+        props.put(JsonDeserializer.TRUSTED_PACKAGES,
+                "pl.rsww.*");
         return new DefaultKafkaConsumerFactory<>(props);
     }
 

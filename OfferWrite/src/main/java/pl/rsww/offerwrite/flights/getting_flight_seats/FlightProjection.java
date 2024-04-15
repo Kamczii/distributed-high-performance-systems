@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
+import pl.rsww.offerwrite.core.projections.EntityEventPublisher;
 import pl.rsww.offerwrite.core.projections.JPAProjection;
 import pl.rsww.offerwrite.flights.FlightEvent;
 import pl.rsww.offerwrite.location.Location;
@@ -19,8 +20,10 @@ class FlightProjection extends JPAProjection<Flight, UUID> {
     private final SeatStateRepository seatStateRepository;
 
     protected FlightProjection(FlightRepository repository,
-                               LocationRepository locationRepository, SeatStateRepository seatStateRepository) {
-        super(repository);
+                               LocationRepository locationRepository,
+                               SeatStateRepository seatStateRepository,
+                                EntityEventPublisher entityEventPublisher) {
+        super(repository, entityEventPublisher);
         this.locationRepository = locationRepository;
         this.seatStateRepository = seatStateRepository;
     }

@@ -3,13 +3,15 @@ package pl.rsww.offerread.listeners;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import pl.rsww.offerread.event.OfferingEvent;
+import org.springframework.stereotype.Component;
+import pl.rsww.offerread.event.OfferIntegrationEvent;
 
 @Slf4j
+@Component
 public class OfferEventListener {
 
-    @KafkaListener(topics = "pl.rsww.offer", groupId = "OfferRead")
-    public void listenOffer(OfferingEvent event) {
-        log.info(event.getClass() + " arrived");
+    @KafkaListener(topics = "pl.rsww.offerwrite.offer", groupId = "OfferRead", containerFactory = "offerEventConsumerFactory")
+    public void listenOffer(OfferIntegrationEvent event) {
+        log.info(event.toString());
     }
 }

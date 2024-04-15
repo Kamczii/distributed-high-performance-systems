@@ -3,6 +3,7 @@ package pl.rsww.offerwrite;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import pl.rsww.offerwrite.api.requests.FlightRequests;
 import pl.rsww.offerwrite.api.requests.HotelRequests;
@@ -21,6 +22,11 @@ public class OfferWriteApplication {
     }
 
     @Bean
+    @ConditionalOnProperty(
+            prefix = "command.line.runner",
+            value = "enabled",
+            havingValue = "true",
+            matchIfMissing = true)
     public CommandLineRunner run(HotelService hotelService, FlightService flightService) {
         return args -> {
             hotelService.create(new HotelRequests.CreateHotel(UUID.randomUUID(), "Jagódka",

@@ -7,8 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.rsww.offerwrite.core.events.EventMetadata;
+import pl.rsww.offerwrite.core.projections.Identifiable;
 import pl.rsww.offerwrite.core.views.VersionedView;
 import pl.rsww.offerwrite.location.Location;
+import pl.rsww.offerwrite.offer.OfferProjection;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(indexes = {@Index(columnList = "departure_id"), @Index(columnList = "destination_id")}, uniqueConstraints = @UniqueConstraint(columnNames = {"flightNumber","date"}))
-public class Flight implements VersionedView {
+public class Flight implements VersionedView, Identifiable {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;

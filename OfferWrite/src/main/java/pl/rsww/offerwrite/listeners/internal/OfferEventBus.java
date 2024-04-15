@@ -50,6 +50,7 @@ public class OfferEventBus {
 
     private void publish(OfferIntegrationEvent event) {
         log.info(event.toString()); //todo kafka
+        objectRequestKafkaProducer.produce("pl.rsww.offerwrite.offer", event);
     }
 
     private static OfferIntegrationEvent.Hotel mapHotel(Offer offer, OfferIntegrationEvent.Room room) {

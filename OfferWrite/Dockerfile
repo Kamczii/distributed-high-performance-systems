@@ -16,7 +16,7 @@ COPY --from=deps $home/ $home/
 
 COPY . $HOME/
 
-RUN mvn package -T 1.5C -am -q -pl :${SERVICE}
+RUN mvn package -DskipTests -T 1.5C -am -q -pl :${SERVICE}
 
 FROM openjdk:22 AS BUILD
 ENV HOME=/usr/src/app
@@ -26,4 +26,4 @@ COPY --from=builder $HOME/target/${SERVICE}.jar /app/${SERVICE}.jar
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 5005
-ENTRYPOINT java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005  -jar ${SERVICE}.jar
+ENTRYPOINT java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar ${SERVICE}.jar

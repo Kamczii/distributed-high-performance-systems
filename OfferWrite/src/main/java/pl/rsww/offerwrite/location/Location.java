@@ -26,6 +26,6 @@ public class Location {
 
     @Override
     public String toString() {
-        return STR."\{city}/\{country}";
+        return "%s/%s".formatted(city, country);
     }
 }
