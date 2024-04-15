@@ -5,16 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
-import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
-import pl.rsww.offerwrite.core.events.EventEnvelope;
-import pl.rsww.offerwrite.domain.AbstractDomainEvent;
+import pl.rsww.offerwrite.api.OfferIntegrationEvent;
 import pl.rsww.offerwrite.location.Location;
 import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferEvent;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
-
-import java.time.LocalDate;
 
 @Slf4j
 @Component

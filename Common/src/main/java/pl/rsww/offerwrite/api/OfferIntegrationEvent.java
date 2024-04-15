@@ -1,4 +1,4 @@
-package pl.rsww.offerread.event;
+package pl.rsww.offerwrite.api;
 
 import java.time.LocalDate;
 import java.util.UUID;

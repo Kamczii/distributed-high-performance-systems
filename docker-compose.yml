@@ -32,8 +32,8 @@ services:
   offer_write:
     container_name: offer_write
     build:
-      context: ./OfferWrite
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./OfferWrite/Dockerfile
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/offer
       - SPRING_DATASOURCE_USERNAME=admin
@@ -52,8 +52,8 @@ services:
   offer_read:
     container_name: offer_read
     build:
-      context: ./OfferRead
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./OfferRead/Dockerfile
     environment:
       SPRING_DATA_MONGODB_HOST: mongo_read_model
       SPRING_DATA_MONGODB_PORT: 27017

@@ -2,7 +2,10 @@ FROM maven:3.9.6-eclipse-temurin-22-jammy AS DEPS
 ENV HOME=/usr/src/app
 ENV SERVICE=OfferWrite
 WORKDIR $HOME
-COPY pom.xml $HOME/pom.xml
+COPY ./Common/ $HOME/Common
+RUN mvn -f $HOME/Common/pom.xml clean install
+
+COPY ./${SERVICE}/pom.xml $HOME/pom.xml
 RUN mvn dependency:go-offline -pl :${SERVICE}
 
 FROM maven:3.9.6-eclipse-temurin-22 AS BUILDER
@@ -14,7 +17,7 @@ WORKDIR $HOME
 COPY --from=deps /root/.m2/ /root/.m2/
 COPY --from=deps $home/ $home/
 
-COPY . $HOME/
+COPY ./${SERVICE}/ $HOME/
 
 RUN mvn package -DskipTests -T 1.5C -am -q -pl :${SERVICE}
 
