@@ -22,7 +22,7 @@ public class OfferReadApplication {
     public CommandLineRunner run(OfferShortInfoProjection projection, OfferShortInfoRepository shortInfoRepository) {
         return args -> {
             OfferIntegrationEvent.Created offerEvent = new OfferIntegrationEvent.Created(
-                    UUID.randomUUID(),  // offerId
+                    UUID.fromString("b01a4efb-8255-490b-bee6-b0e00c2768df"),  // offerId
                     new OfferIntegrationEvent.Hotel(
                             "Ritz Carlton",  // hotel name
                             new OfferIntegrationEvent.Room("Suite", 2, 2)  // room type, capacity, beds

@@ -6,14 +6,14 @@
   </div>
 </template>
 <script>
-import SearchComponent from "@/components/SearchComponent";
+import SearchComponent from "@/components/search/SearchComponent.vue";
 import LastUpdates from "@/components/LastUpdates";
 
 export default {
   name: 'App',
   components: {
     LastUpdates,
-    SearchComponent
+    SearchComponent,
   }
 }
 </script>

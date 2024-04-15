@@ -28,6 +28,6 @@ ENV SERVICE=OfferRead
 
 COPY --from=builder $HOME/target/${SERVICE}.jar /app/${SERVICE}.jar
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 8081
 EXPOSE 5005
 ENTRYPOINT java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005  -jar ${SERVICE}.jar
