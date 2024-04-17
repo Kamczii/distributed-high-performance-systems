@@ -1,4 +1,4 @@
-package pl.rsww.offerwrite.api.requests;
+package pl.rsww.dominik.api;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +25,7 @@ public final class HotelRequests {
     }
 
     public record CreateHotel(
+            //TODO: Dominik
             @Nonnull UUID hotelId,
             @Nonnull String name,
             @Nonnull LocationRequest location,
@@ -32,12 +33,14 @@ public final class HotelRequests {
     ) {}
 
     public record RoomReserved(
+            @Nonnull UUID hotelId,
             @Nonnull String type,
             @Nonnull LocalDate startDate,
             @Nonnull LocalDate endDate
     ) {}
 
     public record RoomBooked(
+            @Nonnull UUID hotelId,
             @Nonnull String type,
             @Nonnull LocalDate startDate,
             @Nonnull LocalDate endDate

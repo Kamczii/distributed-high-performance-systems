@@ -5,8 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import pl.rsww.offerwrite.api.requests.FlightRequests;
-import pl.rsww.offerwrite.api.requests.HotelRequests;
+import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.dominik.api.HotelRequests;
 import pl.rsww.offerwrite.flights.FlightService;
 import pl.rsww.offerwrite.hotels.HotelService;
 

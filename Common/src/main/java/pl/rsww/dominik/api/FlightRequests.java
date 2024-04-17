@@ -1,10 +1,9 @@
-package pl.rsww.offerwrite.api.requests;
+package pl.rsww.dominik.api;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
-import java.util.Collection;
 
 public final class FlightRequests {
     @Validated
@@ -15,6 +14,7 @@ public final class FlightRequests {
     }
 
     public record CreateFlight(
+            //TODO: Dominik
             @Nonnull String flightNumber,
             @Nonnull Integer numberOfSeats,
             @Nonnull LocationRequest departure,
