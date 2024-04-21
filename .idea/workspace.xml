@@ -4,14 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="persist offer">
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/api/integration/OfferIntegrationEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/domain/AbstractDomainEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/OfferEvent.java" afterDir="false" />
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="mongo projection">
+      <change afterPath="$PROJECT_DIR$/Frontend/src/components/search/OfferDetails.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend/src/components/search/OfferList.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend/src/components/search/OfferShortInfo.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/controllers/OfferController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/offers/getting_offers/ShortInfoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/InternalEventBus.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/internal/OfferEventBus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/Offer.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/getting_offers/Offer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/components/SearchComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/components/search/SearchComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/OfferReadApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/OfferReadApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/offers/getting_offers/OfferShortInfoProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/java/pl/rsww/offerread/offers/getting_offers/OfferShortInfoProjection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,64 +106,74 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.OfferWrite/Dockerfile.executor": "Run",
-    "Docker.docker-compose.yml.eureka_server: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.event-store: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.frontend: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.gateway: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.kafka: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.mongo-express: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.mongo_read_model: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.offer_write: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.postgres: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "Docker.frontend/Dockerfile.executor": "Run",
-    "JUnit.HotelRoomRepositoryTest.executor": "Run",
-    "JUnit.HotelRoomRepositoryTest.should_returnNothingIfBooked.executor": "Run",
-    "JUnit.HotelRoomRepositoryTest.should_returnNothing_ifBooked.executor": "Run",
-    "JUnit.HotelRoomRepositoryTest.should_returnRoom_ifBookingNotOverlaps.executor": "Run",
-    "JUnit.HotelRoomRepositoryTest.testFindByRoomNumber (1).executor": "Run",
-    "JUnit.HotelRoomRepositoryTest.testFindByRoomNumber.executor": "Run",
-    "JUnit.OfferReadApplicationTests.contextLoads.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.EurekaServerApplication.executor": "Run",
-    "Spring Boot.GatewayApplication.executor": "Run",
-    "Spring Boot.OfferReadApplication.executor": "Run",
-    "Spring Boot.OfferWriteApplication.executor": "Run",
-    "git-widget-placeholder": "master",
-    "jdk.selected.JAVA_MODULE": "22",
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/test/java/pl/rsww/offerwrite",
-    "last_opened_file_path": "D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite/core",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "com.haulmont.jpb.repository",
-    "ts.external.directory.path": "C:\\Users\\k4mcz\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\233.11799.241\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.OfferWrite/Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.eureka_server: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.event-store: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.event_store: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.frontend: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.gateway: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.kafka: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.mongo-express: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.mongo_read_model: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.offer_read: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.offer_write: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.postgres: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.frontend/Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HotelRoomRepositoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HotelRoomRepositoryTest.should_returnNothingIfBooked.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HotelRoomRepositoryTest.should_returnNothing_ifBooked.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HotelRoomRepositoryTest.should_returnRoom_ifBookingNotOverlaps.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HotelRoomRepositoryTest.testFindByRoomNumber (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HotelRoomRepositoryTest.testFindByRoomNumber.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.OfferReadApplicationTests.contextLoads.executor&quot;: &quot;Run&quot;,
+    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.OfferRead [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Remote JVM Debug.Unnamed.executor&quot;: &quot;Debug&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.EurekaServerApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OfferReadApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OfferWriteApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;22&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;D:/Studia/projekty/Mikroserwisy/Projekt/Common/src/main/java&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite/core&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.haulmont.jpb.repository&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\k4mcz\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\233.11799.241\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="pl.rsww.offerwrite.core.projections" />
       <recent name="pl.rsww.offerwrite.flights.getting_flight_seats" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -168,6 +184,7 @@
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferRead" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Frontend\src\components\search" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\test\java\pl\rsww\offerwrite" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -187,69 +204,19 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.OfferWriteApplication">
-    <configuration name="HotelRoomRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="OfferWrite" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
-      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelRoomRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HotelRoomRepositoryTest.should_returnNothingIfBooked" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="OfferWrite" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
-      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelRoomRepositoryTest" />
-      <option name="METHOD_NAME" value="should_returnNothingIfBooked" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HotelRoomRepositoryTest.should_returnNothing_ifBooked" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="OfferWrite" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
-      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelRoomRepositoryTest" />
-      <option name="METHOD_NAME" value="should_returnNothing_ifBooked" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="HotelRoomRepositoryTest.should_returnRoom_ifBookingNotOverlaps" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="OfferWrite" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
-      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelRoomRepositoryTest" />
-      <option name="METHOD_NAME" value="should_returnRoom_ifBookingNotOverlaps" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+  <component name="RunManager" selected="Docker.docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment">
+    <configuration name="Unnamed" type="Remote" nameIsGenerated="true">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5081" />
+      <option name="AUTO_RESTART" value="false" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="5081" />
+        <option name="LOCAL" value="false" />
+      </RunnerSettings>
+      <method v="2" />
     </configuration>
     <configuration name="EurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="EurekaServer" />
@@ -265,9 +232,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OfferReadApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="OfferReadApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="OfferRead" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="pl.rsww.offerread.OfferReadApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.rsww.offerread.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -297,13 +270,66 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml.kafka: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="kafka" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="services">
+            <list>
+              <option value="offer_read" />
+              <option value="offer_write" />
+              <option value="kafka" />
+              <option value="zookeeper" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.offer_write: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="offer_write" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Docker.docker-compose.yml.kafka: Compose Deployment" />
+      <item itemvalue="Docker.docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment" />
+      <item itemvalue="Docker.docker-compose.yml.offer_write: Compose Deployment" />
+      <item itemvalue="Remote JVM Debug.Unnamed" />
+      <item itemvalue="Spring Boot.EurekaServerApplication" />
+      <item itemvalue="Spring Boot.GatewayApplication" />
+      <item itemvalue="Spring Boot.OfferReadApplication" />
+      <item itemvalue="Spring Boot.OfferWriteApplication" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment" />
+        <item itemvalue="Spring Boot.OfferReadApplication" />
+        <item itemvalue="Docker.docker-compose.yml.offer_write: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.kafka: Compose Deployment" />
         <item itemvalue="Spring Boot.OfferWriteApplication" />
-        <item itemvalue="JUnit.HotelRoomRepositoryTest" />
-        <item itemvalue="JUnit.HotelRoomRepositoryTest.should_returnRoom_ifBookingNotOverlaps" />
-        <item itemvalue="JUnit.HotelRoomRepositoryTest.should_returnNothing_ifBooked" />
-        <item itemvalue="JUnit.HotelRoomRepositoryTest.should_returnNothingIfBooked" />
       </list>
     </recent_temporary>
   </component>
@@ -339,7 +365,12 @@
       <workItem from="1712987366915" duration="9403000" />
       <workItem from="1713012791382" duration="2523000" />
       <workItem from="1713015691564" duration="971000" />
-      <workItem from="1713021032179" duration="15087000" />
+      <workItem from="1713021032179" duration="15760000" />
+      <workItem from="1713110820138" duration="6123000" />
+      <workItem from="1713121812383" duration="2137000" />
+      <workItem from="1713178789808" duration="11000" />
+      <workItem from="1713196066970" duration="4134000" />
+      <workItem from="1713207549976" duration="1123000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -413,7 +444,31 @@
       <option name="project" value="LOCAL" />
       <updated>1713041736665</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Offer Integration Event">
+      <option name="closed" value="true" />
+      <created>1713043571845</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1713043571845</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Introduced Common Module for unified messages&#10;&#10;&#10;- Docker build context changed so Dockerfiles need to be updated">
+      <option name="closed" value="true" />
+      <created>1713190015657</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1713190015658</updated>
+    </task>
+    <task id="LOCAL-00012" summary="mongo projection">
+      <option name="closed" value="true" />
+      <created>1713192229837</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1713192229837</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -444,6 +499,20 @@
     <MESSAGE value="log fix" />
     <MESSAGE value="offer projection refactor" />
     <MESSAGE value="persist offer" />
-    <option name="LAST_COMMIT_MESSAGE" value="persist offer" />
+    <MESSAGE value="Offer Integration Event" />
+    <MESSAGE value="Introduced Common Module for unified messages&#10;&#10;&#10;- Docker build context changed so Dockerfiles need to be updated" />
+    <MESSAGE value="mongo projection" />
+    <option name="LAST_COMMIT_MESSAGE" value="mongo projection" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$MAVEN_REPOSITORY$/com/eventstore/db-client-java/5.3.2/db-client-java-5.3.2-sources.jar!/com/eventstore/dbclient/ConnectionService.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

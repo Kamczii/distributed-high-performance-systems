@@ -2,6 +2,7 @@ package pl.rsww.offerwrite.core.projections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.repository.CrudRepository;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
 import pl.rsww.offerwrite.core.views.VersionedView;
@@ -9,12 +10,15 @@ import pl.rsww.offerwrite.core.views.VersionedView;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class JPAProjection<View, Id> {
+
+public abstract class JPAProjection<View extends Identifiable, Id> {
   private final CrudRepository<View, Id> repository;
   private final Logger logger = LoggerFactory.getLogger(JPAProjection.class);
+  private final EntityEventPublisher entityEventPublisher;
 
-  protected JPAProjection(CrudRepository<View, Id> repository) {
+  protected JPAProjection(CrudRepository<View, Id> repository, EntityEventPublisher entityEventPublisher) {
     this.repository = repository;
+    this.entityEventPublisher = entityEventPublisher;
   }
 
   protected <Event> void add(EventEnvelope<Event> eventEnvelope, Supplier<View> handle) {
@@ -24,7 +28,8 @@ public abstract class JPAProjection<View, Id> {
       versionedView.setMetadata(eventEnvelope.metadata());
     }
 
-    repository.save(result);
+    var save = repository.save(result);
+    entityEventPublisher.publish(save);
   }
 
   protected <Event> void getAndUpdate(

@@ -1,11 +1,13 @@
 package pl.rsww.offerwrite.offer;
 
+import jakarta.persistence.PostPersist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
+import pl.rsww.offerwrite.core.projections.Identifiable;
 import pl.rsww.offerwrite.flights.FlightEvent;
 import pl.rsww.offerwrite.flights.getting_flight_seats.AvailableSeatState;
 import pl.rsww.offerwrite.flights.getting_flight_seats.Flight;
@@ -22,6 +24,7 @@ import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,14 +48,13 @@ public class OfferProjection {
         //todo
     }
 
+//    @EventListener
     @EventListener
-    public void handleFlightCreated(EventEnvelope<FlightEvent.FlightCreated> eventEnvelope) {
-        log.info(eventEnvelope.data().toString());
-        final var data = eventEnvelope.data();
-        final var date = data.date();
-        final var destination = getLocation(data.destination());
-        final var departure = getLocation(data.departure());
-        final var flight = fetchFlight(data);
+    public void handleFlightCreated(Identifiable identifiable) {
+        final var flight = fetchFlight(identifiable.getId());
+        final var date = flight.getDate();
+        final var destination = flight.getDestination();
+        final var departure = flight.getDeparture();
 
         var returnFlights = findFollowingFlights(departure, destination, date)
                 .stream()
@@ -68,8 +70,8 @@ public class OfferProjection {
                 .forEach(this::createOffer);
     }
 
-    private Flight fetchFlight(FlightEvent.FlightCreated data) {
-        return flightRepository.findByFlightNumberAndDate(data.flightNumber(), data.date());
+    private Flight fetchFlight(UUID flightId) {
+        return flightRepository.findById(flightId).orElseThrow();
     }
 
     private void createOffer(Pair<Flight,Flight> route) {

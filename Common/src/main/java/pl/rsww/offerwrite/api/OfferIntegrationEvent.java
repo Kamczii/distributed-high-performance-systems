@@ -1,4 +1,4 @@
-package pl.rsww.offerwrite.api.integration;
+package pl.rsww.offerwrite.api;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -10,7 +10,7 @@ public sealed interface OfferIntegrationEvent {
                    Location destination,
                    LocalDate start,
                    LocalDate end
-                   ) implements OfferIntegrationEvent {}
+    ) implements OfferIntegrationEvent {}
 
     record Hotel (String name, Room room) {
 

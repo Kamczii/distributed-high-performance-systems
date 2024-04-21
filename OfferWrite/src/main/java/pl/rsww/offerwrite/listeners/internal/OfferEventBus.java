@@ -5,16 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
-import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
-import pl.rsww.offerwrite.core.events.EventEnvelope;
-import pl.rsww.offerwrite.domain.AbstractDomainEvent;
+import pl.rsww.offerwrite.api.OfferIntegrationEvent;
 import pl.rsww.offerwrite.location.Location;
 import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferEvent;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 
-import java.time.LocalDate;
+import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_INTEGRATION_TOPIC;
 
 @Slf4j
 @Component
@@ -49,7 +47,7 @@ public class OfferEventBus {
     }
 
     private void publish(OfferIntegrationEvent event) {
-        log.info(event.toString()); //todo kafka
+        objectRequestKafkaProducer.produce(OFFER_INTEGRATION_TOPIC, event);
     }
 
     private static OfferIntegrationEvent.Hotel mapHotel(Offer offer, OfferIntegrationEvent.Room room) {

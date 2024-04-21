@@ -32,16 +32,21 @@ services:
   offer_write:
     container_name: offer_write
     build:
-      context: ./OfferWrite
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./OfferWrite/Dockerfile
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/offer
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+#      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - ESDB_CONNECTIONSTRING=esdb://eventstore:2113?tls=false
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
     ports:
       - "8082:8080"
       - "5082:5005"
+    depends_on:
+    - event_store
+    - postgres
     networks:
       - rsww-network
   order:
@@ -67,14 +72,14 @@ services:
   offer_read:
     container_name: offer_read
     build:
-      context: ./OfferRead
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./OfferRead/Dockerfile
     environment:
       SPRING_DATA_MONGODB_HOST: mongo_read_model
       SPRING_DATA_MONGODB_PORT: 27017
       SPRING_DATA_MONGODB_DATABASE: offer_read_model
     ports:
-      - "8081:8080"
+      - "8081:8081"
       - "5081:5005"
     depends_on:
       - mongo_read_model
@@ -123,7 +128,8 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo_read_model:27017/
     networks:
       - rsww-network
-  event-store:
+  event_store:
+    container_name: eventstore
     image: eventstore/eventstore
     # use this image if you're running ARM-based proc like Apple M1
     # image: eventstore/eventstore:22.10.0-alpha-arm64v8
@@ -137,6 +143,8 @@ services:
     ports:
       - '1113:1113'
       - '2113:2113'
+    networks:
+      - rsww-network
 #    volumes:
 #      - type: volume
 #        source: eventstore-volume-data

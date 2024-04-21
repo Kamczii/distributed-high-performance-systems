@@ -40,12 +40,22 @@
       <!-- Submit Button -->
       <button type="submit">Search</button>
     </form>
+
+    <div>
+      <offer-list></offer-list>
+    </div>
   </div>
 </template>
 
 
 <script>
+
+import OfferList from "@/components/search/OfferList.vue";
+
 export default {
+  components: {
+    OfferList
+  },
   data() {
     return {
       persons: 1,

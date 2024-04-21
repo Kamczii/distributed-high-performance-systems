@@ -17,12 +17,8 @@ public abstract class MongoProjection<View, Id> {
   private final Logger logger = LoggerFactory.getLogger(JPAProjection.class);
 
 
-  protected <Event> void add(EventEnvelope<Event> eventEnvelope, Supplier<View> handle) {
+  protected void add(Supplier<View> handle) {
     var result = handle.get();
-
-    if(result instanceof VersionedView versionedView){
-//      versionedView.setMetadata(eventEnvelope.metadata()); todo
-    }
 
     repository.save(result);
   }

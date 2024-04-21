@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.rsww.offerwrite.core.events.EventMetadata;
+import pl.rsww.offerwrite.core.projections.Identifiable;
 import pl.rsww.offerwrite.core.views.VersionedView;
 import pl.rsww.offerwrite.location.Location;
 
@@ -21,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(indexes = @Index(columnList = "location_id"))
-public class Hotel implements VersionedView {
+public class Hotel implements VersionedView, Identifiable {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;

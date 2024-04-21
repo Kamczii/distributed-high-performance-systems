@@ -3,6 +3,7 @@ package pl.rsww.offerwrite.hotels.getting_hotel_rooms;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
+import pl.rsww.offerwrite.core.projections.EntityEventPublisher;
 import pl.rsww.offerwrite.core.projections.JPAProjection;
 import pl.rsww.offerwrite.hotels.HotelEvent;
 import pl.rsww.offerwrite.location.Location;
@@ -17,8 +18,9 @@ class HotelProjection extends JPAProjection<Hotel, UUID> {
   private final LocationRepository locationRepository;
 
   protected HotelProjection(HotelRepository repository,
-                            LocationRepository locationRepository) {
-    super(repository);
+                            LocationRepository locationRepository,
+                            EntityEventPublisher entityEventPublisher) {
+    super(repository, entityEventPublisher);
     this.locationRepository = locationRepository;
   }
 
