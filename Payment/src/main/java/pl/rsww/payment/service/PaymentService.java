@@ -1,9 +1,7 @@
 package pl.rsww.payment.service;
 
-import pl.rsww.payment.event.OrderCancelledEvent;
-import pl.rsww.payment.event.OrderCreatedEvent;
-import pl.rsww.payment.event.PaymentCancelledEvent;
-import pl.rsww.payment.event.PaymentSucceededEvent;
+import pl.rsww.order.api.OrderIntegrationEvent;
+import pl.rsww.payment.api.PaymentIntegrationEvent;
 import pl.rsww.payment.model.Payment;
 import pl.rsww.payment.publisher.OrderEventPublisher;
 import pl.rsww.payment.publisher.PaymentEventPublisher;
@@ -28,13 +26,15 @@ public class PaymentService {
     private OrderEventPublisher orderEventPublisher;
     @Autowired
     private PaymentEventPublisher paymentEventPublisher;
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Transactional
-    public void createPayment(OrderCreatedEvent orderEvent) {
+    public void createPayment(OrderIntegrationEvent orderEvent) {
 
         Payment payment = Payment.builder()
-                .orderId(orderEvent.getOrderId())
-                .amount(orderEvent.getTotalPrice())
+                .orderId(orderEvent.orderId())
+                .amount(orderEvent.totalPrice())
                 .createdAt(new Date())
                 .paymentStatus(PaymentStatus.PENDING).build();
 
@@ -64,22 +64,28 @@ public class PaymentService {
     }
 
     public void sendPaymentSuccessEvent(Payment payment) {
-        PaymentSucceededEvent paymentSucceededEvent = new PaymentSucceededEvent(payment.getId(),
+        PaymentIntegrationEvent paymentSucceededEvent = new PaymentIntegrationEvent(PaymentIntegrationEvent.EventType.SUCCEEDED,
+                payment.getId(),
                 payment.getOrderId(),
+                authenticationService.getToken(),
                 payment.getAmount());
         paymentEventPublisher.publishPaymentEvent(paymentSucceededEvent);
     }
 
     public void sendPaymentCancelEvent(Payment payment) {
-        PaymentCancelledEvent paymentCancelledEvent = new PaymentCancelledEvent(payment.getId(),
+        PaymentIntegrationEvent paymentCancelledEvent = new PaymentIntegrationEvent(PaymentIntegrationEvent.EventType.CANCELLED,
+                payment.getId(),
                 payment.getOrderId(),
+                authenticationService.getToken(),
                 payment.getAmount());
         paymentEventPublisher.publishPaymentEvent(paymentCancelledEvent);
     }
 
     public void sendOrderCancelEvent(Payment payment) {
-        OrderCancelledEvent orderCancelEvent = new OrderCancelledEvent(payment.getOrderId(),
+        OrderIntegrationEvent orderCancelledEvent = new OrderIntegrationEvent(OrderIntegrationEvent.EventType.CANCELLED,
+                payment.getOrderId(),
+                authenticationService.getToken(),
                 payment.getAmount());
-        orderEventPublisher.publishOrderEvent(orderCancelEvent);
+        orderEventPublisher.publishOrderEvent(orderCancelledEvent);
     }
 }

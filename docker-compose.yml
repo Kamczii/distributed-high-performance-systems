@@ -52,8 +52,8 @@ services:
   order:
     container_name: order
     build:
-      context: ./Order
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./Order/Dockerfile
     ports:
       - "8083:8080"
       - "5083:5005"
@@ -62,8 +62,8 @@ services:
   payment:
     container_name: payment
     build:
-      context: ./Payment
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./Payment/Dockerfile
     ports:
       - "8084:8080"
       - "5084:5005"

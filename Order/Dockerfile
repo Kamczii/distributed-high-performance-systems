@@ -1,24 +1,27 @@
-FROM maven:3.9.6-eclipse-temurin-17-jammy AS DEPS
+FROM maven:3.9.6-eclipse-temurin-22-jammy AS DEPS
 ENV HOME=/usr/src/app
 ENV SERVICE=Order
 WORKDIR $HOME
-COPY pom.xml $HOME/pom.xml
+COPY ./Common/ $HOME/Common
+RUN mvn -f $HOME/Common/pom.xml clean install
+
+COPY ./${SERVICE}/pom.xml $HOME/pom.xml
 RUN mvn dependency:go-offline -pl :${SERVICE}
 
-FROM maven:3.9.6-eclipse-temurin-17 AS BUILDER
+FROM maven:3.9.6-eclipse-temurin-22 AS BUILDER
 ENV HOME=/usr/src/app
 ENV SERVICE=Order
 
 WORKDIR $HOME
 
 COPY --from=deps /root/.m2/ /root/.m2/
-COPY --from=deps $home/ $home/
+COPY --from=deps $HOME/ $HOME/
 
-COPY . $HOME/
+COPY ./${SERVICE}/ $HOME/
 
-RUN mvn package -T 1.5C -am -q -pl :${SERVICE}
+RUN mvn package -DskipTests -T 1.5C -am -q -pl :${SERVICE}
 
-FROM openjdk:17 AS BUILD
+FROM openjdk:22 AS BUILD
 ENV HOME=/usr/src/app
 ENV SERVICE=Order
 
@@ -26,4 +29,4 @@ COPY --from=builder $HOME/target/${SERVICE}.jar /app/${SERVICE}.jar
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 5005
-ENTRYPOINT java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005  -jar ${SERVICE}.jar
+ENTRYPOINT java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar ${SERVICE}.jar

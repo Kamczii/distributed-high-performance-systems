@@ -16,7 +16,7 @@ COPY --from=deps $home/ $home/
 
 COPY . $HOME/
 
-RUN mvn package -T 1.5C -am -q -pl :${SERVICE}
+RUN mvn package -DskipTests -T 1.5C -am -q -pl :${SERVICE}
 
 FROM openjdk:17 AS BUILD
 ENV HOME=/usr/src/app

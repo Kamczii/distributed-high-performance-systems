@@ -1,5 +1,6 @@
 package pl.rsww.payment.listener;
 
+import pl.rsww.order.api.OrderIntegrationEvent;
 import pl.rsww.payment.event.OrderCreatedEvent;
 import pl.rsww.payment.event.OrderEvent;
 //import com.rsww.project.event.OrderPendingEvent;
@@ -18,16 +19,16 @@ public class OrderListener {
     PaymentService paymentService;
 
     @KafkaListener(topics = "pl.rsww.order")
-    public void handleOrderEvent(OrderEvent orderEvent) {
+    public void handleOrderEvent(OrderIntegrationEvent orderEvent) {
 
-        if (orderEvent instanceof OrderCreatedEvent) {
-            processOrderCreatedEvent((OrderCreatedEvent) orderEvent);
+        if (orderEvent.eventType().equals(OrderIntegrationEvent.EventType.CANCELLED)) {
+            processOrderCreatedEvent(orderEvent);
         }
 
     }
 
-    private void processOrderCreatedEvent(OrderCreatedEvent orderCreatedEvent) {
-        log.info("Received order event with id: {}", orderCreatedEvent.getOrderId());
+    private void processOrderCreatedEvent(OrderIntegrationEvent orderCreatedEvent) {
+        log.info("Received order event with id: {}", orderCreatedEvent.orderId());
 
         paymentService.createPayment(orderCreatedEvent);
     }
