@@ -56,6 +56,12 @@ export default {
   components: {
     OfferList
   },
+  mounted() {
+    fetch("http://localhost:8081/locations")
+        .then(res => res.json())
+        .then(data => this.cities = data)
+        .catch(err => console.log(err))
+  },
   data() {
     return {
       persons: 1,
@@ -67,7 +73,7 @@ export default {
       startDate: '', // Added for start date of the trip
       endDate: '', // Added for end date of the trip
       kidAges: [], // Array to store each kid's age
-      cities: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'], // Example cities
+      cities: [], // Example cities
     };
   },
   watch: {
@@ -87,9 +93,30 @@ export default {
       }
     },
     submitSearch() {
-      // Update your submitSearch method to include the new data
-      alert(`Searching for ${this.persons} persons, ${this.kids} kids, going to ${this.destination} from ${this.from} by ${this.transport}. Date range: ${this.startDate} to ${this.endDate}. Kid ages: ${this.kidAges.join(', ')}`);
-      // Make your HTTP request or emit an event here
+      // Collect search parameters
+      const params = {
+        persons: this.persons,
+        kids: this.kids,
+        from: this.from,
+        destination: this.destination,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        transport: this.transport
+      };
+
+      // Filter out empty parameters
+      const searchParams = {};
+      Object.keys(params).forEach(key => {
+        if (params[key]) searchParams[key] = params[key];
+      });
+
+
+      this.$router.push({ name: '', query: searchParams }).catch(err => {
+        // Handle duplicate navigation errors or any other router error
+        if (err.name !== 'NavigationDuplicated' && err.message !== 'Avoided redundant navigation to current location') {
+          console.error(err);
+        }
+      });
     },
   },
 };

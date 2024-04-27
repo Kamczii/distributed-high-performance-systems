@@ -18,5 +18,9 @@ public class MyKafkaConsumerFactory {
         return consumerFactory.create(OfferIntegrationEvent.class);
     }
 
+    public ConcurrentKafkaListenerContainerFactory<String, Object> locationEventConsumerFactory() {
+        return consumerFactory.create(OfferIntegrationEvent.class);
+    }
+
 
 }
