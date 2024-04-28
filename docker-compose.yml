@@ -59,6 +59,26 @@ services:
       - "5083:5005"
     networks:
       - rsww-network
+    depends_on:
+      - postgres-order
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-order:5432/order-service
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+  postgres-order:
+    image: 'postgres'
+    container_name: postgres-order
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: order-service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    networks:
+      - rsww-network
   payment:
     container_name: payment
     build:
@@ -67,6 +87,25 @@ services:
     ports:
       - "8084:8080"
       - "5084:5005"
+    networks:
+      - rsww-network
+    depends_on:
+      - postgres-payment
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-payment:5432/payment-service
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+  postgres-payment:
+    image: 'postgres'
+    container_name: postgres-payment
+    ports:
+      - "5444:5432"
+    environment:
+      POSTGRES_DB: payment-service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     networks:
       - rsww-network
   offer_read:
@@ -85,24 +124,6 @@ services:
       - mongo_read_model
     networks:
       - rsww-network
-  postgres-order:
-    image: 'postgres'
-    container_name: postgres-order
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_DB: order-service
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-  postgres-payment:
-    image: 'postgres'
-    container_name: postgres-payment
-    ports:
-      - "5444:5432"
-    environment:
-      POSTGRES_DB: payment-service
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
   mongo_read_model:
     container_name: mongo_read_model
     image: mongo:7.0.7

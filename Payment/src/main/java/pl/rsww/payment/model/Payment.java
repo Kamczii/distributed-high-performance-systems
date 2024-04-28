@@ -22,6 +22,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID orderId;
+    private String userId;
     private Float amount;
     private Date createdAt;
 

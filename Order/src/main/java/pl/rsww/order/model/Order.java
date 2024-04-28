@@ -21,6 +21,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID orderId;
     private UUID offerId;
+    private String userId;
     private Float totalPrice;
     private Date orderDate;
 

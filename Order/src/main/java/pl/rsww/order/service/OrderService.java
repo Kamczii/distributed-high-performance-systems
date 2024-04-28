@@ -30,6 +30,7 @@ public class OrderService {
 
         Order order = Order.builder()
                 .offerId(orderRequest.getOfferId())
+                .userId(authenticationService.getToken())
                 .totalPrice(orderRequest.getPrice())
                 .orderStatus(OrderStatus.CREATED)
                 .orderDate(new Date()).build();

@@ -34,6 +34,7 @@ public class PaymentService {
 
         Payment payment = Payment.builder()
                 .orderId(orderEvent.orderId())
+                .userId(authenticationService.getToken())
                 .amount(orderEvent.totalPrice())
                 .createdAt(new Date())
                 .paymentStatus(PaymentStatus.PENDING).build();
