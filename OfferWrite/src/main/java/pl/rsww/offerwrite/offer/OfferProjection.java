@@ -38,7 +38,7 @@ public class OfferProjection {
     public void handleHotelCreated(Hotel hotel) {
         log.info(String.format("Dodano hotel: %s", hotel.getName()));
         flightRepository.findAllByDestination(hotel.getLocation())
-                .forEach(this::handleFlightCreated);
+                .forEach(this::handleFlightCreated); //todo: refactor
     }
 
     @EventListener

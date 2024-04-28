@@ -5,11 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="offer search">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Changes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Changes.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/dominik/api/TourOperatorTopics.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/factory/ConsumerFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/factory/MyKafkaConsumerFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/kafka/FlightEventListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/kafka/HotelEventListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferRead/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/OfferRead/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/dominik/api/FlightRequests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/dominik/api/FlightRequests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/core/aggregates/AggregateStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/core/aggregates/AggregateStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/Flight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightService.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,8 +154,8 @@
     "git-widget-placeholder": "master",
     "jdk.selected.JAVA_MODULE": "22",
     "kotlin-language-version-configured": "true",
-    "last_directory_selection": "D:/Studia/projekty/Mikroserwisy/Projekt/Common/src/main/java",
-    "last_opened_file_path": "D:/Studia/projekty/Mikroserwisy/Projekt/Common/src/main/java/pl/rsww/dominik/api",
+    "last_directory_selection": "D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners",
+    "last_opened_file_path": "D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -181,22 +191,22 @@
       <recent name="pl.rsww.offerwrite.flights.getting_flight_seats" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Common\src\main\java\pl\rsww\dominik\api" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite\core" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite\flights" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite\api\requests" />
-      <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\EurekaServer" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Frontend\src\components\search" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\test\java\pl\rsww\offerwrite" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pl.rsww.dominik.api" />
+      <recent name="pl.rsww.offerwrite.listeners.kafka" />
       <recent name="pl.rsww.offerread.locations.getting_locations" />
       <recent name="pl.rsww.offerwrite.flights.getting_flight_seats" />
       <recent name="pl.rsww.offerwrite.hotels.getting_hotel_rooms" />
-      <recent name="pl.rsww.offerwrite.api.requests" />
-      <recent name="pl.rsww.offerwrite.hotels.hotel_rooms" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -208,7 +218,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Docker.RUN ALL">
+  <component name="RunManager" selected="Spring Boot.OfferWriteApplication">
     <configuration name="Unnamed" type="Remote" nameIsGenerated="true">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -289,6 +299,19 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml.event_store: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="event_store" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml.mongo-express: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -315,24 +338,11 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.yml.offer_write: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="offer_write" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <list>
+      <item itemvalue="Docker.docker-compose.yml.event_store: Compose Deployment" />
       <item itemvalue="Docker.docker-compose.yml.mongo-express: Compose Deployment" />
       <item itemvalue="Docker.RUN ALL" />
       <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
-      <item itemvalue="Docker.docker-compose.yml.offer_write: Compose Deployment" />
       <item itemvalue="Remote JVM Debug.Unnamed" />
       <item itemvalue="Spring Boot.OfferWriteApplication" />
       <item itemvalue="Spring Boot.EurekaServerApplication" />
@@ -341,11 +351,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.RUN ALL" />
+        <item itemvalue="Docker.docker-compose.yml.event_store: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
+        <item itemvalue="Docker.RUN ALL" />
         <item itemvalue="Spring Boot.OfferReadApplication" />
         <item itemvalue="Docker.docker-compose.yml.mongo-express: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.offer_write: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
@@ -396,6 +406,7 @@
       <workItem from="1714241390345" duration="2184000" />
       <workItem from="1714287187666" duration="1176000" />
       <workItem from="1714288427751" duration="7882000" />
+      <workItem from="1714300848485" duration="9134000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -517,7 +528,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714288100231</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="offer search">
+      <option name="closed" value="true" />
+      <created>1714298873095</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1714298873095</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
