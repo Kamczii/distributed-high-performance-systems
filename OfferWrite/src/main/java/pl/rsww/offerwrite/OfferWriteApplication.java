@@ -41,7 +41,7 @@ public class OfferWriteApplication {
                     new HotelRequests.LocationRequest("Poland", "Gdańsk"),
                     List.of(
                             new HotelRequests.RoomRequest("Double bed", 2, 1),
-                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 3),
+                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2),
                             new HotelRequests.RoomRequest("Single bed", 1, 1)
                     )));
 
@@ -49,7 +49,7 @@ public class OfferWriteApplication {
                     new HotelRequests.LocationRequest("Poland", "Gdańsk"),
                     List.of(
                             new HotelRequests.RoomRequest("Double bed", 2, 1),
-                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 3),
+                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2),
                             new HotelRequests.RoomRequest("Single bed", 1, 1)
                     )));
 
@@ -57,7 +57,7 @@ public class OfferWriteApplication {
                     new HotelRequests.LocationRequest("Poland", "Warsaw"),
                     List.of(
                             new HotelRequests.RoomRequest("Double bed", 2, 1),
-                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 3),
+                            new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2),
                             new HotelRequests.RoomRequest("Single bed", 1, 1)
                     )));
 
