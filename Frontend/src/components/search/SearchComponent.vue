@@ -20,14 +20,14 @@
       <label for="from">From:</label>
       <select id="from" v-model="from">
         <option disabled value="">Please select one</option>
-        <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+        <option v-for="location in locations" :key="location" :value="location">{{ location.city }} / {{location.country}}</option>
       </select>
 
       <!-- Destination City -->
       <label for="destination">Destination:</label>
       <select id="destination" v-model="destination">
         <option disabled value="">Please select one</option>
-        <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+        <option v-for="location in locations" :key="location" :value="location">{{ location.city }} / {{location.country}}</option>
       </select>
 
       <!-- Date Range Picker -->
@@ -59,21 +59,21 @@ export default {
   mounted() {
     fetch("http://localhost:8081/locations")
         .then(res => res.json())
-        .then(data => this.cities = data)
+        .then(data => this.locations = data)
         .catch(err => console.log(err))
   },
   data() {
     return {
       persons: 1,
       kids: 0,
-      from: '',
+      from: {},
+      destination: {},
       rooms: '',
-      destination: '',
       transport: '', // Added for transport type
       startDate: '', // Added for start date of the trip
       endDate: '', // Added for end date of the trip
       kidAges: [], // Array to store each kid's age
-      cities: [], // Example cities
+      locations: [], // Example cities
     };
   },
   watch: {
@@ -93,15 +93,19 @@ export default {
       }
     },
     submitSearch() {
-      // Collect search parameters
+
       const params = {
         persons: this.persons,
         kids: this.kids,
-        from: this.from,
-        destination: this.destination,
+        destinationCity: this.destination.city,
+        destinationCountry: this.destination.country,
+        departureCity: this.from.city,
+        departureCountry: this.from.country,
         startDate: this.startDate,
         endDate: this.endDate,
-        transport: this.transport
+        transport: this.transport,
+        pageNumber: 0,
+        pageSize: 20
       };
 
       // Filter out empty parameters

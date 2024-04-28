@@ -23,17 +23,17 @@ export default {
   mounted() {
     fetch("http://localhost:8081/offers")
         .then(res => res.json())
-        .then(data => this.offers = data.content)
+        .then(data => this.offers = data)
         .catch(err => console.log(err))
   },
   watch: {
-    '$route.query': {
-      immediate: true, // Trigger the handler immediately with the current route
+    "$route.query": {
+      immediate: true,
       handler(newQuery) {
         const params = new URLSearchParams(newQuery).toString()
         fetch(`http://localhost:8081/offers?${params}` )
             .then(res => res.json())
-            .then(data => this.offers = data.content.sort())
+            .then(data => this.offers = data.sort())
             .catch(err => console.log(err))
       }
     }

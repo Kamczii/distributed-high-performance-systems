@@ -15,7 +15,7 @@ import java.util.Map;
 public class ConsumerFactory<T> {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
-    private static final String DEFAULT_GROUP_ID = "offer";
+    private static final String DEFAULT_GROUP_ID = "OfferRead";
 
     private org.springframework.kafka.core.ConsumerFactory<String, Object> consumerFactory(Class<T> valueClass) {
         Map<String, Object> props = new HashMap<>();

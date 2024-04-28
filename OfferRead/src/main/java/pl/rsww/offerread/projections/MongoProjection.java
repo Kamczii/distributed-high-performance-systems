@@ -4,6 +4,7 @@ package pl.rsww.offerread.projections;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import pl.rsww.offerread.events.EventEnvelope;
 import pl.rsww.offerread.views.VersionedView;
@@ -20,7 +21,11 @@ public abstract class MongoProjection<View, Id> {
   protected void add(Supplier<View> handle) {
     var result = handle.get();
 
-    repository.save(result);
+    try {
+      repository.save(result);
+    } catch (DuplicateKeyException e) {
+      logger.info(result.toString() + " already exists");
+    }
   }
 
   protected <Event> void getAndUpdate(

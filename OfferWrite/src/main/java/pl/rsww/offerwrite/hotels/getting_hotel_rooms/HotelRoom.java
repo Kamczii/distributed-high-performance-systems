@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.rsww.offerwrite.core.events.EventMetadata;
 import pl.rsww.offerwrite.core.views.VersionedView;
-import pl.rsww.offerwrite.flights.getting_flight_seats.FlightSeat;
 
 import java.util.ArrayList;
 import java.util.List;

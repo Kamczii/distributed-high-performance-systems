@@ -42,7 +42,7 @@ public class OfferEventBus {
         var hotel = mapHotel(offer, room);
         var start = offer.getInitialFlight().getDate();
         var end = offer.getReturnFlight().getDate();
-        var event = new OfferIntegrationEvent.Created(offer.getId(), hotel, departure, destination, start, end);
+        var event = new OfferIntegrationEvent.Created(offer.getId(), hotel, departure, destination, start, end, offer.getStatus());
         publish(event);
     }
 

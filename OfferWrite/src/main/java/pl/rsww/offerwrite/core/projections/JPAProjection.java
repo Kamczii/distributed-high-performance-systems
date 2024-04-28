@@ -2,7 +2,6 @@ package pl.rsww.offerwrite.core.projections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.repository.CrudRepository;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
 import pl.rsww.offerwrite.core.views.VersionedView;
@@ -11,7 +10,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 
-public abstract class JPAProjection<View extends Identifiable, Id> {
+public abstract class JPAProjection<View extends IdentifiableEntity, Id> {
   private final CrudRepository<View, Id> repository;
   private final Logger logger = LoggerFactory.getLogger(JPAProjection.class);
   private final EntityEventPublisher entityEventPublisher;

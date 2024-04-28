@@ -63,6 +63,7 @@ services:
       - "5081:5005"
     depends_on:
       - mongo_read_model
+      - offer_write
     networks:
       - rsww-network
   mongo_read_model:
@@ -74,8 +75,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin
     ports:
       - "27017:27017"
-    volumes:
-      - mongo_read_db:/data/db
+#    volumes:
+#      - mongo_read_db:/data/db
     networks:
       - rsww-network
   mongo-express:
@@ -152,17 +153,17 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: offer
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
       - rsww-network
-volumes:
-  mongo_read_db:
+#volumes:
+#  mongo_read_db:
 #  eventstore-volume-data:
 #  eventstore-volume-logs:
-  postgres_data:
+#  postgres_data:
 networks:
   rsww-network:
     driver: bridge
