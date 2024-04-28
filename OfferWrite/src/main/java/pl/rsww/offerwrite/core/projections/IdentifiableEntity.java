@@ -2,6 +2,6 @@ package pl.rsww.offerwrite.core.projections;
 
 import java.util.UUID;
 
-public interface Identifiable {
+public interface IdentifiableEntity {
   UUID getId();
 }

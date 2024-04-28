@@ -1,21 +1,8 @@
 <template>
-  <h1>Travel office</h1>
-  <div class="layout">
-  <div><SearchComponent/></div>
-  <div><LastUpdates/></div>
-  </div>
+  <router-view/>
 </template>
 <script>
-import SearchComponent from "@/components/search/SearchComponent.vue";
-import LastUpdates from "@/components/LastUpdates";
 
-export default {
-  name: 'App',
-  components: {
-    LastUpdates,
-    SearchComponent,
-  }
-}
 </script>
 
 <style>

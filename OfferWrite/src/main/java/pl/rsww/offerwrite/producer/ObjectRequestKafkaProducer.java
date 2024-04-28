@@ -14,6 +14,7 @@ public class ObjectRequestKafkaProducer {
 
     @Async
     public void produce(String topic, Object data) {
+        log.info(String.format("Kafka produce on %s: %s", topic, data.toString()));
         kafkaTemplate.send(topic, data);
     }
 }

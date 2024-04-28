@@ -1,32 +1,31 @@
-package pl.rsww.offerread.controllers;
+package pl.rsww.offerread.offers.getting_offers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import pl.rsww.offerread.offers.getting_offers.OfferShortInfo;
-import pl.rsww.offerread.offers.getting_offers.ShortInfoService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class OfferController {
     private final ShortInfoService shortInfoService;
 
     @GetMapping("offers")
-    public ResponseEntity<Page<OfferShortInfo>> search(@PageableDefault Pageable pageable) {
-        Page<OfferShortInfo> search = shortInfoService.search(pageable);
+    public ResponseEntity<List<OfferShortInfo>> search(GetOffers query) {
+        log.info(query.toString());
+        final var search = shortInfoService.search(query);
         return ResponseEntity.ok(search);
     }
 
     @GetMapping("/offers/{offerId}")
     public ResponseEntity<OfferShortInfo> getById(@PathVariable UUID offerId) {
-        OfferShortInfo search = shortInfoService.getById(offerId);
+        final var search = shortInfoService.getById(offerId);
         return ResponseEntity.ok(search);
     }
 }

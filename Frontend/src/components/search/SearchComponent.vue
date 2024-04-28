@@ -20,14 +20,14 @@
       <label for="from">From:</label>
       <select id="from" v-model="from">
         <option disabled value="">Please select one</option>
-        <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+        <option v-for="location in locations" :key="location" :value="location">{{ location.city }} / {{location.country}}</option>
       </select>
 
       <!-- Destination City -->
       <label for="destination">Destination:</label>
       <select id="destination" v-model="destination">
         <option disabled value="">Please select one</option>
-        <option v-for="city in cities" :key="city" :value="city">{{ city }}</option>
+        <option v-for="location in locations" :key="location" :value="location">{{ location.city }} / {{location.country}}</option>
       </select>
 
       <!-- Date Range Picker -->
@@ -56,18 +56,24 @@ export default {
   components: {
     OfferList
   },
+  mounted() {
+    fetch("http://localhost:8081/locations")
+        .then(res => res.json())
+        .then(data => this.locations = data)
+        .catch(err => console.log(err))
+  },
   data() {
     return {
       persons: 1,
       kids: 0,
-      from: '',
+      from: {},
+      destination: {},
       rooms: '',
-      destination: '',
       transport: '', // Added for transport type
       startDate: '', // Added for start date of the trip
       endDate: '', // Added for end date of the trip
       kidAges: [], // Array to store each kid's age
-      cities: ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'], // Example cities
+      locations: [], // Example cities
     };
   },
   watch: {
@@ -87,9 +93,34 @@ export default {
       }
     },
     submitSearch() {
-      // Update your submitSearch method to include the new data
-      alert(`Searching for ${this.persons} persons, ${this.kids} kids, going to ${this.destination} from ${this.from} by ${this.transport}. Date range: ${this.startDate} to ${this.endDate}. Kid ages: ${this.kidAges.join(', ')}`);
-      // Make your HTTP request or emit an event here
+
+      const params = {
+        persons: this.persons,
+        kids: this.kids,
+        destinationCity: this.destination.city,
+        destinationCountry: this.destination.country,
+        departureCity: this.from.city,
+        departureCountry: this.from.country,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        transport: this.transport,
+        pageNumber: 0,
+        pageSize: 20
+      };
+
+      // Filter out empty parameters
+      const searchParams = {};
+      Object.keys(params).forEach(key => {
+        if (params[key]) searchParams[key] = params[key];
+      });
+
+
+      this.$router.push({ name: '', query: searchParams }).catch(err => {
+        // Handle duplicate navigation errors or any other router error
+        if (err.name !== 'NavigationDuplicated' && err.message !== 'Avoided redundant navigation to current location') {
+          console.error(err);
+        }
+      });
     },
   },
 };

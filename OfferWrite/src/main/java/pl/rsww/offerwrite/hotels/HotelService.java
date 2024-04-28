@@ -2,7 +2,7 @@ package pl.rsww.offerwrite.hotels;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.rsww.offerwrite.api.requests.HotelRequests;
+import pl.rsww.dominik.api.HotelRequests;
 import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 
 import java.util.UUID;

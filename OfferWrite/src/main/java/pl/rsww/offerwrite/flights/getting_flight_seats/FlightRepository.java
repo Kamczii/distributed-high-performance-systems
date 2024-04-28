@@ -13,4 +13,6 @@ public interface FlightRepository extends JpaRepository<Flight, UUID> {
     List<Flight> findByDestinationAndDepartureAndDateBetween(Location destination, Location departure, LocalDate dateStart, LocalDate dateEnd);
 
     Flight findByFlightNumberAndDate(String s, LocalDate date);
+
+    List<Flight> findAllByDestination(Location destination);
 }

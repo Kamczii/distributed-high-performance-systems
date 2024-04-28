@@ -54,8 +54,7 @@ public class AggregateStore<Entity extends AbstractAggregate<Event, Id>, Event, 
 
   public ETag getAndUpdate(
     Consumer<Entity> handle,
-    Id id,
-    long expectedRevision
+    Id id
   ) {
     var streamId = mapToStreamId.apply(id);
     var entity = get(id).orElseThrow(
@@ -64,7 +63,7 @@ public class AggregateStore<Entity extends AbstractAggregate<Event, Id>, Event, 
 
     handle.accept(entity);
 
-    return appendEvents(entity, AppendToStreamOptions.get().expectedRevision(expectedRevision));
+    return appendEvents(entity, AppendToStreamOptions.get());
   }
 
   private Optional<List<Event>> getEvents(String streamId) {

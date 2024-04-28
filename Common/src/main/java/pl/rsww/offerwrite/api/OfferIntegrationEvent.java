@@ -9,7 +9,8 @@ public sealed interface OfferIntegrationEvent {
                    Location departure,
                    Location destination,
                    LocalDate start,
-                   LocalDate end
+                   LocalDate end,
+                   AvailableOrderStatus status
     ) implements OfferIntegrationEvent {}
 
     record Hotel (String name, Room room) {

@@ -1,4 +1,4 @@
-package pl.rsww.offerread.factory;
+package pl.rsww.offerwrite.factory;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class ConsumerFactory<T> {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
-    private static final String DEFAULT_GROUP_ID = "OfferRead";
+    private static final String DEFAULT_GROUP_ID = "OfferWrite";
 
     private org.springframework.kafka.core.ConsumerFactory<String, Object> consumerFactory(Class<T> valueClass) {
         Map<String, Object> props = new HashMap<>();
@@ -43,7 +43,7 @@ public class ConsumerFactory<T> {
         ConcurrentKafkaListenerContainerFactory<String, Object> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory(valueClass));
-        factory.setAutoStartup(true);
+        factory.setAutoStartup(false);
         return factory;
     }
 }

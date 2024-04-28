@@ -1,10 +1,10 @@
-package pl.rsww.offerwrite.api.requests;
+package pl.rsww.dominik.api;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.UUID;
 
 public final class FlightRequests {
     @Validated
@@ -15,6 +15,7 @@ public final class FlightRequests {
     }
 
     public record CreateFlight(
+            //TODO: Dominik
             @Nonnull String flightNumber,
             @Nonnull Integer numberOfSeats,
             @Nonnull LocationRequest departure,
@@ -23,14 +24,18 @@ public final class FlightRequests {
     ) {}
 
     public record SeatReserved(
+            // TODO: Dima
             @Nonnull String flightNumber,
             @Nonnull Integer numberOfSeats,
+            @Nonnull UUID orderId,
             @Nonnull LocalDate date
     ) {}
 
-    public record SeatBooked(
+    public record SeatConfirmed(
+            // TODO: Dima
             @Nonnull String flightNumber,
             @Nonnull Integer numberOfSeats,
+            @Nonnull UUID orderId,
             @Nonnull LocalDate date
     ) {}
 }
