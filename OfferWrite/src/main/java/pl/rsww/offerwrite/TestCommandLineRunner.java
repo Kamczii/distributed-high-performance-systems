@@ -13,6 +13,7 @@ import pl.rsww.offerwrite.flights.FlightCommand;
 import pl.rsww.offerwrite.flights.FlightService;
 import pl.rsww.offerwrite.hotels.HotelService;
 import pl.rsww.offerwrite.offer.OfferService;
+import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 
 import java.time.LocalDate;
@@ -58,18 +59,11 @@ public class TestCommandLineRunner {
     private void reservation(Integer id) throws InterruptedException {
         log.info("Trying by " + id);
         try {
-            var offer = offerRepository.findAllByOrderById().get(id);
+            var offers = offerRepository.findAllByOrderById();
+            var offer = offers.get((int) (Math.random() * offers.size()));
             var orderId = UUID.randomUUID();
             offerService.reserveOffer(offer.getId(), orderId);
             offerService.confirmOffer(offer.getId(), orderId);
-            if (orderId.getLeastSignificantBits() % 5 != 0) {
-
-                if (orderId.getMostSignificantBits() % 5 == 0) {
-                    flightService.handle(new FlightCommand.CancelConfirmation(offer.getReturnFlight().getFlightNumber(), offer.getHotelRoom().getCapacity(), orderId, offer.getReturnFlight().getDate()));
-                }
-            } else {
-                flightService.handle(new FlightCommand.ReleaseLock(offer.getReturnFlight().getFlightNumber(), offer.getHotelRoom().getCapacity(), orderId, offer.getReturnFlight().getDate()));
-            }
             log.info("Success by id " + id);
         } catch (Exception e) {
             log.info("Failed by id " + id);

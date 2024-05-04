@@ -9,9 +9,9 @@ import pl.rsww.offerwrite.api.response.AvailableLockStatus;
 import pl.rsww.offerwrite.api.response.OfferResponse;
 import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
-import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_INTEGRATION_TOPIC;
 import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_RESPONSE_TOPIC;
 
 @Aspect
@@ -22,7 +22,7 @@ public class OfferServiceAdvice {
 
     @AfterReturning(value = "execution(public * pl.rsww.offerwrite.offer.OfferService.reserveOffer(..)) && args(offerId, orderId)", argNames = "offerId,orderId")
     public void afterReserveOffer(UUID offerId, UUID orderId) {
-        final var event = new OfferResponse.Lock(offerId, orderId, AvailableLockStatus.SUCCESS);
+        final var event = new OfferResponse.Lock(offerId, orderId, BigDecimal.TEN, AvailableLockStatus.SUCCESS);
         publish(event);
     }
 
@@ -34,7 +34,7 @@ public class OfferServiceAdvice {
 
     @AfterThrowing(value = "execution(public * pl.rsww.offerwrite.offer.OfferService.reserveOffer(..)) && args(offerId, orderId)", throwing = "ex", argNames = "offerId,orderId,ex")
     public void handleReserveOfferException(UUID offerId, UUID orderId, Exception ex) {
-        final var event = new OfferResponse.Lock(offerId, orderId, AvailableLockStatus.FAIL);
+        final var event = new OfferResponse.Lock(offerId, orderId, BigDecimal.TEN, AvailableLockStatus.FAIL);
         publish(event);
     }
 
