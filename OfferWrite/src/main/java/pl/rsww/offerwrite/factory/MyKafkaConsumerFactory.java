@@ -7,7 +7,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import pl.rsww.dominik.api.FlightRequests;
 import pl.rsww.dominik.api.HotelRequests;
-import pl.rsww.offerwrite.api.OfferIntegrationEvent;
+import pl.rsww.offerwrite.api.requests.OfferRequests;
 
 @EnableKafka
 @Configuration
@@ -15,6 +15,7 @@ import pl.rsww.offerwrite.api.OfferIntegrationEvent;
 public class MyKafkaConsumerFactory {
     private final ConsumerFactory<FlightRequests> flightRequestsConsumerFactory;
     private final ConsumerFactory<HotelRequests> hotelRequestsConsumerFactory;
+    private final ConsumerFactory<OfferRequests> offerRequestsConsumerFactory;
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> flightConsumerFactory() {
@@ -24,5 +25,11 @@ public class MyKafkaConsumerFactory {
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> hotelConsumerFactory() {
         return hotelRequestsConsumerFactory.create(HotelRequests.class);
+    }
+
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> offerConsumerFactory() {
+        return offerRequestsConsumerFactory.create(OfferRequests.class);
     }
 }

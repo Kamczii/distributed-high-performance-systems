@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run all for offer display" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="envFilePath" value="" />
+        <option name="services">
+          <list>
+            <option value="offer_read" />
+            <option value="frontend" />
+            <option value="event_store" />
+            <option value="kafka" />
+            <option value="mongo_read_model" />
+            <option value="offer_write" />
+            <option value="zookeeper" />
+            <option value="postgres" />
+          </list>
+        </option>
+        <option name="sourceFilePath" value="docker-compose.yml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>

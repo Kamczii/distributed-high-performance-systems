@@ -30,26 +30,16 @@ public abstract class MongoProjection<View, Id> {
 
   protected <Event> void getAndUpdate(
     Id viewId,
-    EventEnvelope<Event> eventEnvelope,
     Function<View, View> handle
   ) {
     var view = repository.findById(viewId);
 
     if (view.isEmpty()) {
-      logger.warn("View with id %s was not found for event %s".formatted(viewId, eventEnvelope.metadata().eventType()));
-      return;
-    }
-
-    if (view.get() instanceof VersionedView versionedView && wasAlreadyApplied(versionedView, eventEnvelope)) {
-      logger.warn("View with id %s was already applied for event %s".formatted(viewId, eventEnvelope.metadata().eventType()));
+      logger.warn("View with id %s was not found".formatted(viewId));
       return;
     }
 
     var result = handle.apply(view.get());
-
-    if(result instanceof VersionedView versionedView){
-//      versionedView.setMetadata(eventEnvelope.metadata()); todo
-    }
 
     repository.save(result);
   }

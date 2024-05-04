@@ -9,8 +9,8 @@ import pl.rsww.offerread.locations.getting_locations.LocationRepository;
 import pl.rsww.offerread.offers.getting_offers.OfferShortInfoProjection;
 import pl.rsww.offerread.offers.getting_offers.OfferShortInfoRepository;
 import pl.rsww.offerread.offers.getting_offers.ShortInfoService;
-import pl.rsww.offerwrite.api.AvailableOrderStatus;
-import pl.rsww.offerwrite.api.OfferIntegrationEvent;
+import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -40,7 +40,7 @@ public class OfferReadApplication {
                     new OfferIntegrationEvent.Location("Paris", "France"),  // destinationCity location
                     LocalDate.of(2024, 4, 15),  // start date
                     LocalDate.of(2024, 4, 25),   // end date,
-                    AvailableOrderStatus.OPEN
+                    AvailableOfferStatus.OPEN
             );
             projection.listenOffer(offerEvent);
         };

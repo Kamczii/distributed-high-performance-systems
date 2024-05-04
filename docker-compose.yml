@@ -63,7 +63,7 @@ services:
       - "5081:5005"
     depends_on:
       - mongo_read_model
-      - offer_write
+      - kafka
     networks:
       - rsww-network
   mongo_read_model:

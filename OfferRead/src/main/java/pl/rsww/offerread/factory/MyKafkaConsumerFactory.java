@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import pl.rsww.offerwrite.api.OfferIntegrationEvent;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 @EnableKafka
 @Configuration

@@ -31,18 +31,4 @@ public final class HotelRequests {
             @Nonnull LocationRequest location,
             @Nonnull Collection<RoomRequest> rooms
     ) {}
-
-    public record RoomReserved(
-            @Nonnull UUID hotelId,
-            @Nonnull String type,
-            @Nonnull LocalDate startDate,
-            @Nonnull LocalDate endDate
-    ) {}
-
-    public record RoomBooked(
-            @Nonnull UUID hotelId,
-            @Nonnull String type,
-            @Nonnull LocalDate startDate,
-            @Nonnull LocalDate endDate
-    ) {}
 }

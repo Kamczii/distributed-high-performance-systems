@@ -4,22 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="offer search">
-      <change afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/dominik/api/TourOperatorTopics.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/factory/ConsumerFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/factory/MyKafkaConsumerFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/kafka/FlightEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners/kafka/HotelEventListener.java" afterDir="false" />
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="commands &amp; responses">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/dominik/api/FlightRequests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/dominik/api/FlightRequests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/core/aggregates/AggregateStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/core/aggregates/AggregateStore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/Flight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightService.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/flights/FlightService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/offer/OfferProjection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/TestCommandLineRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/TestCommandLineRunner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/HotelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/HotelService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/Hotel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +102,8 @@
   "keyToString": {
     "Docker.OfferWrite/Dockerfile.executor": "Run",
     "Docker.RUN ALL.executor": "Run",
+    "Docker.Run all for offer display.executor": "Run",
+    "Docker.Run all.executor": "Run",
     "Docker.docker-compose.yml.eureka_server: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.event-store: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.event_store: Compose Deployment.executor": "Run",
@@ -124,18 +115,34 @@
     "Docker.docker-compose.yml.offer_read: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.offer_write: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.postgres: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.zookeeper: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment.executor": "Run",
     "Docker.frontend/Dockerfile.executor": "Run",
     "HTTP Request.generated-requests | #1.executor": "Run",
     "HTTP Request.http-requests-log | #2.executor": "Run",
     "HTTP Request.scratch | #1.executor": "Run",
+    "JUnit.FlightAggregateTest.executor": "Run",
+    "JUnit.FlightAggregateTest.testCancelConfirmation.executor": "Run",
+    "JUnit.FlightAggregateTest.testExpiredReservation.executor": "Run",
+    "JUnit.FlightAggregateTest.testReservationNotFound.executor": "Debug",
+    "JUnit.FlightTest.executor": "Run",
+    "JUnit.FlightTest.testConfirmReservation.executor": "Run",
     "JUnit.HotelRoomRepositoryTest.executor": "Run",
     "JUnit.HotelRoomRepositoryTest.should_returnNothingIfBooked.executor": "Run",
     "JUnit.HotelRoomRepositoryTest.should_returnNothing_ifBooked.executor": "Run",
     "JUnit.HotelRoomRepositoryTest.should_returnRoom_ifBookingNotOverlaps.executor": "Run",
     "JUnit.HotelRoomRepositoryTest.testFindByRoomNumber (1).executor": "Run",
     "JUnit.HotelRoomRepositoryTest.testFindByRoomNumber.executor": "Run",
+    "JUnit.HotelTest.executor": "Run",
+    "JUnit.HotelTest.lock_all_rooms_should_result_in_four_reservations.executor": "Run",
+    "JUnit.HotelTest.lock_non_overlying_reservations.executor": "Run",
+    "JUnit.HotelTest.testConfirmLock.executor": "Run",
+    "JUnit.HotelTest.testConfirmLock_ReservationNotFound.executor": "Run",
+    "JUnit.HotelTest.testCreateHotel.executor": "Run",
+    "JUnit.HotelTest.testLockOverlappingRooms.executor": "Run",
+    "JUnit.HotelTest.testLockOverlappingRooms2.executor": "Run",
+    "JUnit.HotelTest.testLockRoom.executor": "Run",
     "JUnit.OfferReadApplicationTests.contextLoads.executor": "Run",
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
     "Maven.OfferRead [clean].executor": "Run",
@@ -186,6 +193,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="pl.rsww.offerwrite.api.response" />
       <recent name="pl.rsww.offerread.locations.getting_locations" />
       <recent name="pl.rsww.offerwrite.core.projections" />
       <recent name="pl.rsww.offerwrite.flights.getting_flight_seats" />
@@ -202,11 +210,11 @@
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\test\java\pl\rsww\offerwrite" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="pl.rsww.offerwrite.api" />
       <recent name="pl.rsww.dominik.api" />
       <recent name="pl.rsww.offerwrite.listeners.kafka" />
       <recent name="pl.rsww.offerread.locations.getting_locations" />
       <recent name="pl.rsww.offerwrite.flights.getting_flight_seats" />
-      <recent name="pl.rsww.offerwrite.hotels.getting_hotel_rooms" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -218,7 +226,85 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.OfferWriteApplication">
+  <component name="RunManager" selected="Docker.Run all for offer display">
+    <configuration name="FlightAggregateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OfferWrite" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
+      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.FlightAggregateTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HotelTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OfferWrite" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
+      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HotelTest.lock_all_rooms_should_result_in_four_reservations" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OfferWrite" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
+      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelTest" />
+      <option name="METHOD_NAME" value="lock_all_rooms_should_result_in_four_reservations" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HotelTest.lock_non_overlying_reservations" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OfferWrite" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
+      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelTest" />
+      <option name="METHOD_NAME" value="lock_non_overlying_reservations" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HotelTest.lock_two_same_rooms_should_result_in_two_reservations" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OfferWrite" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
+      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.HotelTest" />
+      <option name="METHOD_NAME" value="lock_two_same_rooms_should_result_in_two_reservations" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Unnamed" type="Remote" nameIsGenerated="true">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -246,46 +332,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OfferReadApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="OfferRead" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="pl.rsww.offerread.OfferReadApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.rsww.offerread.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="OfferWriteApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="OfferWrite" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="pl.rsww.offerwrite.OfferWriteApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration name="RUN ALL" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="envFilePath" value="" />
-          <option name="services">
-            <list>
-              <option value="mongo_read_model" />
-              <option value="offer_write" />
-              <option value="offer_read" />
-              <option value="postgres" />
-              <option value="zookeeper" />
-              <option value="kafka" />
-              <option value="frontend" />
-              <option value="event_store" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
     </configuration>
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
@@ -299,63 +351,25 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.yml.event_store: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="event_store" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="docker-compose.yml.mongo-express: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="mongo-express" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="docker-compose.yml.offer_read: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="offer_read" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <list>
-      <item itemvalue="Docker.docker-compose.yml.event_store: Compose Deployment" />
-      <item itemvalue="Docker.docker-compose.yml.mongo-express: Compose Deployment" />
-      <item itemvalue="Docker.RUN ALL" />
-      <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
+      <item itemvalue="Docker.Run all for offer display" />
+      <item itemvalue="JUnit.FlightAggregateTest" />
+      <item itemvalue="JUnit.HotelTest" />
+      <item itemvalue="JUnit.HotelTest.lock_all_rooms_should_result_in_four_reservations" />
+      <item itemvalue="JUnit.HotelTest.lock_non_overlying_reservations" />
+      <item itemvalue="JUnit.HotelTest.lock_two_same_rooms_should_result_in_two_reservations" />
       <item itemvalue="Remote JVM Debug.Unnamed" />
       <item itemvalue="Spring Boot.OfferWriteApplication" />
       <item itemvalue="Spring Boot.EurekaServerApplication" />
       <item itemvalue="Spring Boot.GatewayApplication" />
-      <item itemvalue="Spring Boot.OfferReadApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.docker-compose.yml.event_store: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
-        <item itemvalue="Docker.RUN ALL" />
-        <item itemvalue="Spring Boot.OfferReadApplication" />
-        <item itemvalue="Docker.docker-compose.yml.mongo-express: Compose Deployment" />
+        <item itemvalue="JUnit.FlightAggregateTest" />
+        <item itemvalue="JUnit.HotelTest.lock_all_rooms_should_result_in_four_reservations" />
+        <item itemvalue="JUnit.HotelTest" />
+        <item itemvalue="JUnit.HotelTest.lock_non_overlying_reservations" />
+        <item itemvalue="JUnit.HotelTest.lock_two_same_rooms_should_result_in_two_reservations" />
       </list>
     </recent_temporary>
   </component>
@@ -406,7 +420,14 @@
       <workItem from="1714241390345" duration="2184000" />
       <workItem from="1714287187666" duration="1176000" />
       <workItem from="1714288427751" duration="7882000" />
-      <workItem from="1714300848485" duration="9134000" />
+      <workItem from="1714300848485" duration="9977000" />
+      <workItem from="1714317281046" duration="5099000" />
+      <workItem from="1714651188502" duration="1470000" />
+      <workItem from="1714657409782" duration="294000" />
+      <workItem from="1714724217137" duration="5926000" />
+      <workItem from="1714737976044" duration="4912000" />
+      <workItem from="1714749786972" duration="16201000" />
+      <workItem from="1714809157751" duration="21841000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -536,7 +557,79 @@
       <option name="project" value="LOCAL" />
       <updated>1714298873095</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="offer search">
+      <option name="closed" value="true" />
+      <created>1714311685581</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1714311685581</updated>
+    </task>
+    <task id="LOCAL-00018" summary="simple offer read init">
+      <option name="closed" value="true" />
+      <created>1714651553886</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1714651553886</updated>
+    </task>
+    <task id="LOCAL-00019" summary="offer projection">
+      <option name="closed" value="true" />
+      <created>1714813192412</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1714813192412</updated>
+    </task>
+    <task id="LOCAL-00020" summary="offer projection">
+      <option name="closed" value="true" />
+      <created>1714813217021</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1714813217021</updated>
+    </task>
+    <task id="LOCAL-00021" summary="include other flight in availability decision making">
+      <option name="closed" value="true" />
+      <created>1714815329283</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1714815329283</updated>
+    </task>
+    <task id="LOCAL-00022" summary="include other flight in availability decision making">
+      <option name="closed" value="true" />
+      <created>1714815340666</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1714815340666</updated>
+    </task>
+    <task id="LOCAL-00023" summary="rename">
+      <option name="closed" value="true" />
+      <created>1714815688350</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1714815688350</updated>
+    </task>
+    <task id="LOCAL-00024" summary="rename">
+      <option name="closed" value="true" />
+      <created>1714815829054</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1714815829054</updated>
+    </task>
+    <task id="LOCAL-00025" summary="commands &amp; responses">
+      <option name="closed" value="true" />
+      <created>1714840154786</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1714840154786</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -572,6 +665,22 @@
     <MESSAGE value="mongo projection" />
     <MESSAGE value="tour operator integration events" />
     <MESSAGE value="offer search" />
-    <option name="LAST_COMMIT_MESSAGE" value="offer search" />
+    <MESSAGE value="simple offer read init" />
+    <MESSAGE value="offer projection" />
+    <MESSAGE value="include other flight in availability decision making" />
+    <MESSAGE value="rename" />
+    <MESSAGE value="commands &amp; responses" />
+    <option name="LAST_COMMIT_MESSAGE" value="commands &amp; responses" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/OfferWrite/src/test/java/pl/rsww/offerwrite/HotelTest.java</url>
+          <line>76</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

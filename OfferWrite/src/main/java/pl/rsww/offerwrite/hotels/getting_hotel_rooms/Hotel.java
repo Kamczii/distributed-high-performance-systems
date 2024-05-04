@@ -23,7 +23,6 @@ import java.util.UUID;
 @Table(indexes = @Index(columnList = "location_id"))
 public class Hotel implements VersionedView, IdentifiableEntity {
     @Id
-    @GeneratedValue(generator = "UUID")
     private UUID id;
 
     private String name;
