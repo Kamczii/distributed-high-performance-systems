@@ -13,6 +13,7 @@ import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
 @Slf4j
@@ -25,7 +26,7 @@ public class OfferService {
     private final OfferRepository offerRepository;
     private final HotelService hotelService;
 
-    public void reserveOffer(UUID offerId, UUID orderId) {
+    public void reserveOffer(UUID offerId, UUID orderId, Collection<Integer> ageOfVisitors) {
         final var offer = fetchOffer(offerId);
         final var capacity = offer.getHotelRoom().getCapacity();
 

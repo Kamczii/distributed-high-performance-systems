@@ -9,14 +9,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import pl.rsww.dominik.api.FlightRequests;
 import pl.rsww.dominik.api.HotelRequests;
-import pl.rsww.offerwrite.flights.FlightCommand;
 import pl.rsww.offerwrite.flights.FlightService;
 import pl.rsww.offerwrite.hotels.HotelService;
 import pl.rsww.offerwrite.offer.OfferService;
-import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,7 +61,7 @@ public class TestCommandLineRunner {
             var offers = offerRepository.findAllByOrderById();
             var offer = offers.get((int) (Math.random() * offers.size()));
             var orderId = UUID.randomUUID();
-            offerService.reserveOffer(offer.getId(), orderId);
+            offerService.reserveOffer(offer.getId(), orderId, List.of(1));
             offerService.confirmOffer(offer.getId(), orderId);
             log.info("Success by id " + id);
         } catch (Exception e) {

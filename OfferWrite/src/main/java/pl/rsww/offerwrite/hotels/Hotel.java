@@ -8,6 +8,7 @@ import pl.rsww.offerwrite.core.aggregates.AbstractAggregate;
 import pl.rsww.offerwrite.hotels.hotel_rooms.HotelRoom;
 import pl.rsww.offerwrite.hotels.hotel_rooms.HotelRooms;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -142,7 +143,12 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
                 });
     }
 
-
+    public BigDecimal getPrice(String roomType, Integer age) {
+        if (age < 18) {
+            return BigDecimal.ONE;
+        }
+        return BigDecimal.TEN;
+    }
 
 
     public record ReservationDTO (

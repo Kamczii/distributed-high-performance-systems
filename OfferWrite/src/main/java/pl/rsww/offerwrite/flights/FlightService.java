@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pl.rsww.dominik.api.FlightRequests;
 import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor

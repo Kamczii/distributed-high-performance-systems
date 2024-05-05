@@ -16,7 +16,7 @@ public class OfferCommandListener {
     public void listenOffer(OfferCommand offerCommand) {
         switch (offerCommand) {
             case OfferCommand.Lock lock -> {
-                offerService.reserveOffer(lock.offerId(), lock.orderId());
+                offerService.reserveOffer(lock.offerId(), lock.orderId(), lock.ageOfVisitors());
             }
             case OfferCommand.ConfirmLock confirmLock -> {
                 offerService.confirmOffer(confirmLock.offerId(), confirmLock.orderId());

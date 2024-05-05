@@ -3,6 +3,7 @@ package pl.rsww.offerwrite.flights;
 import jakarta.annotation.Nonnull;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.UUID;
 
 public sealed interface FlightCommand {

@@ -6,6 +6,7 @@ import pl.rsww.dominik.api.FlightRequests;
 import pl.rsww.offerwrite.common.location.Location;
 import pl.rsww.offerwrite.core.aggregates.AbstractAggregate;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -128,6 +129,15 @@ public class Flight extends AbstractAggregate<FlightEvent, String> {
         if(!confirmationValid(orderId, seats))
             throw new IllegalStateException("Confirmation not found");
         enqueue(new FlightEvent.SeatConfirmationCanceled(flightNumber, date, seats, orderId));
+    }
+
+
+
+    public BigDecimal getPrice(Integer age) {
+        if (age < 18) {
+            return BigDecimal.TWO;
+        }
+        return BigDecimal.TEN;
     }
 
     private boolean reservationValid(UUID orderId, Integer seats) {
