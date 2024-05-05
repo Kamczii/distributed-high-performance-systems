@@ -127,8 +127,6 @@ export default {
 </script>
 <style scoped>
 .search-box {
-  max-width: 600px;
-  margin: auto;
   padding: 20px;
   background-color: #f7f7f7;
   border-radius: 8px;

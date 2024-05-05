@@ -5,10 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="commands &amp; responses">
+      <change afterPath="$PROJECT_DIR$/Frontend/src/components/debug/AllFlights.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend/src/components/debug/AllHotels.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Frontend/src/components/debug/AllOffers.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/config/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/controller/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/TestCommandLineRunner.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/TestCommandLineRunner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/HotelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/HotelService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/Hotel.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/hotels/getting_hotel_rooms/Hotel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/components/MainPage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/components/MainPage.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/components/search/SearchComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/components/search/SearchComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/OfferWrite/src/main/java/pl/rsww/offerwrite/OfferWriteApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,17 +53,17 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
-        <option value="Vue Composition API Component" />
         <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
+        <option value="Vue Composition API Component" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="notification_service" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -157,12 +168,12 @@
     "Spring Boot.EurekaServerApplication.executor": "Run",
     "Spring Boot.GatewayApplication.executor": "Run",
     "Spring Boot.OfferReadApplication.executor": "Debug",
-    "Spring Boot.OfferWriteApplication.executor": "Debug",
+    "Spring Boot.OfferWriteApplication.executor": "Run",
     "git-widget-placeholder": "master",
     "jdk.selected.JAVA_MODULE": "22",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners",
-    "last_opened_file_path": "D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite",
+    "last_opened_file_path": "D:/Studia/projekty/Mikroserwisy/Projekt/Frontend/src/components/debug",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -199,11 +210,11 @@
       <recent name="pl.rsww.offerwrite.flights.getting_flight_seats" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Frontend\src\components\debug" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Common\src\main\java\pl\rsww\dominik\api" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite\core" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite\flights" />
-      <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\OfferWrite\src\main\java\pl\rsww\offerwrite\api\requests" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Frontend\src\components\search" />
@@ -226,21 +237,9 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Docker.Run all for offer display">
-    <configuration name="FlightAggregateTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="OfferWrite" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pl.rsww.offerwrite.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pl.rsww.offerwrite" />
-      <option name="MAIN_CLASS_NAME" value="pl.rsww.offerwrite.FlightAggregateTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+  <component name="RunManager" selected="Spring Boot.OfferWriteApplication">
+    <configuration name="scratch | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/scratch.http" requestIdentifier="#1" runType="Run single request">
+      <method v="2" />
     </configuration>
     <configuration name="HotelTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="OfferWrite" />
@@ -353,7 +352,7 @@
     </configuration>
     <list>
       <item itemvalue="Docker.Run all for offer display" />
-      <item itemvalue="JUnit.FlightAggregateTest" />
+      <item itemvalue="HTTP Request.scratch | #1" />
       <item itemvalue="JUnit.HotelTest" />
       <item itemvalue="JUnit.HotelTest.lock_all_rooms_should_result_in_four_reservations" />
       <item itemvalue="JUnit.HotelTest.lock_non_overlying_reservations" />
@@ -365,11 +364,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.FlightAggregateTest" />
+        <item itemvalue="HTTP Request.scratch | #1" />
+        <item itemvalue="JUnit.HotelTest.lock_two_same_rooms_should_result_in_two_reservations" />
+        <item itemvalue="JUnit.HotelTest.lock_non_overlying_reservations" />
         <item itemvalue="JUnit.HotelTest.lock_all_rooms_should_result_in_four_reservations" />
         <item itemvalue="JUnit.HotelTest" />
-        <item itemvalue="JUnit.HotelTest.lock_non_overlying_reservations" />
-        <item itemvalue="JUnit.HotelTest.lock_two_same_rooms_should_result_in_two_reservations" />
       </list>
     </recent_temporary>
   </component>

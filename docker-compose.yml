@@ -42,7 +42,7 @@ services:
       - ESDB_CONNECTIONSTRING=esdb://eventstore:2113?tls=false
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
     ports:
-      - "8082:8080"
+      - "8082:8082"
       - "5082:5005"
     depends_on:
     - event_store
