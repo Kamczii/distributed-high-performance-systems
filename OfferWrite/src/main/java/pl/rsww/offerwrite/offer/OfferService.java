@@ -30,6 +30,10 @@ public class OfferService {
         final var offer = fetchOffer(offerId);
         final var capacity = offer.getHotelRoom().getCapacity();
 
+        if (ageOfVisitors.size() > capacity) {
+            throw new IllegalStateException("The number of people exceeds the capacity");
+        }
+
         ArrayList<FlightCommand> rollbacks = new ArrayList<>();
 
         try {

@@ -12,9 +12,7 @@ import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
