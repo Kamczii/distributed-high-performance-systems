@@ -10,6 +10,7 @@ public class HotelRoom {
     private int id;
     private String description;
     private int maxPeople;
+    private int numberOfBeds;
     private int numberInHotel;
     @ManyToOne
     @JoinColumn(name="hotel_id", nullable=false)
@@ -53,5 +54,13 @@ public class HotelRoom {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public int getNumberOfBeds() {
+        return numberOfBeds;
+    }
+
+    public void setNumberOfBeds(int numberOfBeds) {
+        this.numberOfBeds = numberOfBeds;
     }
 }

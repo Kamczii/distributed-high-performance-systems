@@ -1,10 +1,10 @@
-package pl.rsww.touroperator.api.requests;
+package pl.rsww.dominik.api;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
-import java.util.Collection;
+import java.util.UUID;
 
 public final class FlightRequests {
     @Validated
@@ -19,18 +19,6 @@ public final class FlightRequests {
             @Nonnull Integer numberOfSeats,
             @Nonnull LocationRequest departure,
             @Nonnull LocationRequest destination,
-            @Nonnull LocalDate date
-    ) {}
-
-    public record SeatReserved(
-            @Nonnull String flightNumber,
-            @Nonnull Integer numberOfSeats,
-            @Nonnull LocalDate date
-    ) {}
-
-    public record SeatBooked(
-            @Nonnull String flightNumber,
-            @Nonnull Integer numberOfSeats,
             @Nonnull LocalDate date
     ) {}
 }

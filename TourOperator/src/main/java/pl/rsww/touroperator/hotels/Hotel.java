@@ -1,6 +1,7 @@
 package pl.rsww.touroperator.hotels;
 
 import pl.rsww.touroperator.flights.lines.FlightLine;
+import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import pl.rsww.touroperator.locations.AirportLocation;
 import jakarta.persistence.*;
@@ -21,12 +22,14 @@ public class Hotel {
     @ManyToOne
     private AirportLocation location;
     private String localRegionName;
-    @ManyToMany
-    @JoinTable(
-            name = "hotel_flight_lines",
-            joinColumns = @JoinColumn(name = "hotel_id"),
-            inverseJoinColumns = @JoinColumn(name = "flight_line_id"))
-    private Set<FlightLine> hotelFlightLines;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "hotel_flight_lines",
+//            joinColumns = @JoinColumn(name = "hotel_id"),
+//            inverseJoinColumns = @JoinColumn(name = "flight_line_id"))
+//    private Set<FlightLine> hotelFlightLines;
+    @OneToMany(mappedBy="hotel")
+    private Set<AgeRangePriceItem> priceList;
 
 
     public UUID getId() {return id;}
@@ -59,21 +62,21 @@ public class Hotel {
         this.location = location;
     }
 
-    public Set<FlightLine> getFlightLines() {
-        return hotelFlightLines;
-    }
-
-    public void setFlightLines(Set<FlightLine> flightLines) {
-        this.hotelFlightLines = flightLines;
-    }
-
-    public Set<FlightLine> getHotelFlightLines() {
-        return hotelFlightLines;
-    }
-
-    public void setHotelFlightLines(Set<FlightLine> hotelFlightLines) {
-        this.hotelFlightLines = hotelFlightLines;
-    }
+//    public Set<FlightLine> getFlightLines() {
+//        return hotelFlightLines;
+//    }
+//
+//    public void setFlightLines(Set<FlightLine> flightLines) {
+//        this.hotelFlightLines = flightLines;
+//    }
+//
+//    public Set<FlightLine> getHotelFlightLines() {
+//        return hotelFlightLines;
+//    }
+//
+//    public void setHotelFlightLines(Set<FlightLine> hotelFlightLines) {
+//        this.hotelFlightLines = hotelFlightLines;
+//    }
 
     public String getLocalRegionName() {
         return localRegionName;
@@ -81,5 +84,13 @@ public class Hotel {
 
     public void setLocalRegionName(String localRegionName) {
         this.localRegionName = localRegionName;
+    }
+
+    public Set<AgeRangePriceItem> getPriceList() {
+        return priceList;
+    }
+
+    public void setPriceList(Set<AgeRangePriceItem> priceList) {
+        this.priceList = priceList;
     }
 }
