@@ -18,8 +18,8 @@ public class FlightLine {
     private AirportLocation destinationLocation;
     @ManyToOne
     private AirportLocation homeLocation;
-    @ManyToMany(mappedBy = "hotelFlightLines")
-    private Set<Hotel> hotels;
+//    @ManyToMany(mappedBy = "hotelFlightLines")
+//    private Set<Hotel> hotels;
 
     public int getId() {
         return id;
@@ -61,19 +61,19 @@ public class FlightLine {
         this.destinationLocation = destinationLocation;
     }
 
-    public Set<Hotel> getHotels() {
-        return hotels;
-    }
-
-    public void setHotels(Set<Hotel> hotels) {
-        this.hotels = hotels;
-    }
-
-    public void addHotel(Hotel hotel){
-        if(hotels != null){
-            hotels.add(hotel);
-        }
-    }
+//    public Set<Hotel> getHotels() {
+//        return hotels;
+//    }
+//
+//    public void setHotels(Set<Hotel> hotels) {
+//        this.hotels = hotels;
+//    }
+//
+//    public void addHotel(Hotel hotel){
+//        if(hotels != null){
+//            hotels.add(hotel);
+//        }
+//    }
 
     public AirportLocation getHomeLocation() {
         return homeLocation;

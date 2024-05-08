@@ -6,25 +6,29 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import pl.rsww.touroperator.api.requests.FlightRequests;
-import pl.rsww.touroperator.api.requests.HotelRequests;
+import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.dominik.api.HotelRequests;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
-public class EventSender {
-    private static final String TOPIC_HOTELS = "pl.rsww.hotel";
-    private static final String TOPIC_FLIGHTS = "pl.rsww.flight";
+import static pl.rsww.dominik.api.TourOperatorTopics.FLIGHT_INTEGRATION_TOPIC;
+import static pl.rsww.dominik.api.TourOperatorTopics.HOTEL_INTEGRATION_TOPIC;
 
+public class EventSender {
     private Producer<String, HotelRequests.CreateHotel> hotelProducer;
     private Producer<String, FlightRequests.CreateFlight> flightProducer;
+    private static EventSender thisEventSender;
 
+    public static EventSender getEventSender(){
+        if(thisEventSender == null){
+            thisEventSender = new EventSender(1);
+        }
+        return thisEventSender;
+    }
 
-    private void conf() {
+    private void configure() {
         String bootstrapServer = System.getenv("BOOTSTRAP_SERVER");
 
-        // Kafka producer configuration
         Properties producerProps = new Properties();
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -35,17 +39,17 @@ public class EventSender {
 
     public void sendHotel(HotelRequests.CreateHotel request, String key){
 //        System.out.println("DEBUG sending hotel: " + request.name());
-        ProducerRecord<String, HotelRequests.CreateHotel> record = new ProducerRecord<>(TOPIC_HOTELS, key, request);
+        ProducerRecord<String, HotelRequests.CreateHotel> record = new ProducerRecord<>(HOTEL_INTEGRATION_TOPIC, key, request);
         hotelProducer.send(record);
     }
 
     public void sendFlight(FlightRequests.CreateFlight request, String key){
 //        System.out.println("DEBUG sending flight: " + request.flightNumber());
-        ProducerRecord<String, FlightRequests.CreateFlight> record = new ProducerRecord<>(TOPIC_FLIGHTS, key, request);
+        ProducerRecord<String, FlightRequests.CreateFlight> record = new ProducerRecord<>(FLIGHT_INTEGRATION_TOPIC, key, request);
         flightProducer.send(record);
     }
 
-    public EventSender(){
-        conf();
+    public EventSender(int useAsSingleton){
+        configure();
     }
 }

@@ -1,63 +1,52 @@
 package pl.rsww.touroperator.hotels;
 
 
+import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
-import pl.rsww.touroperator.data.StringNumberPair;
-import pl.rsww.touroperator.hotels.reservations.RoomReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.rsww.touroperator.initialization.EventSender;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping(path="/hotels")
 public class HotelController {
     @Autowired
     private HotelRepository hotelRepository;
-    @Autowired
-    private RoomReservationRepository roomReservationRepository;
+    private EventSender eventSender;
 
-
-    @GetMapping(path="/all")
-    public @ResponseBody Iterable<String> getAllHotels() {
-        List<String> results = new LinkedList<>();
-        for(Hotel h: hotelRepository.findAll()){
-            results.add(h.getName());
-        }
-        return results;
-    }
-
-    @GetMapping(path="/list-rooms")
-    public @ResponseBody Iterable<String> listRoomsOf(@RequestParam String hotelName) {
-        Hotel hotel = hotelRepository.findByName(hotelName);
-        List<String> results = new LinkedList<>();
+    private void sendRequest(Hotel hotel){
+        UUID uuid = hotel.getId();
+        HotelRequests.LocationRequest requestLoc = new HotelRequests.LocationRequest(hotel.getLocation().getCountry(), hotel.getLocation().getCity());
+        List<HotelRequests.RoomRequest> roomRequests = new LinkedList<>();
         for(HotelRoom room: hotel.getRooms()){
-            results.add(room.getDescription());
+            for(int i = 0; i < room.getNumberInHotel(); i++){
+                roomRequests.add(new HotelRequests.RoomRequest(room.getDescription(), room.getMaxPeople(), room.getNumberOfBeds()));
+            }
         }
-        return results;
+        Set<HotelRequests.AgeRangePrice> priceListRequests = new HashSet<>();
+        for(AgeRangePriceItem item: hotel.getPriceList()){
+            priceListRequests.add(new HotelRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
+        }
+        HotelRequests.CreateHotel hotelRequest = new HotelRequests.CreateHotel(uuid, hotel.getName(), requestLoc, roomRequests, priceListRequests);
+        String key = uuid.toString();
+        eventSender.sendHotel(hotelRequest, key);
     }
 
-    @GetMapping(path="/list-free-rooms")
-    public @ResponseBody List<StringNumberPair> listFreeRoomsOfHotel(@RequestParam String hotelName) {
-        Hotel hotel = hotelRepository.findByName(hotelName);
-
-        Iterator<HotelRoom> it = hotel.getRooms().iterator();
-        List<StringNumberPair> results = new LinkedList<>();
-
-        while (it.hasNext()){
-            HotelRoom room = it.next();
-//            Iterable<RoomReservation> reservations = roomReservationRepository.findAllByRoom(room);
-            long numOfReservations = roomReservationRepository.countByRoom(room);
-            StringNumberPair p = new StringNumberPair(room.getDescription(), room.getNumberInHotel() - numOfReservations);
-            results.add(p);
+    @GetMapping(path="/send")
+    public @ResponseBody String sendRequests() {
+        eventSender = EventSender.getEventSender();
+        Iterable<Hotel> hotels = hotelRepository.findAll();
+        for(Hotel hotel: hotels){
+            sendRequest(hotel);
         }
-        return results;
+        return "OK";
     }
+
 }

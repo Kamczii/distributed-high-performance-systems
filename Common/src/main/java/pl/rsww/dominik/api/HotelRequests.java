@@ -3,11 +3,19 @@ package pl.rsww.dominik.api;
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
 
 public final class HotelRequests {
+
+    @Validated
+    public record AgeRangePrice(
+            @Nonnull Integer startingRange,
+            @Nonnull Integer endingRange,
+            @Nonnull BigDecimal price
+            ){}
 
     @Validated
     public record RoomRequest(
@@ -25,10 +33,10 @@ public final class HotelRequests {
     }
 
     public record CreateHotel(
-            //TODO: Dominik
             @Nonnull UUID hotelId,
             @Nonnull String name,
             @Nonnull LocationRequest location,
-            @Nonnull Collection<RoomRequest> rooms
+            @Nonnull Collection<RoomRequest> rooms,
+            @Nonnull Collection<AgeRangePrice> priceList
     ) {}
 }
