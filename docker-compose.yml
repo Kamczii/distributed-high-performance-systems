@@ -42,7 +42,7 @@ services:
       - ESDB_CONNECTIONSTRING=esdb://eventstore:2113?tls=false
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
     ports:
-      - "8082:8082"
+      - "8082:8080"
       - "5082:5005"
     depends_on:
     - event_store
@@ -63,7 +63,6 @@ services:
       - "5081:5005"
     depends_on:
       - mongo_read_model
-      - kafka
     networks:
       - rsww-network
   mongo_read_model:
@@ -75,8 +74,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin
     ports:
       - "27017:27017"
-#    volumes:
-#      - mongo_read_db:/data/db
+    volumes:
+      - mongo_read_db:/data/db
     networks:
       - rsww-network
   mongo-express:
@@ -153,17 +152,57 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: offer
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
       - rsww-network
-#volumes:
-#  mongo_read_db:
-#  eventstore-volume-data:
-#  eventstore-volume-logs:
-#  postgres_data:
+  mysql_to:
+    container_name: mysql_to
+    image: mysql:8
+    restart: always
+    environment: # remember to delete volume to re-init
+      MYSQL_ROOT_PASSWORD: miAJy0VKTCk4eHK
+      MYSQL_USER: 'springuser'
+      MYSQL_PASSWORD: 'ThePassword'
+      MYSQL_DATABASE: hotels
+      MYSQL_ROOT_HOST: "%"
+    healthcheck: # healthcheck so tour_operator do not run before db user init
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql_to_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - rsww-network
+  tour_operator:
+    container_name: tour_operator
+    build:
+      context: .
+      dockerfile: ./TourOperator/Dockerfile
+    ports:
+      - "8083:8080"
+      - "5083:5003"
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysql_to:3306/hotels?allowPublicKeyRetrieval=true
+      - BOOTSTRAP_SERVER=kafka:9092
+    depends_on:
+      kafka:
+        condition: service_started
+      mysql_to:
+        condition: service_healthy
+    networks:
+      - rsww-network
+volumes:
+#   mongo_read_db:
+# #  eventstore-volume-data:
+# #  eventstore-volume-logs:
+#   postgres_data:
+  mysql_to_data:
 networks:
   rsww-network:
     driver: bridge
