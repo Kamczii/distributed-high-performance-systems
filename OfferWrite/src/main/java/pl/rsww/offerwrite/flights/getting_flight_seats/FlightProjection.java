@@ -17,15 +17,12 @@ import java.util.UUID;
 @Slf4j
 class FlightProjection extends JPAProjection<Flight, UUID> {
     private final LocationRepository locationRepository;
-    private final SeatStateRepository seatStateRepository;
 
     protected FlightProjection(FlightRepository repository,
                                LocationRepository locationRepository,
-                               SeatStateRepository seatStateRepository,
                                 EntityEventPublisher entityEventPublisher) {
         super(repository, entityEventPublisher);
         this.locationRepository = locationRepository;
-        this.seatStateRepository = seatStateRepository;
     }
 
     @EventListener
@@ -41,11 +38,6 @@ class FlightProjection extends JPAProjection<Flight, UUID> {
             flight.setDate(event.date());
             flight.setDeparture(departure);
             flight.setDestination(destination);
-            var openState = seatStateRepository.findByState(AvailableSeatState.OPEN);
-            for (var i = 0; i < event.capacity(); i++) {
-                var seat = this.createSeat(openState);
-                flight.addSeat(seat);
-            }
             flight.setVersion(eventEnvelope.metadata().streamPosition());
             flight.setLastProcessedPosition(eventEnvelope.metadata().logPosition());
             return flight;
@@ -64,11 +56,5 @@ class FlightProjection extends JPAProjection<Flight, UUID> {
 
     private Optional<Location> findLocation(pl.rsww.offerwrite.common.location.Location location) {
         return locationRepository.findByCityAndCountry(location.city(), location.country());
-    }
-
-    private FlightSeat createSeat(SeatState state) {
-        return FlightSeat.builder()
-                .seatState(state)
-                .build();
     }
 }

@@ -15,27 +15,10 @@ public final class FlightRequests {
     }
 
     public record CreateFlight(
-            //TODO: Dominik
             @Nonnull String flightNumber,
             @Nonnull Integer numberOfSeats,
             @Nonnull LocationRequest departure,
             @Nonnull LocationRequest destination,
-            @Nonnull LocalDate date
-    ) {}
-
-    public record SeatReserved(
-            // TODO: Dima
-            @Nonnull String flightNumber,
-            @Nonnull Integer numberOfSeats,
-            @Nonnull UUID orderId,
-            @Nonnull LocalDate date
-    ) {}
-
-    public record SeatConfirmed(
-            // TODO: Dima
-            @Nonnull String flightNumber,
-            @Nonnull Integer numberOfSeats,
-            @Nonnull UUID orderId,
             @Nonnull LocalDate date
     ) {}
 }

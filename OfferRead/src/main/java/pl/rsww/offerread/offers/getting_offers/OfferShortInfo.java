@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import pl.rsww.offerwrite.api.AvailableOrderStatus;
+import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -25,7 +25,12 @@ public class OfferShortInfo {
     private LocalDate start;
 
     private LocalDate end;
-    private AvailableOrderStatus status;
+    private AvailableOfferStatus status;
+
+    public OfferShortInfo changeStatus(AvailableOfferStatus status) {
+        setStatus(status);
+        return this;
+    }
 
     @Data
     @NoArgsConstructor

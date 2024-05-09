@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import pl.rsww.offerread.projections.MongoProjection;
-import pl.rsww.offerwrite.api.OfferIntegrationEvent;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 import java.util.UUID;
 

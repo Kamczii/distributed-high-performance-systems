@@ -13,6 +13,8 @@ public sealed interface FlightEvent {
                          LocalDate date,
                          Integer capacity) implements FlightEvent {}
 
-    record SeatReserved(Integer seats, LocalDateTime time, UUID reservationId) implements FlightEvent {}
-    record SeatReservedConfirmed(Integer seats, UUID reservationId) implements FlightEvent {}
+    record SeatReserved(String flightNumber, LocalDate date, Integer seats, LocalDateTime time, UUID orderId) implements FlightEvent {}
+    record SeatReleased(String flightNumber, LocalDate date, Integer seats, UUID orderId) implements FlightEvent {}
+    record SeatReservedConfirmed(String flightNumber, LocalDate date, Integer seats, UUID orderId) implements FlightEvent {}
+    record SeatConfirmationCanceled(String flightNumber, LocalDate date, Integer seats, UUID orderId) implements FlightEvent {}
 }

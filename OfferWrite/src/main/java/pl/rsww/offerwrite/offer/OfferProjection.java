@@ -5,11 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
-import pl.rsww.offerwrite.api.AvailableOrderStatus;
-import pl.rsww.offerwrite.flights.getting_flight_seats.AvailableSeatState;
+import pl.rsww.offerwrite.flights.FlightService;
+import pl.rsww.offerwrite.flights.FlightUtils;
 import pl.rsww.offerwrite.flights.getting_flight_seats.Flight;
 import pl.rsww.offerwrite.flights.getting_flight_seats.FlightRepository;
-import pl.rsww.offerwrite.flights.getting_flight_seats.FlightSeatRepository;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.Hotel;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoom;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoomRepository;
@@ -26,19 +25,19 @@ import java.util.stream.Stream;
 @Component
 @RequiredArgsConstructor
 public class OfferProjection {
-    public static final int MAX_TRIP_DURATION_IN_DAYS = 15;
     public static final int MIN_TRIP_DURATION_IN_DAYS = 1;
+    public static final int MAX_TRIP_DURATION_IN_DAYS = 15;
 
     private final HotelRoomRepository hotelRoomRepository;
     private final FlightRepository flightRepository;
-    private final FlightSeatRepository flightSeatRepository;
     private final OfferRepository offerRepository;
+    private final FlightService flightService;
 
     @EventListener
     public void handleHotelCreated(Hotel hotel) {
         log.info(String.format("Dodano hotel: %s", hotel.getName()));
         flightRepository.findAllByDestination(hotel.getLocation())
-                .forEach(this::handleFlightCreated); //todo: refactor
+                .forEach(this::handleFlightCreated);
     }
 
     @EventListener
@@ -48,35 +47,39 @@ public class OfferProjection {
         final var destination = flight.getDestination();
         final var departure = flight.getDeparture();
 
-        var returnFlights = findFollowingFlights(departure, destination, date)
+        var asPrecedingFlight = findFollowingFlights(departure, destination, date)
                 .stream()
                 .map(returnFlight -> Pair.of(flight, returnFlight))
                 .toList();
 
-        var startFlights = findPrecedingFlights(departure, destination, date)
+        var asFollowingFlight = findPrecedingFlights(departure, destination, date)
                 .stream()
                 .map(initialFlight -> Pair.of(initialFlight, flight))
                 .toList();
 
-        Stream.concat(returnFlights.stream(), startFlights.stream())
+        Stream.concat(asPrecedingFlight.stream(), asFollowingFlight.stream())
                 .forEach(this::createOffers);
     }
 
     private void createOffers(Pair<Flight,Flight> route) {
-        final var initialFlight = route.getFirst();
-        final var returnFlight = route.getSecond();
-        final var maxCapacity = Math.min(countAvailableSeats(initialFlight), countAvailableSeats(returnFlight));
-        final var offers = findRoomsMatchingFlight(initialFlight.getDestination(), maxCapacity, initialFlight.getDate(), returnFlight.getDate())
+        final var first = route.getFirst();
+        final var second = route.getSecond();
+        final var initialFlight = getFlightCurrentState(first);
+        final var returnFlight = getFlightCurrentState(second);
+        final var maxCapacity = Math.min(initialFlight.getCapacity(), returnFlight.getCapacity());
+        final var offers = findRoomsMatchingFlight(first.getDestination(), maxCapacity, initialFlight.getDate(), returnFlight.getDate())
                 .stream()
                 .map(room -> Offer.builder()
                         .hotelRoom(room)
-                        .initialFlight(initialFlight)
-                        .returnFlight(returnFlight)
-                        .status(AvailableOrderStatus.OPEN)
+                        .initialFlight(first)
+                        .returnFlight(second)
                         .build())
                 .peek(OfferProjection::log)
                 .collect(Collectors.collectingAndThen(Collectors.toList(), offerRepository::saveAll));
-        log.info(String.valueOf(offers.size()));
+    }
+
+    private pl.rsww.offerwrite.flights.Flight getFlightCurrentState(Flight flight) {
+        return flightService.get(FlightUtils.flightId(flight.getFlightNumber(), flight.getDate()));
     }
 
     private static void log(Offer offer) {
@@ -86,10 +89,6 @@ public class OfferProjection {
 
     private List<HotelRoom> findRoomsMatchingFlight(Location location, int maxCapacity, LocalDate checkIn, LocalDate checkout) {
         return hotelRoomRepository.find(location, maxCapacity, checkIn, checkout);
-    }
-
-    private int countAvailableSeats(Flight departure) {
-        return flightSeatRepository.countByFlightIdAndSeatStateState(departure.getId(), AvailableSeatState.OPEN);
     }
 
 

@@ -56,14 +56,18 @@ public class AggregateStore<Entity extends AbstractAggregate<Event, Id>, Event, 
     Consumer<Entity> handle,
     Id id
   ) {
-    var streamId = mapToStreamId.apply(id);
-    var entity = get(id).orElseThrow(
-      () -> new EntityNotFoundException("Stream with id %s was not found".formatted(streamId))
-    );
+    var entity = getEntity(id);
 
     handle.accept(entity);
 
     return appendEvents(entity, AppendToStreamOptions.get());
+  }
+
+  public Entity getEntity(Id id) {
+    var streamId = mapToStreamId.apply(id);
+      return get(id).orElseThrow(
+      () -> new EntityNotFoundException("Stream with id %s was not found".formatted(streamId))
+    );
   }
 
   private Optional<List<Event>> getEvents(String streamId) {

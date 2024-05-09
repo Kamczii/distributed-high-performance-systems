@@ -10,7 +10,7 @@ import static pl.rsww.dominik.api.TourOperatorTopics.FLIGHT_INTEGRATION_TOPIC;
 
 @Component
 @Slf4j
-public class FlightEventListener {
+public class TourOperatorFlightEventListener {
 
     @KafkaListener(topics = FLIGHT_INTEGRATION_TOPIC, groupId = "OfferWrite", containerFactory = "flightConsumerFactory",autoStartup = "${listen.auto.start:true}")
     public void listenOffer(FlightRequests flightRequests) {
