@@ -28,8 +28,7 @@ public class Hotel {
 //            joinColumns = @JoinColumn(name = "hotel_id"),
 //            inverseJoinColumns = @JoinColumn(name = "flight_line_id"))
 //    private Set<FlightLine> hotelFlightLines;
-    @OneToMany(mappedBy="hotel")
-    private Set<AgeRangePriceItem> priceList;
+
 
 
     public UUID getId() {return id;}
@@ -86,11 +85,4 @@ public class Hotel {
         this.localRegionName = localRegionName;
     }
 
-    public Set<AgeRangePriceItem> getPriceList() {
-        return priceList;
-    }
-
-    public void setPriceList(Set<AgeRangePriceItem> priceList) {
-        this.priceList = priceList;
-    }
 }

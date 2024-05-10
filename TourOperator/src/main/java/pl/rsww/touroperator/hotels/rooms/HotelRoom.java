@@ -2,6 +2,9 @@ package pl.rsww.touroperator.hotels.rooms;
 
 import pl.rsww.touroperator.hotels.Hotel;
 import jakarta.persistence.*;
+import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
+
+import java.util.Set;
 
 @Entity
 public class HotelRoom {
@@ -15,6 +18,8 @@ public class HotelRoom {
     @ManyToOne
     @JoinColumn(name="hotel_id", nullable=false)
     private Hotel hotel;
+    @OneToMany(mappedBy="hotelRoom")
+    private Set<AgeRangePriceItem> priceList;
 
     public int getId() {
         return id;
@@ -62,5 +67,13 @@ public class HotelRoom {
 
     public void setNumberOfBeds(int numberOfBeds) {
         this.numberOfBeds = numberOfBeds;
+    }
+
+    public Set<AgeRangePriceItem> getPriceList() {
+        return priceList;
+    }
+
+    public void setPriceList(Set<AgeRangePriceItem> priceList) {
+        this.priceList = priceList;
     }
 }

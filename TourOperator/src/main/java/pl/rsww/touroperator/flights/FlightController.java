@@ -1,6 +1,7 @@
 package pl.rsww.touroperator.flights;
 
 import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.dominik.api.HotelRequests;
 import pl.rsww.touroperator.flights.lines.FlightLine;
 import pl.rsww.touroperator.flights.lines.FlightLineRepository;
 import pl.rsww.touroperator.hotels.Hotel;
@@ -11,7 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.initialization.EventSender;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Controller
@@ -30,7 +35,13 @@ public class FlightController {
         FlightRequests.LocationRequest lrDest = new FlightRequests.LocationRequest(line.getDestinationLocation().getCountry(), line.getDestinationLocation().getCity());
         String flightNumber = line.flightNumber();
         String key = flightNumber + flight.getDepartureDate();
-        FlightRequests.CreateFlight flightRequest = new FlightRequests.CreateFlight(flightNumber, line.getMaxPassengers(), lrHome, lrDest, flight.getDepartureDate());
+
+        Set<FlightRequests.AgeRangePrice> priceListRequests = new HashSet<>();
+        for(AgeRangePriceItem item: line.getPriceList()){
+            priceListRequests.add(new FlightRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
+        }
+
+        FlightRequests.CreateFlight flightRequest = new FlightRequests.CreateFlight(flightNumber, line.getMaxPassengers(), lrHome, lrDest, flight.getDepartureDate(), priceListRequests);
         eventSender.sendFlight(flightRequest, key);
     }
 

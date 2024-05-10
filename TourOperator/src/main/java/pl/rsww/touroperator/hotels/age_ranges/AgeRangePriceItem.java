@@ -1,7 +1,9 @@
 package pl.rsww.touroperator.hotels.age_ranges;
 
 import jakarta.persistence.*;
+import pl.rsww.touroperator.flights.lines.FlightLine;
 import pl.rsww.touroperator.hotels.Hotel;
+import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 
 import java.math.BigDecimal;
 
@@ -14,8 +16,11 @@ public class AgeRangePriceItem {
     private Integer endingRange;
     private BigDecimal price;
     @ManyToOne
-    @JoinColumn(name="hotel_id", nullable=false)
-    private Hotel hotel;
+    @JoinColumn(name="hotel_room_id", nullable=true)
+    private HotelRoom hotelRoom;
+    @ManyToOne
+    @JoinColumn(name="flight_line_id", nullable=true)
+    private FlightLine flightLine;
 
     public Integer getStartingRange() {
         return startingRange;
@@ -49,13 +54,6 @@ public class AgeRangePriceItem {
         this.id = id;
     }
 
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
 
     public AgeRangePriceItem() {
     }
@@ -64,5 +62,21 @@ public class AgeRangePriceItem {
         this.startingRange = startingRange;
         this.endingRange = endingRange;
         this.price = price;
+    }
+
+    public HotelRoom getRoom() {
+        return hotelRoom;
+    }
+
+    public void setRoom(HotelRoom room) {
+        this.hotelRoom = room;
+    }
+
+    public FlightLine getFlightLine() {
+        return flightLine;
+    }
+
+    public void setFlightLine(FlightLine flightLine) {
+        this.flightLine = flightLine;
     }
 }

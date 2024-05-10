@@ -1,18 +1,14 @@
-package pl.rsww.touroperator.initialization;
+package pl.rsww.touroperator.hotels;
 
 
-import pl.rsww.dominik.api.HotelRequests;
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.data.PlaneConnectionHolder;
 import pl.rsww.touroperator.data_extraction.HotelInfo;
-import pl.rsww.touroperator.flights.FlightRepository;
 import pl.rsww.touroperator.flights.lines.FlightLine;
-import pl.rsww.touroperator.flights.lines.FlightLineRepository;
-import pl.rsww.touroperator.hotels.Hotel;
-import pl.rsww.touroperator.hotels.HotelRepository;
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItemRepository;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import pl.rsww.touroperator.hotels.rooms.HotelRoomRepository;
+import pl.rsww.touroperator.initialization.PriceListGenerator;
 import pl.rsww.touroperator.locations.AirportLocation;
 import pl.rsww.touroperator.locations.AirportLocationRepository;
 
@@ -82,15 +78,21 @@ public class HotelInitializer {
 
     }
 
-    private void initPriceList(){
-        List<AgeRangePriceItem> ranges = priceListGenerator.getRanges();
+    private void setPriceListForRoom(HotelRoom room){
+        List<AgeRangePriceItem> ranges = priceListGenerator.getNextRoomRanges();
         priceList = new HashSet<>(ranges);
         for(AgeRangePriceItem item: priceList){
-            item.setHotel(hotel);
+            item.setRoom(room);
         }
         ageRangePriceItemRepository.saveAll(priceList);
+    }
 
-        hotel.setPriceList(priceList);
+    private void initPriceList(){
+        priceListGenerator.startHotel();
+        for(HotelRoom room: hotel.getRooms()){
+            setPriceListForRoom(room);
+            room.setPriceList(priceList);
+        }
     }
 
     public void clear(){

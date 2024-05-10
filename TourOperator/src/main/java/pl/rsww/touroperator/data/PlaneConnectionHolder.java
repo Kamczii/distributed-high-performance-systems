@@ -7,7 +7,6 @@ import java.util.Set;
 public class PlaneConnectionHolder {
     private String destinationCity;
     private String destinationCountry;
-//    private Set<String> departures;
 
     public String getDestinationCity() {
         return destinationCity;
@@ -25,13 +24,6 @@ public class PlaneConnectionHolder {
         this.destinationCountry = destinationCountry;
     }
 
-//    public Set<String> getDepartures() {
-//        return departures;
-//    }
-//
-//    public void setDepartures(Set<String> departures) {
-//        this.departures = departures;
-//    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,7 +44,4 @@ public class PlaneConnectionHolder {
 //        this.departures = new HashSet<>();
     }
 
-//    public void addDeparture(String city){
-//        departures.add(city);
-//    }
 }

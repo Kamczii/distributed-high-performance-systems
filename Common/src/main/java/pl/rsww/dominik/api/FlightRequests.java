@@ -3,8 +3,10 @@ package pl.rsww.dominik.api;
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.Collection;
+
 
 public final class FlightRequests {
     @Validated
@@ -14,11 +16,19 @@ public final class FlightRequests {
     ) {
     }
 
+    @Validated
+    public record AgeRangePrice(
+            @Nonnull Integer startingRange,
+            @Nonnull Integer endingRange,
+            @Nonnull BigDecimal price
+    ){}
+
     public record CreateFlight(
             @Nonnull String flightNumber,
             @Nonnull Integer numberOfSeats,
             @Nonnull LocationRequest departure,
             @Nonnull LocationRequest destination,
-            @Nonnull LocalDate date
+            @Nonnull LocalDate date,
+            @Nonnull Collection<FlightRequests.AgeRangePrice> priceList
     ) {}
 }
