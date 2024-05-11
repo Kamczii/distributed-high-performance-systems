@@ -29,7 +29,7 @@ public class PriceListGenerator {
         ranges.add(new AgeRangePriceItem(0, 2, BigDecimal.valueOf(0.5 * referencePrice).round(mathContext))); // <0,3)
         ranges.add(new AgeRangePriceItem(3, 9, BigDecimal.valueOf(0.8 * referencePrice).round(mathContext))); // <3,10)
         ranges.add(new AgeRangePriceItem(10, 17, BigDecimal.valueOf(0.9 * referencePrice).round(mathContext))); // <10,18)
-        ranges.add(new AgeRangePriceItem(19, 999, BigDecimal.valueOf(referencePrice).round(mathContext))); // <18,999>
+        ranges.add(new AgeRangePriceItem(18, 999, BigDecimal.valueOf(referencePrice).round(mathContext))); // <18,999>
     }
 
     public List<AgeRangePriceItem> getNextRoomRanges(){

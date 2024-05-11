@@ -21,7 +21,7 @@ public class Hotel {
     private List<HotelRoom> rooms;
     @ManyToOne
     private AirportLocation location;
-    private String localRegionName;
+//    private String localRegionName;
 //    @ManyToMany
 //    @JoinTable(
 //            name = "hotel_flight_lines",
@@ -77,12 +77,12 @@ public class Hotel {
 //        this.hotelFlightLines = hotelFlightLines;
 //    }
 
-    public String getLocalRegionName() {
-        return localRegionName;
-    }
-
-    public void setLocalRegionName(String localRegionName) {
-        this.localRegionName = localRegionName;
-    }
+//    public String getLocalRegionName() {
+//        return localRegionName;
+//    }
+//
+//    public void setLocalRegionName(String localRegionName) {
+//        this.localRegionName = localRegionName;
+//    }
 
 }

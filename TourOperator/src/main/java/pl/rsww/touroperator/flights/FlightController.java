@@ -41,7 +41,13 @@ public class FlightController {
             priceListRequests.add(new FlightRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
         }
 
-        FlightRequests.CreateFlight flightRequest = new FlightRequests.CreateFlight(flightNumber, line.getMaxPassengers(), lrHome, lrDest, flight.getDepartureDate(), priceListRequests);
+        FlightRequests.CreateFlight flightRequest;
+        if(!flight.getItReturningFlight()){
+            flightRequest = new FlightRequests.CreateFlight(flightNumber, line.getMaxPassengers(), lrHome, lrDest, flight.getDepartureDate(), priceListRequests);
+        }else{
+            flightRequest = new FlightRequests.CreateFlight(flightNumber, line.getMaxPassengers(), lrDest, lrHome, flight.getDepartureDate(), priceListRequests);
+        }
+
         eventSender.sendFlight(flightRequest, key);
     }
 

@@ -65,12 +65,20 @@ public class FlightInitializer {
 
     public void initFlights(){
         LocalDate date = LocalDate.now();
+        LocalDate dateBack = date.plusDays(7);
         Iterable<FlightLine> flightLines = flightLineRepository.findAll();
         for(FlightLine flightLine: flightLines){
             Flight flight = new Flight();
             flight.setLine(flightLine);
             flight.setDepartureDate(date);
+            flight.setItReturningFlight(false);
             flightRepository.save(flight);
+
+            Flight flightBack = new Flight();
+            flightBack.setLine(flightLine);
+            flightBack.setDepartureDate(dateBack);
+            flightBack.setItReturningFlight(true);
+            flightRepository.save(flightBack);
         }
     }
 
