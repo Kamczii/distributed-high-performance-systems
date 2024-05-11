@@ -1,5 +1,6 @@
 package pl.rsww.offerwrite.hotels;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.rsww.dominik.api.HotelRequests;
@@ -12,8 +13,12 @@ import java.util.UUID;
 public class HotelService {
     private final AggregateStore<Hotel, HotelEvent, UUID> hotelStore;
 
-    public void create(HotelRequests.CreateHotel create) {
-        hotelStore.add(Hotel.create(create));
+    public void handle(HotelRequests.CreateHotel create) {
+        try {
+            hotelStore.getEntity(create.hotelId());
+        } catch (EntityNotFoundException e) {
+            hotelStore.add(Hotel.create(create));
+        }
     }
 
     public Hotel getEntity(UUID id) {
@@ -28,5 +33,11 @@ public class HotelService {
 
     public void handle(HotelCommand.ConfirmLock hotelConfirmLockRequest) {
         hotelStore.getAndUpdate(hotel -> hotel.confirmLock(hotelConfirmLockRequest.orderId()), hotelConfirmLockRequest.hotelId());
+    }
+
+    public void handle(HotelRequests request) {
+        if (request instanceof HotelRequests.CreateHotel createHotel) {
+            handle(createHotel);
+        }
     }
 }

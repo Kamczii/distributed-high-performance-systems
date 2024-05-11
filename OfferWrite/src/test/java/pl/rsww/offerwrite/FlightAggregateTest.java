@@ -6,7 +6,9 @@ import org.springframework.data.util.Pair;
 import pl.rsww.dominik.api.FlightRequests;
 import pl.rsww.offerwrite.flights.Flight;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +29,8 @@ class FlightAggregateTest {
                 capacity,
                 departure,
                 destination,
-                flightDate
+                flightDate,
+                List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
         ));
     }
 

@@ -1,5 +1,6 @@
 package pl.rsww.offerwrite.flights;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,11 @@ public class FlightService {
     private final AggregateStore<Flight, FlightEvent, String> flightStore;
 
     public void handle(FlightRequests.CreateFlight create) {
-        flightStore.add(Flight.create(create));
+        try {
+            Flight exist = flightStore.getEntity(FlightUtils.flightId(create.flightNumber(), create.date()));
+        } catch (EntityNotFoundException e) {
+            flightStore.add(Flight.create(create));
+        }
     }
 
     public void handle(FlightCommand.ConfirmLock create) {
@@ -59,6 +64,12 @@ public class FlightService {
             handle(lock);
         } else if (command instanceof FlightCommand.CancelConfirmation cancelConfirmation) {
             handle(cancelConfirmation);
+        }
+    }
+
+    public void handle(FlightRequests request) {
+        if (request instanceof FlightRequests.CreateFlight create) {
+            handle(create);
         }
     }
 

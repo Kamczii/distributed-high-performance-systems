@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import pl.rsww.dominik.api.HotelRequests;
 import pl.rsww.offerwrite.hotels.Hotel;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -28,9 +29,9 @@ class HotelTest {
         name = "Test Hotel";
         location = new HotelRequests.LocationRequest("Test Country", "Test City");
         createHotelRequest = new HotelRequests.CreateHotel(hotelId, name, location, List.of(
-                new HotelRequests.RoomRequest(SINGLE_ROOM_TYPE, 1, 1),
-                new HotelRequests.RoomRequest(SINGLE_ROOM_TYPE, 1, 1),
-                new HotelRequests.RoomRequest(DOUBLE_ROOM_TYPE, 2, 2)
+                new HotelRequests.RoomRequest(SINGLE_ROOM_TYPE, 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+                new HotelRequests.RoomRequest(SINGLE_ROOM_TYPE, 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+                new HotelRequests.RoomRequest(DOUBLE_ROOM_TYPE, 2, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))
         ));
         
         hotel = Hotel.create(createHotelRequest);

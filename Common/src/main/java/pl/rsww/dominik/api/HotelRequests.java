@@ -8,17 +8,17 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
 
-public final class HotelRequests {
+public sealed interface HotelRequests {
 
     @Validated
-    public record AgeRangePrice(
+    record AgeRangePrice(
             @Nonnull Integer startingRange,
             @Nonnull Integer endingRange,
             @Nonnull BigDecimal price
             ){}
 
     @Validated
-    public record RoomRequest(
+    record RoomRequest(
             @Nonnull String type,
             @Nonnull Integer capacity,
             @Nonnull Integer beds,
@@ -27,16 +27,16 @@ public final class HotelRequests {
     }
 
     @Validated
-    public record LocationRequest(
+    record LocationRequest(
             @Nonnull String country,
             @Nonnull String city
     ) {
     }
 
-    public record CreateHotel(
+    record CreateHotel(
             @Nonnull UUID hotelId,
             @Nonnull String name,
             @Nonnull LocationRequest location,
             @Nonnull Collection<RoomRequest> rooms
-    ) {}
+    ) implements HotelRequests {}
 }

@@ -20,7 +20,6 @@ public class OfferShortInfoProjection extends MongoProjection<OfferShortInfo, UU
 
     @KafkaListener(topics = OFFER_INTEGRATION_TOPIC, groupId = "OfferRead", containerFactory = "offerEventConsumerFactory",autoStartup = "${listen.auto.start:true}")
     public void listenOffer(OfferIntegrationEvent event) {
-        log.info("Listener");
         if (event instanceof OfferIntegrationEvent.Created created) {
             log.info(event.toString());
             add(() -> mapToShortInfo(created));

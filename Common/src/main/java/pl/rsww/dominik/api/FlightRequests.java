@@ -8,27 +8,27 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 
-public final class FlightRequests {
+public sealed interface FlightRequests {
     @Validated
-    public record LocationRequest(
+    record LocationRequest(
             @Nonnull String country,
             @Nonnull String city
     ) {
     }
 
     @Validated
-    public record AgeRangePrice(
+    record AgeRangePrice(
             @Nonnull Integer startingRange,
             @Nonnull Integer endingRange,
             @Nonnull BigDecimal price
     ){}
 
-    public record CreateFlight(
+    record CreateFlight(
             @Nonnull String flightNumber,
             @Nonnull Integer numberOfSeats,
             @Nonnull LocationRequest departure,
             @Nonnull LocationRequest destination,
             @Nonnull LocalDate date,
             @Nonnull Collection<FlightRequests.AgeRangePrice> priceList
-    ) {}
+    ) implements FlightRequests{}
 }
