@@ -31,17 +31,6 @@ public class JsonDataExtractor implements DataExtractor{
 
     private InputStream loadResource(String name){
         return getClass().getClassLoader().getResourceAsStream(name);
-//        URL resource = getClass().getClassLoader().getResourceAsStream(fileName);
-//        if (resource == null) {
-//            throw new IllegalArgumentException("file not found!");
-//        } else {
-//            try {
-//                URI uri = resource.toURI();
-//                return new FileInputStream(new File(uri));
-//            } catch (URISyntaxException | FileNotFoundException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
     }
 
     private void loadSettings(){
@@ -56,19 +45,6 @@ public class JsonDataExtractor implements DataExtractor{
         fileName = jsonDir + dataFileName;
     }
 
-//    public String readFile(String fileName){
-//        StringBuilder stringBuilder = new StringBuilder();
-//        try {
-//            Scanner scanner = new Scanner(new File(fileName));
-//            while (scanner.hasNextLine()){
-//                stringBuilder.append(scanner.nextLine());
-//            }
-//            scanner.close();
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return stringBuilder.toString();
-//    }
 
     private List<String> fromList(JSONArray jsonA){
         List<String> strings = new LinkedList<>();

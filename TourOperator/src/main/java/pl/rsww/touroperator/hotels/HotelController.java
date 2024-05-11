@@ -26,15 +26,16 @@ public class HotelController {
         HotelRequests.LocationRequest requestLoc = new HotelRequests.LocationRequest(hotel.getLocation().getCountry(), hotel.getLocation().getCity());
         List<HotelRequests.RoomRequest> roomRequests = new LinkedList<>();
         for(HotelRoom room: hotel.getRooms()){
+            Set<HotelRequests.AgeRangePrice> priceListRequests = new HashSet<>();
+            for(AgeRangePriceItem item: room.getPriceList()){
+                priceListRequests.add(new HotelRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
+            }
             for(int i = 0; i < room.getNumberInHotel(); i++){
-                roomRequests.add(new HotelRequests.RoomRequest(room.getDescription(), room.getMaxPeople(), room.getNumberOfBeds()));
+                roomRequests.add(new HotelRequests.RoomRequest(room.getDescription(), room.getMaxPeople(), room.getNumberOfBeds(), priceListRequests));
             }
         }
-        Set<HotelRequests.AgeRangePrice> priceListRequests = new HashSet<>();
-        for(AgeRangePriceItem item: hotel.getPriceList()){
-            priceListRequests.add(new HotelRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
-        }
-        HotelRequests.CreateHotel hotelRequest = new HotelRequests.CreateHotel(uuid, hotel.getName(), requestLoc, roomRequests, priceListRequests);
+
+        HotelRequests.CreateHotel hotelRequest = new HotelRequests.CreateHotel(uuid, hotel.getName(), requestLoc, roomRequests);
         String key = uuid.toString();
         eventSender.sendHotel(hotelRequest, key);
     }

@@ -21,7 +21,8 @@ public final class HotelRequests {
     public record RoomRequest(
             @Nonnull String type,
             @Nonnull Integer capacity,
-            @Nonnull Integer beds
+            @Nonnull Integer beds,
+            @Nonnull Collection<AgeRangePrice> priceList
     ) {
     }
 
@@ -36,7 +37,6 @@ public final class HotelRequests {
             @Nonnull UUID hotelId,
             @Nonnull String name,
             @Nonnull LocationRequest location,
-            @Nonnull Collection<RoomRequest> rooms,
-            @Nonnull Collection<AgeRangePrice> priceList
+            @Nonnull Collection<RoomRequest> rooms
     ) {}
 }

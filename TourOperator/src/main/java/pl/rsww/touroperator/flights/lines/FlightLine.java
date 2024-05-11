@@ -1,6 +1,7 @@
 package pl.rsww.touroperator.flights.lines;
 
 import pl.rsww.touroperator.hotels.Hotel;
+import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.locations.AirportLocation;
 import jakarta.persistence.*;
 
@@ -11,15 +12,13 @@ public class FlightLine {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
-//    private String homeAirport;
-//    private String destinationAirport;
     private int maxPassengers;
     @ManyToOne
     private AirportLocation destinationLocation;
     @ManyToOne
     private AirportLocation homeLocation;
-//    @ManyToMany(mappedBy = "hotelFlightLines")
-//    private Set<Hotel> hotels;
+    @OneToMany(mappedBy="flightLine")
+    private Set<AgeRangePriceItem> priceList;
 
     public int getId() {
         return id;
@@ -29,21 +28,6 @@ public class FlightLine {
         this.id = id;
     }
 
-//    public String getHomeAirport() {
-//        return homeAirport;
-//    }
-//
-//    public void setHomeAirport(String homeAirport) {
-//        this.homeAirport = homeAirport;
-//    }
-
-//    public String getDestinationAirport() {
-//        return destinationAirport;
-//    }
-//
-//    public void setDestinationAirport(String destinationAirport) {
-//        this.destinationAirport = destinationAirport;
-//    }
 
     public int getMaxPassengers() {
         return maxPassengers;
@@ -61,19 +45,6 @@ public class FlightLine {
         this.destinationLocation = destinationLocation;
     }
 
-//    public Set<Hotel> getHotels() {
-//        return hotels;
-//    }
-//
-//    public void setHotels(Set<Hotel> hotels) {
-//        this.hotels = hotels;
-//    }
-//
-//    public void addHotel(Hotel hotel){
-//        if(hotels != null){
-//            hotels.add(hotel);
-//        }
-//    }
 
     public AirportLocation getHomeLocation() {
         return homeLocation;
@@ -85,5 +56,13 @@ public class FlightLine {
 
     public String flightNumber(){
         return "RA" + id;
+    }
+
+    public Set<AgeRangePriceItem> getPriceList() {
+        return priceList;
+    }
+
+    public void setPriceList(Set<AgeRangePriceItem> priceList) {
+        this.priceList = priceList;
     }
 }
