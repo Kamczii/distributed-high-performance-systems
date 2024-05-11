@@ -13,7 +13,6 @@ import pl.rsww.offerread.mapper.OfferShortInfoMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -27,20 +26,39 @@ public class ShortInfoService {
     private final OfferShortInfoMapper offerShortInfoMapper;
     public List<OfferShortInfoDTO> search(GetOffers getOffers) {
         final var query = buildQuery(getOffers);
+        final var adults = getAdultsCount(getOffers);
         return mongoTemplate.find(query, OfferShortInfo.class)
                 .stream()
-                .map(offer -> map(offer, getOffers.persons(), getOffers.kids()))
+                .map(offer -> map(offer, adults, getOffers.kids()))
                 .toList();
     }
 
-    private OfferShortInfoDTO map(OfferShortInfo source, Integer persons, Collection<LocalDate> kids) {
-        BigDecimal price = getPrice(source, kids, persons);
+    private static Integer getAdultsCount(GetOffers getOffers) {
+        return Optional.ofNullable(getOffers.persons())
+                .map(persons -> persons - Optional.ofNullable(getOffers.kids()).map(Collection::size).orElse(0))
+                .orElse(1);
+    }
+
+    private OfferShortInfoDTO map(OfferShortInfo source, Integer adults, Collection<LocalDate> kids) {
+        final var ageOfVisitors = Stream.concat(adultStream(adults),
+                childStream(kids)).toList();
+        final var price = getPrice(source, ageOfVisitors);
         return offerShortInfoMapper.map(source, price);
     }
 
-    private BigDecimal getPrice(OfferShortInfo offer, Collection<LocalDate> kids, Integer persons) {
-        return Stream.concat(Stream.generate(() -> 18).limit(persons != null ? persons : 1),
-                Optional.ofNullable(kids).orElse(Collections.emptyList()).stream().map(this::calculateAge)).map(offer::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+    private BigDecimal getPrice(OfferShortInfo offer, Collection<Integer> ageOfVisitors) {
+        return ageOfVisitors.stream()
+                .map(offer::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private Stream<Integer> childStream(Collection<LocalDate> kids) {
+        return Optional.ofNullable(kids).orElse(Collections.emptyList())
+                .stream().map(this::calculateAge);
+    }
+
+    private static Stream<Integer> adultStream(Integer persons) {
+        return Stream.generate(() -> 18).limit(persons != null ? persons : 1);
     }
 
     public Integer calculateAge(LocalDate birthday) {
