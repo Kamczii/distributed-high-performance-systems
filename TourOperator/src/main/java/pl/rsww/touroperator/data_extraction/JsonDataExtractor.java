@@ -74,6 +74,10 @@ public class JsonDataExtractor implements DataExtractor{
         JSONArray jsonDepartures = jsonObject.getJSONArray("departures");
         List<String> departures = fromList(jsonDepartures);
 
+        if(city.contains("(")){
+            city = city.split("\\(")[0];
+        }
+
         HotelInfo info = new HotelInfo();
         info.setName(hotelName);
         info.setCountry(country);

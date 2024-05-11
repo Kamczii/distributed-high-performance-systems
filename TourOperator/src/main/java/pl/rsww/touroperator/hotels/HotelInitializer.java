@@ -36,6 +36,7 @@ public class HotelInitializer {
         if(location == null){
             location = new AirportLocation();
             location.setCountry(country);
+
             location.setCity(info.getCity());
 //            location.setHotels(new LinkedList<>());
             airportLocationRepository.save(location);
