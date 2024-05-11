@@ -3,6 +3,7 @@ package pl.rsww.offerwrite.hotels;
 import lombok.Builder;
 import lombok.Getter;
 import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.common.location.Location;
 import pl.rsww.offerwrite.core.aggregates.AbstractAggregate;
 import pl.rsww.offerwrite.hotels.hotel_rooms.HotelRoom;
@@ -25,6 +26,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
     private Location location;
     private String name;
     private Map<String, List<Set<ReservationDTO>>> activeReservations;
+    private Collection<AgeRangePrice> priceList;
 
     Hotel() {
     }
@@ -64,6 +66,11 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
                                 _ -> new HashSet<>(),
                                 toList()
                         ))
+                );
+                priceList = List.of(
+                        new AgeRangePrice(0, 3, BigDecimal.valueOf(0)),
+                        new AgeRangePrice(4, 12, BigDecimal.valueOf(50)),
+                        new AgeRangePrice(12, 100, BigDecimal.valueOf(100))
                 );
             }
             case HotelEvent.RoomReserved roomReserved -> {

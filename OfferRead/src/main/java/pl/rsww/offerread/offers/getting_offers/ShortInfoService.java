@@ -37,9 +37,6 @@ public class ShortInfoService {
         if (getOffers.persons() != null) {
             criteria.and("hotel.room.capacity").gte(getOffers.persons());
         }
-        if (getOffers.kids() != null) {
-//            criteria.and("kids").gt(getOffers.kids());
-        }
         if (getOffers.destinationCity() != null) {
             criteria.and("destination.city").is(getOffers.destinationCity());
         }

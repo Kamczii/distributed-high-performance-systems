@@ -5,6 +5,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
+import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
 import pl.rsww.offerwrite.flights.Flight;
 import pl.rsww.offerwrite.flights.FlightEvent;
@@ -14,12 +15,15 @@ import pl.rsww.offerwrite.flights.getting_flight_seats.FlightRepository;
 import pl.rsww.offerwrite.hotels.Hotel;
 import pl.rsww.offerwrite.hotels.HotelService;
 import pl.rsww.offerwrite.location.Location;
+import pl.rsww.offerwrite.mapper.AgeRangePriceMapper;
 import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferEvent;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +37,8 @@ public class OfferIntegrationEvent {
     private final ObjectRequestKafkaProducer objectRequestKafkaProducer;
     private final FlightRepository flightRepository;
     private final OfferRepository offerRepository;
-
+    private final PriceCalculatorService priceCalculatorService;
+    private final AgeRangePriceMapper ageRangePriceMapper;
     @EventListener
     void handleSeatReserved(EventEnvelope<FlightEvent.SeatReserved> eventEnvelope) {
         final var flightNumber = eventEnvelope.data().flightNumber();
@@ -104,7 +109,8 @@ public class OfferIntegrationEvent {
         var hotel = mapHotel(offer, room);
         var start = offer.getInitialFlight().getDate();
         var end = offer.getReturnFlight().getDate();
-        var event = new pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Created(offer.getId(), hotel, departure, destination, start, end, AvailableOfferStatus.OPEN);
+        var priceList = ageRangePriceMapper.map(priceCalculatorService.getPriceList(offer.getId()));
+        var event = new pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Created(offer.getId(), hotel, departure, destination, start, end, AvailableOfferStatus.OPEN, priceList);
         publish(event);
     }
 

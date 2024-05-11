@@ -3,16 +3,15 @@ package pl.rsww.offerwrite.flights;
 import lombok.Getter;
 import org.springframework.data.util.Pair;
 import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
+import pl.rsww.offerwrite.common.age_range_price.AgeRangePriceHelper;
 import pl.rsww.offerwrite.common.location.Location;
 import pl.rsww.offerwrite.core.aggregates.AbstractAggregate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 public class Flight extends AbstractAggregate<FlightEvent, String> {
@@ -24,6 +23,7 @@ public class Flight extends AbstractAggregate<FlightEvent, String> {
     private Integer capacity;
     private Set<Pair<UUID, Integer>> activeReservations;
     private Set<Pair<UUID, Integer>> activeConfirmations;
+    private Collection<AgeRangePrice> priceList;
 
     Flight() {
     }
@@ -65,6 +65,11 @@ public class Flight extends AbstractAggregate<FlightEvent, String> {
                 capacity = flightCreated.capacity();
                 activeReservations = new HashSet<>();
                 activeConfirmations = new HashSet<>();
+                priceList = List.of(
+                        new AgeRangePrice(0, 3, BigDecimal.valueOf(0)),
+                        new AgeRangePrice(4, 12, BigDecimal.valueOf(50)),
+                        new AgeRangePrice(12, 100, BigDecimal.valueOf(100))
+                );
             }
             case FlightEvent.SeatReserved seatsReserved -> {
                 if (seatsReserved.time().isAfter(LocalDateTime.now().minusSeconds(LOCK_TIME_IN_SECONDS))) {

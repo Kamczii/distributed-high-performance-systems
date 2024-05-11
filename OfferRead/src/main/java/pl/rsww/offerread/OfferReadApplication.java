@@ -13,6 +13,7 @@ import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -40,7 +41,8 @@ public class OfferReadApplication {
                     new OfferIntegrationEvent.Location("Paris", "France"),  // destinationCity location
                     LocalDate.of(2024, 4, 15),  // start date
                     LocalDate.of(2024, 4, 25),   // end date,
-                    AvailableOfferStatus.OPEN
+                    AvailableOfferStatus.OPEN,
+                    Collections.emptyList()
             );
             projection.listenOffer(offerEvent);
         };
