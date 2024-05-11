@@ -14,12 +14,12 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.UUID;
 
-@Document
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OfferShortInfo {
-    @Id
+public class OfferShortInfoDTO {
+
     private UUID id;
 
     private Hotel hotel;
@@ -31,18 +31,7 @@ public class OfferShortInfo {
     private LocalDate end;
     private AvailableOfferStatus status;
 
-    private Collection<AgeRangePrice> priceList;
-
-    public OfferShortInfo changeStatus(AvailableOfferStatus status) {
-        setStatus(status);
-        return this;
-    }
-
-    public BigDecimal getPrice(int age) {
-        return priceList.stream().filter(price -> price.startingRange() <= age && age <= price.endingRange()).findAny()
-                .map(AgeRangePrice::price)
-                .orElse(BigDecimal.ZERO);
-    }
+    private BigDecimal price;
 
     @Data
     @NoArgsConstructor

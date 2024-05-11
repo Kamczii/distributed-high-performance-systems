@@ -8,9 +8,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import pl.rsww.offerread.mapper.OfferShortInfoMapper;
 
-import java.util.List;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Stream;
 
 
 @Service
@@ -19,10 +24,27 @@ public class ShortInfoService {
 
     private final OfferShortInfoRepository shortInfoRepository;
     private final MongoTemplate mongoTemplate;
-
-    public List<OfferShortInfo> search(GetOffers getOffers) {
+    private final OfferShortInfoMapper offerShortInfoMapper;
+    public List<OfferShortInfoDTO> search(GetOffers getOffers) {
         final var query = buildQuery(getOffers);
-        return mongoTemplate.find(query, OfferShortInfo.class);
+        return mongoTemplate.find(query, OfferShortInfo.class)
+                .stream()
+                .map(offer -> map(offer, getOffers.persons(), getOffers.kids()))
+                .toList();
+    }
+
+    private OfferShortInfoDTO map(OfferShortInfo source, Integer persons, Collection<LocalDate> kids) {
+        BigDecimal price = getPrice(source, kids, persons);
+        return offerShortInfoMapper.map(source, price);
+    }
+
+    private BigDecimal getPrice(OfferShortInfo offer, Collection<LocalDate> kids, Integer persons) {
+        return Stream.concat(Stream.generate(() -> 18).limit(persons != null ? persons : 1),
+                Optional.ofNullable(kids).orElse(Collections.emptyList()).stream().map(this::calculateAge)).map(offer::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Integer calculateAge(LocalDate birthday) {
+        return Period.between(birthday, LocalDate.now()).getYears();
     }
 
     public OfferShortInfo getById(UUID offerId) {

@@ -109,9 +109,14 @@ public class OfferIntegrationEvent {
         var hotel = mapHotel(offer, room);
         var start = offer.getInitialFlight().getDate();
         var end = offer.getReturnFlight().getDate();
-        var priceList = ageRangePriceMapper.map(priceCalculatorService.getPriceList(offer.getId()));
+        var priceList = getPriceListForOffer(offer);
         var event = new pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Created(offer.getId(), hotel, departure, destination, start, end, AvailableOfferStatus.OPEN, priceList);
         publish(event);
+    }
+
+    private Collection<pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.AgeRangePrice> getPriceListForOffer(Offer offer) {
+        final var priceList = priceCalculatorService.getPriceList(offer.getId());
+        return ageRangePriceMapper.map(priceList);
     }
 
     private static pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Hotel mapHotel(Offer offer, pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Room room) {
