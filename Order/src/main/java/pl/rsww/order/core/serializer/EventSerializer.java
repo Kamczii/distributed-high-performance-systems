@@ -2,28 +2,27 @@ package pl.rsww.order.core.serializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.serialization.Serializer;
-import java.io.Serializable;
+
 import java.util.Map;
 
-public class EventSerializer implements Serializer<Serializable> {
+public class EventSerializer implements Serializer<Object> {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
-        // nothing to do here
+        // no configuration needed
     }
 
     @Override
-    public byte[] serialize(String topic, Serializable data) {
-        try {
-            return objectMapper.writeValueAsBytes(data);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize event", e);
+    public byte[] serialize(String topic, Object object) {
+        if (object == null) {
+            return null;
         }
-    }
 
-    @Override
-    public void close() {
-        // nothing to do here
+        try {
+            return objectMapper.writeValueAsBytes(object);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to serialize Event", e);
+        }
     }
 }

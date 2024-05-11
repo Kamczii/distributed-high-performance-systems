@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -21,8 +22,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID orderId;
     private UUID offerId;
-    private String userId;
-    private Float totalPrice;
+    private Long userId;
+    private BigDecimal totalPrice;
     private Date orderDate;
 
     @Enumerated(EnumType.STRING)

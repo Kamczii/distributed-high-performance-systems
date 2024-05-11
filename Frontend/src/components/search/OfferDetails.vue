@@ -17,7 +17,7 @@
     <p>End Date: {{ formatDate(offer.end) }}</p>
 
 
-    <button type="submit">Buy now!</button>
+    <button type="submit" @click="createOrder">Buy now!</button>
   </div>
 </template>
 
@@ -27,12 +27,36 @@ export default {
   props: ['id'],
   data() {
     return {
-      offer: null
+      offer: null,
+      orderId: null
     }
   },
   methods: {
     formatDate(value) {
       return value ? new Date(value).toLocaleDateString() : '';
+    },
+    createOrder() {
+      const offerId = this.$route.params.id;
+      const url = `http://localhost:8083/order/create`;
+      const data = {
+        offerId: offerId,
+        ageOfVisitors: [18, 20, 22]
+      };
+      const config = {
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'userId': '10'
+        }
+      };
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        ...config
+      })
+          .then(res => res.text())
+          .then(data =>  this.orderId = data)
+          .catch(err => console.log(err))
     }
   },
   mounted() {
