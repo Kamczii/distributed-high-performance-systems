@@ -37,9 +37,10 @@ public class Flight extends AbstractAggregate<FlightEvent, String> {
             Location destination,
             String flightNumber,
             LocalDate date,
-            Integer capacity
+            Integer capacity,
+            Collection<AgeRangePrice> priceList
     ) {
-        enqueue(new FlightEvent.FlightCreated(departure, destination, flightNumber, date, capacity));
+        enqueue(new FlightEvent.FlightCreated(departure, destination, flightNumber, date, capacity, priceList));
     }
 
     public static Flight create(FlightRequests.CreateFlight create) {
@@ -48,8 +49,10 @@ public class Flight extends AbstractAggregate<FlightEvent, String> {
         var flightNumber = create.flightNumber();
         var date = create.date();
         var capacity = create.numberOfSeats();
-
-        return new Flight(departure, destination, flightNumber, date, capacity);
+        var priceList = create.priceList().stream()
+                .map(price -> new AgeRangePrice(price.startingRange(), price.endingRange(), price.price()))
+                .toList();
+        return new Flight(departure, destination, flightNumber, date, capacity, priceList);
     }
 
     @Override
@@ -64,11 +67,7 @@ public class Flight extends AbstractAggregate<FlightEvent, String> {
                 capacity = flightCreated.capacity();
                 activeReservations = new HashSet<>();
                 activeConfirmations = new HashSet<>();
-                priceList = List.of(
-                        new AgeRangePrice(0, 3, BigDecimal.valueOf(0)),
-                        new AgeRangePrice(4, 12, BigDecimal.valueOf(50)),
-                        new AgeRangePrice(12, 100, BigDecimal.valueOf(100))
-                );
+                priceList = flightCreated.priceList();
             }
             case FlightEvent.SeatReserved seatsReserved -> {
                 if (seatsReserved.time().isAfter(LocalDateTime.now().minusSeconds(LOCK_TIME_IN_SECONDS))) {

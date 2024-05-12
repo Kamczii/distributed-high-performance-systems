@@ -48,10 +48,14 @@ public class PriceCalculatorService {
     public Collection<AgeRangePrice> getPriceList(UUID offerId) {
         final var offer = fetchOffer(offerId);
         final var hotel = getHotel(offer);
+        final var room = hotel.getRooms().rooms().stream()
+                .filter(r -> r.type().equals(offer.getHotelRoom().getType()))
+                .findAny()
+                .orElseThrow();
         final var initialFlight = getFlight(offer.getInitialFlight());
         final var returnFlight = getFlight(offer.getReturnFlight());
 
-        final var priceLists = Stream.of(hotel.getPriceList(), initialFlight.getPriceList(), returnFlight.getPriceList()).toList();
+        final var priceLists = Stream.of(room.priceList(), initialFlight.getPriceList(), returnFlight.getPriceList()).toList();
         return AgeRangePriceHelper.calculateSummedPrices(priceLists);
     }
 

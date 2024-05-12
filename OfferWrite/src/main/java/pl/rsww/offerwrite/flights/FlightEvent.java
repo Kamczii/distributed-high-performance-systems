@@ -1,9 +1,11 @@
 package pl.rsww.offerwrite.flights;
 
+import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.common.location.Location;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.UUID;
 
 public sealed interface FlightEvent {
@@ -11,7 +13,8 @@ public sealed interface FlightEvent {
                          Location destination,
                          String flightNumber,
                          LocalDate date,
-                         Integer capacity) implements FlightEvent {}
+                         Integer capacity,
+                         Collection<AgeRangePrice> priceList) implements FlightEvent {}
 
     record SeatReserved(String flightNumber, LocalDate date, Integer seats, LocalDateTime time, UUID orderId) implements FlightEvent {}
     record SeatReleased(String flightNumber, LocalDate date, Integer seats, UUID orderId) implements FlightEvent {}

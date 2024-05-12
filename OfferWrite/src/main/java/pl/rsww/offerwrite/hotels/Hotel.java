@@ -25,7 +25,6 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
     private Location location;
     private String name;
     private Map<String, List<Set<ReservationDTO>>> activeReservations;
-    private Collection<AgeRangePrice> priceList;
 
     Hotel() {
     }
@@ -47,7 +46,8 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
         var location = new Location(create.location().country(), create.location().city());
         var rooms = create.rooms()
                 .stream()
-                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds()))
+                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds(),
+                        roomRequest.priceList().stream().map(price -> new AgeRangePrice(price.startingRange(), price.endingRange(), price.price())).toList()))
                 .collect(Collectors.collectingAndThen(toList(), HotelRooms::new));
         return new Hotel(create.hotelId(), create.name(), location, rooms);
     }
@@ -65,11 +65,6 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
                                 _ -> new HashSet<>(),
                                 toList()
                         ))
-                );
-                priceList = List.of(
-                        new AgeRangePrice(0, 3, BigDecimal.valueOf(0)),
-                        new AgeRangePrice(4, 12, BigDecimal.valueOf(50)),
-                        new AgeRangePrice(12, 100, BigDecimal.valueOf(100))
                 );
             }
             case HotelEvent.RoomReserved roomReserved -> {

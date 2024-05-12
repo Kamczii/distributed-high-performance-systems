@@ -5,7 +5,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
-import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.core.events.EventEnvelope;
 import pl.rsww.offerwrite.flights.Flight;
 import pl.rsww.offerwrite.flights.FlightEvent;
@@ -23,7 +22,6 @@ import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
