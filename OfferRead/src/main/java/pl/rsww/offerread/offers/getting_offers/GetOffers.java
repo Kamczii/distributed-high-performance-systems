@@ -4,10 +4,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Objects;
 
 
-public record GetOffers(Integer pageNumber, Integer pageSize, Integer persons, Integer kids,
+public record GetOffers(Integer pageNumber, Integer pageSize, Integer persons, Collection<LocalDate> kids,
                         String departureCity, String departureCountry, String destinationCity, String destinationCountry, LocalDate startDate, LocalDate endDate, String transport) {
   public GetOffers {
     if (pageNumber != null && pageNumber < 0)

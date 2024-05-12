@@ -17,7 +17,7 @@ public class OfferController {
     private final ShortInfoService shortInfoService;
 
     @GetMapping("offers")
-    public ResponseEntity<List<OfferShortInfo>> search(GetOffers query) {
+    public ResponseEntity<List<OfferShortInfoDTO>> search(GetOffers query) {
         log.info(query.toString());
         final var search = shortInfoService.search(query);
         return ResponseEntity.ok(search);
