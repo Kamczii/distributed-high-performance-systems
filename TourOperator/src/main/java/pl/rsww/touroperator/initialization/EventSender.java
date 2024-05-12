@@ -6,13 +6,13 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
-import pl.rsww.dominik.api.FlightRequests;
-import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.tour_operator.api.FlightRequests;
+import pl.rsww.tour_operator.api.HotelRequests;
 
 import java.util.Properties;
 
-import static pl.rsww.dominik.api.TourOperatorTopics.FLIGHT_INTEGRATION_TOPIC;
-import static pl.rsww.dominik.api.TourOperatorTopics.HOTEL_INTEGRATION_TOPIC;
+import static pl.rsww.tour_operator.api.TourOperatorTopics.FLIGHT_INTEGRATION_TOPIC;
+import static pl.rsww.tour_operator.api.TourOperatorTopics.HOTEL_INTEGRATION_TOPIC;
 
 public class EventSender {
     private Producer<String, HotelRequests.CreateHotel> hotelProducer;

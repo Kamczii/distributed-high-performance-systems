@@ -3,7 +3,7 @@ package pl.rsww.offerwrite;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.util.Pair;
-import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.offerwrite.flights.Flight;
 
 import java.math.BigDecimal;

@@ -3,7 +3,7 @@ package pl.rsww.offerwrite.hotels;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 
 import java.util.UUID;

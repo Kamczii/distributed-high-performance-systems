@@ -4,10 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.offerwrite.core.aggregates.AggregateStore;
-
-import java.math.BigDecimal;
 
 @Slf4j
 @Service

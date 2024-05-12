@@ -1,4 +1,4 @@
-package pl.rsww.dominik.api;
+package pl.rsww.tour_operator.api;
 
 public class TourOperatorTopics {
     public final static String FLIGHT_INTEGRATION_TOPIC = "pl.rsww.dominik.flight";

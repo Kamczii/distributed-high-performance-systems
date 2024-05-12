@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.offerwrite.flights.FlightService;
 
-import static pl.rsww.dominik.api.TourOperatorTopics.FLIGHT_INTEGRATION_TOPIC;
+import static pl.rsww.tour_operator.api.TourOperatorTopics.FLIGHT_INTEGRATION_TOPIC;
 
 
 @Slf4j

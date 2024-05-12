@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import pl.rsww.dominik.api.FlightRequests;
-import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.tour_operator.api.FlightRequests;
+import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.api.requests.OfferRequests;
 
 @EnableKafka

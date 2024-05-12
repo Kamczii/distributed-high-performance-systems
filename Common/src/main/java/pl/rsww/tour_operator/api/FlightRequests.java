@@ -1,4 +1,4 @@
-package pl.rsww.dominik.api;
+package pl.rsww.tour_operator.api;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;

@@ -1,8 +1,7 @@
 package pl.rsww.offerwrite.hotels;
 
-import lombok.Builder;
 import lombok.Getter;
-import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.common.location.Location;
 import pl.rsww.offerwrite.core.aggregates.AbstractAggregate;

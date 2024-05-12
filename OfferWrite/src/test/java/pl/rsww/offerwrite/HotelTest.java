@@ -2,7 +2,7 @@ package pl.rsww.offerwrite;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.hotels.Hotel;
 
 import java.math.BigDecimal;

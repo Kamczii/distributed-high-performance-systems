@@ -2,9 +2,8 @@ package pl.rsww.offerwrite.flights;
 
 import lombok.Getter;
 import org.springframework.data.util.Pair;
-import pl.rsww.dominik.api.FlightRequests;
+import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
-import pl.rsww.offerwrite.common.age_range_price.AgeRangePriceHelper;
 import pl.rsww.offerwrite.common.location.Location;
 import pl.rsww.offerwrite.core.aggregates.AbstractAggregate;
 

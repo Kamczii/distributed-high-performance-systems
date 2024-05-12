@@ -1,7 +1,7 @@
 package pl.rsww.touroperator.hotels;
 
 
-import pl.rsww.dominik.api.HotelRequests;
+import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import org.springframework.beans.factory.annotation.Autowired;
