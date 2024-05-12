@@ -1,6 +1,7 @@
 package pl.rsww.order.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
 import pl.rsww.offerwrite.api.command.OfferCommand;
 import pl.rsww.offerwrite.api.response.AvailableLockStatus;
 import pl.rsww.order.api.OrderEvent;
@@ -47,11 +48,8 @@ public class OrderService {
     @Transactional
     public void confirmOrder(UUID orderId) {
 
-        Order order = orderRepository.findById(orderId).orElse(null);
-
-        assert order != null;
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
         order.setOrderStatus(OrderStatus.ACCEPTED);
-
         orderRepository.save(order);
 
     }
@@ -59,11 +57,8 @@ public class OrderService {
     @Transactional
     public void rejectOrder(UUID orderId, Long userId) {
 
-        Order order = orderRepository.findById(orderId).orElse(null);
-
-        assert order != null;
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
         order.setOrderStatus(OrderStatus.CANCELLED);
-
         orderRepository.save(order);
 
     }
@@ -71,9 +66,8 @@ public class OrderService {
     @Transactional
     public void setOrderPrice(UUID orderId, BigDecimal price, AvailableLockStatus lockStatus) {
 
-        Order order = orderRepository.findById(orderId).orElse(null);
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
 
-        assert order != null;
         order.setTotalPrice(price);
 
         if (lockStatus == AvailableLockStatus.SUCCESS) order.setOrderStatus(OrderStatus.PENDING);
