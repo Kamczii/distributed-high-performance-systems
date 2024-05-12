@@ -9,26 +9,26 @@ services:
       - "4200:8080"
     networks:
       - rsww-network
-  gateway:
-    container_name: gateway
-    build:
-      context: ./Gateway
-      dockerfile: ./Dockerfile
-    ports:
-      - "8080:8080"
-      - "5080:5005"
-    networks:
-      - rsww-network
-  eureka_server:
-    container_name: eureka_server
-    build:
-      context: ./EurekaServer
-      dockerfile: ./Dockerfile
-    ports:
-      - "8761:8761"
-      - "5761:5005"
-    networks:
-      - rsww-network
+#  gateway:
+#    container_name: gateway
+#    build:
+#      context: ./Gateway
+#      dockerfile: ./Dockerfile
+#    ports:
+#      - "8080:8080"
+#      - "5080:5005"
+#    networks:
+#      - rsww-network
+#  eureka_server:
+#    container_name: eureka_server
+#    build:
+#      context: ./EurekaServer
+#      dockerfile: ./Dockerfile
+#    ports:
+#      - "8761:8761"
+#      - "5761:5005"
+#    networks:
+#      - rsww-network
   offer_write:
     container_name: offer_write
     build:
@@ -110,17 +110,17 @@ services:
       context: .
       dockerfile: ./TourOperator/Dockerfile
     ports:
-      - "8083:8080"
-      - "5083:5003"
+      - "8085:8080"
+      - "5085:5003"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_to:5432/tour_operator
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tour_operator
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
       - BOOTSTRAP_SERVER=kafka:9092
     depends_on:
       kafka:
         condition: service_started
-      postgres_to:
+      postgres:
         condition: service_started
     networks:
       - rsww-network
@@ -133,8 +133,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin
     ports:
       - "27017:27017"
-#    volumes:
-#      - mongo_read_db:/data/db
+    volumes:
+      - mongo_read_db:/data/db
     networks:
       - rsww-network
   mongo-express:
@@ -211,17 +211,17 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: offer
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
       - rsww-network
-#volumes:
-#  mongo_read_db:
+volumes:
+  mongo_read_db:
 #  eventstore-volume-data:
 #  eventstore-volume-logs:
-#  postgres_data:
+  postgres_data:
 networks:
   rsww-network:
     driver: bridge
