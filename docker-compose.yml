@@ -67,8 +67,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
-#      - SPRING_KAFKA_PRODUCER_VALUE-SERIALIZER=pl.rsww.order.core.EventSerde
-#      - SPRING_KAFKA_CONSUMER_VALUE-DESERIALIZER=pl.rsww.order.core.EventSerde
+  #      - SPRING_KAFKA_PRODUCER_VALUE-SERIALIZER=pl.rsww.order.core.EventSerde
+  #      - SPRING_KAFKA_CONSUMER_VALUE-DESERIALIZER=pl.rsww.order.core.EventSerde
   payment:
     container_name: payment
     build:
@@ -102,6 +102,26 @@ services:
     depends_on:
       - mongo_read_model
       - kafka
+    networks:
+      - rsww-network
+  tour_operator:
+    container_name: tour_operator
+    build:
+      context: .
+      dockerfile: ./TourOperator/Dockerfile
+    ports:
+      - "8083:8080"
+      - "5083:5003"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_to:5432/tour_operator
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - BOOTSTRAP_SERVER=kafka:9092
+    depends_on:
+      kafka:
+        condition: service_started
+      postgres_to:
+        condition: service_started
     networks:
       - rsww-network
   mongo_read_model:
@@ -187,12 +207,12 @@ services:
     container_name: postgres
     image: postgres:15.4
     restart: always
-#    volumes:
-      #      - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
       POSTGRES_DB: offer
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:

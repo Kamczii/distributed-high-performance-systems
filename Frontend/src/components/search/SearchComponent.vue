@@ -96,7 +96,7 @@ export default {
 
       const params = {
         persons: this.persons,
-        kids: this.kids,
+        kids: this.kidAges,
         destinationCity: this.destination.city,
         destinationCountry: this.destination.country,
         departureCity: this.from.city,

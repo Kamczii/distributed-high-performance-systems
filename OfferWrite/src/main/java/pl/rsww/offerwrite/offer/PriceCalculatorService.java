@@ -3,6 +3,8 @@ package pl.rsww.offerwrite.offer;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
+import pl.rsww.offerwrite.common.age_range_price.AgeRangePriceHelper;
 import pl.rsww.offerwrite.flights.Flight;
 import pl.rsww.offerwrite.flights.FlightService;
 import pl.rsww.offerwrite.hotels.Hotel;
@@ -12,9 +14,12 @@ import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +43,16 @@ public class PriceCalculatorService {
         final var component3 = calculateTotalPrice(ageOfVisitors, returnFlight::getPrice);
 
         return component1.add(component2).add(component3);
+    }
+
+    public Collection<AgeRangePrice> getPriceList(UUID offerId) {
+        final var offer = fetchOffer(offerId);
+        final var hotel = getHotel(offer);
+        final var initialFlight = getFlight(offer.getInitialFlight());
+        final var returnFlight = getFlight(offer.getReturnFlight());
+
+        final var priceLists = Stream.of(hotel.getPriceList(), initialFlight.getPriceList(), returnFlight.getPriceList()).toList();
+        return AgeRangePriceHelper.calculateSummedPrices(priceLists);
     }
 
     private BigDecimal calculateTotalPrice(Collection<Integer> ageOfVisitors, Function<Integer, BigDecimal> priceFunction) {
@@ -64,4 +79,6 @@ public class PriceCalculatorService {
         return offerRepository.findById(offerId)
                 .orElseThrow(() -> new ResourceNotFoundException(Offer.class.toString(), offerId.toString()));
     }
+
+
 }
