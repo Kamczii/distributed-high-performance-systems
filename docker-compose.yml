@@ -55,8 +55,8 @@ services:
       context: .
       dockerfile: ./Order/Dockerfile
     ports:
-      - "8083:8080"
-      - "5083:5005"
+      - "8085:8080"
+      - "5085:5005"
     networks:
       - rsww-network
     depends_on:

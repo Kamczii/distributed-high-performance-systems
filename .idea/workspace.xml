@@ -4,56 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="order and payment service">
-      <change afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/order/api/OrderEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/order/api/OrderTopics.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/payment/api/PaymentEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/payment/api/PaymentTopics.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/config/KafkaConsumerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/deserializer/GenericObjectDeserializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/listener/OfferResponseListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/listener/PaymentListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/publisher/KafkaPublisher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/config/KafkaConsumerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/deserializer/GenericObjectDeserializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/listener/OrderPendingListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/publisher/KafkaPublisher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Changes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Changes.xml" afterDir="false" />
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="order and payment reworked communication + front request">
+      <change afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/config/KafkaProducerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/config/KafkaProducerConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/order/api/OrderIntegrationEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/src/main/java/pl/rsww/payment/api/PaymentIntegrationEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Frontend/src/components/search/OfferDetails.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/src/components/search/OfferDetails.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Order/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/deserializer/EventDeserializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/serializer/EventSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/serializer/EventSerializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/listener/OfferListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/listener/OrderListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/model/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/publisher/OfferEventPublisher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/publisher/OrderEventPublisher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/request/OrderRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/request/OrderRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/service/AuthenticationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/config/KafkaConsumerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/config/KafkaConsumerConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/service/OrderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Order/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/deserializer/EventDeserializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/serializer/EventSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/serializer/EventSerializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/listener/OrderListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/model/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/model/Payment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/publisher/OrderEventPublisher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/publisher/PaymentEventPublisher.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/service/AuthenticationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/service/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/status/PaymentStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/status/PaymentStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/config/KafkaConsumerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/config/KafkaConsumerConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -247,6 +206,7 @@
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Common\src\main\java\pl\rsww\dominik\api" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dimik\IdeaProjects\distributed-high-performance-systems\Order\src\main\java\pl\rsww\order\core\config" />
       <recent name="C:\Users\dimik\IdeaProjects\distributed-high-performance-systems\postgres-init" />
       <recent name="C:\Users\dimik\IdeaProjects\distributed-high-performance-systems" />
       <recent name="D:\Studia\projekty\Mikroserwisy\Projekt\Frontend\src\components\search" />
@@ -269,7 +229,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Docker.docker-compose.yml.frontend: Compose Deployment">
+  <component name="RunManager" selected="Docker.docker-compose.yml.offer_write: Compose Deployment">
     <configuration name="Unnamed" type="Remote" nameIsGenerated="true">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -376,6 +336,19 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml.offer_write: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="offer_write" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml.order: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -389,26 +362,13 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.yml.payment: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="payment" />
-            </list>
-          </option>
-          <option name="sourceFilePath" value="docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Docker.Run all for offer display" />
       <item itemvalue="Docker.docker-compose.yml.kafka: Compose Deployment" />
       <item itemvalue="Docker.docker-compose.yml.frontend: Compose Deployment" />
       <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
+      <item itemvalue="Docker.docker-compose.yml.offer_write: Compose Deployment" />
       <item itemvalue="Docker.docker-compose.yml.order: Compose Deployment" />
-      <item itemvalue="Docker.docker-compose.yml.payment: Compose Deployment" />
       <item itemvalue="Remote JVM Debug.Unnamed" />
       <item itemvalue="Spring Boot.OfferReadApplication" />
       <item itemvalue="Spring Boot.OrderServiceApplication" />
@@ -419,11 +379,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.docker-compose.yml.frontend: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.offer_write: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.order: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.kafka: Compose Deployment" />
-        <item itemvalue="Docker.docker-compose.yml.payment: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.frontend: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.offer_read: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
@@ -484,7 +444,8 @@
       <workItem from="1714809157751" duration="21841000" />
       <workItem from="1715385421533" duration="5317000" />
       <workItem from="1715391509772" duration="12445000" />
-      <workItem from="1715444149332" duration="1500000" />
+      <workItem from="1715444149332" duration="2748000" />
+      <workItem from="1715447318821" duration="9617000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -686,7 +647,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714840154786</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="order and payment reworked communication + front request">
+      <option name="closed" value="true" />
+      <created>1715445956629</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1715445956629</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -727,7 +696,8 @@
     <MESSAGE value="include other flight in availability decision making" />
     <MESSAGE value="rename" />
     <MESSAGE value="commands &amp; responses" />
-    <option name="LAST_COMMIT_MESSAGE" value="commands &amp; responses" />
+    <MESSAGE value="order and payment reworked communication + front request" />
+    <option name="LAST_COMMIT_MESSAGE" value="order and payment reworked communication + front request" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
