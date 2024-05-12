@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @Data
@@ -13,5 +14,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class OrderRequest {
     private UUID offerId;
-    private Float price;
+    private Collection<Integer> ageOfVisitors;
 }

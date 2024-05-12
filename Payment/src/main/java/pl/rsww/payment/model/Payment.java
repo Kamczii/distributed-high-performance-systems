@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,8 +23,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID orderId;
-    private String userId;
-    private Float amount;
+    private Long userId;
+    private BigDecimal amount;
     private Date createdAt;
 
     @Enumerated(EnumType.STRING)

@@ -1,55 +1,90 @@
 package pl.rsww.order.service;
 
-import pl.rsww.order.api.OrderIntegrationEvent;
-import pl.rsww.order.publisher.OrderEventPublisher;
+import lombok.RequiredArgsConstructor;
+import pl.rsww.offerwrite.api.command.OfferCommand;
+import pl.rsww.offerwrite.api.response.AvailableLockStatus;
+import pl.rsww.order.api.OrderEvent;
+import pl.rsww.order.publisher.KafkaPublisher;
 import pl.rsww.order.repository.OrderRepository;
 import pl.rsww.order.request.OrderRequest;
 import pl.rsww.order.status.OrderStatus;
 import pl.rsww.order.model.Order;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
+
+import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_COMMAND_TOPIC;
+import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_RESPONSE_TOPIC;
+import static pl.rsww.order.api.OrderTopics.ORDER_BASIC_TOPIC;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private OrderEventPublisher orderEventPublisher;
-//    @Autowired
-//    private OfferEventPublisher offerEventPublisher;
-    @Autowired
-    private AuthenticationService authenticationService;
+
+    private final OrderRepository orderRepository;
+    private final KafkaPublisher kafkaPublisher;
 
     @Transactional
-    public void createOrder(OrderRequest orderRequest) {
-
+    public UUID createOrder(OrderRequest orderRequest, Long userId) {
 
         Order order = Order.builder()
                 .offerId(orderRequest.getOfferId())
-                .userId(authenticationService.getToken())
-                .totalPrice(orderRequest.getPrice())
+                .userId(userId)
                 .orderStatus(OrderStatus.CREATED)
                 .orderDate(new Date()).build();
 
         order = orderRepository.save(order);
 
-        orderEventPublisher.publishOrderEvent(new OrderIntegrationEvent(OrderIntegrationEvent.EventType.CREATED, order.getOrderId(), authenticationService.getToken(), order.getTotalPrice()));
-//        offerEventPublisher.publishOfferEvent(new OfferEvent(order.getOfferId()));
+        kafkaPublisher.publish(OFFER_COMMAND_TOPIC, new OfferCommand.Lock(order.getOfferId(), order.getOrderId(), orderRequest.getAgeOfVisitors()));
+//        kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Pending(order.getOrderId(), order.getUserId(), BigDecimal.valueOf(245)));
+        return order.getOrderId();
     }
 
     @Transactional
-    public void rejectOrder(OrderIntegrationEvent orderCancelledEvent) {
+    public void confirmOrder(UUID orderId) {
 
-        Order order = orderRepository.findById(orderCancelledEvent.orderId()).orElse(null);
+        Order order = orderRepository.findById(orderId).orElse(null);
+
+        assert order != null;
+        order.setOrderStatus(OrderStatus.ACCEPTED);
+
+        orderRepository.save(order);
+
+    }
+
+    @Transactional
+    public void rejectOrder(UUID orderId, Long userId) {
+
+        Order order = orderRepository.findById(orderId).orElse(null);
 
         assert order != null;
         order.setOrderStatus(OrderStatus.CANCELLED);
 
         orderRepository.save(order);
+
+    }
+
+    @Transactional
+    public void setOrderPrice(UUID orderId, BigDecimal price, AvailableLockStatus lockStatus) {
+
+        Order order = orderRepository.findById(orderId).orElse(null);
+
+        assert order != null;
+        order.setTotalPrice(price);
+
+        if (lockStatus == AvailableLockStatus.SUCCESS) order.setOrderStatus(OrderStatus.PENDING);
+        else if (lockStatus == AvailableLockStatus.FAIL) order.setOrderStatus(OrderStatus.CANCELLED);
+
+        orderRepository.save(order);
+
+        if (order.getOrderStatus() == OrderStatus.PENDING)
+            kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Pending(order.getOrderId(), order.getUserId(), order.getTotalPrice()));
+        if (order.getOrderStatus() == OrderStatus.CANCELLED)
+            kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Cancelled(order.getOrderId()));
 
     }
 }

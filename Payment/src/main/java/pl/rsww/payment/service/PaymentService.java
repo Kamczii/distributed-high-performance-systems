@@ -1,41 +1,38 @@
 package pl.rsww.payment.service;
 
-import pl.rsww.order.api.OrderIntegrationEvent;
-import pl.rsww.payment.api.PaymentIntegrationEvent;
+import lombok.RequiredArgsConstructor;
+import pl.rsww.payment.api.PaymentEvent;
 import pl.rsww.payment.model.Payment;
-import pl.rsww.payment.publisher.OrderEventPublisher;
-import pl.rsww.payment.publisher.PaymentEventPublisher;
+import pl.rsww.payment.publisher.KafkaPublisher;
 import pl.rsww.payment.repository.PaymentRepository;
 import pl.rsww.payment.status.PaymentStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
+
+import static pl.rsww.payment.api.PaymentTopics.*;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentService {
 
     private static final Random random = new Random();
     private static final int SIMULATION_SUCCESS_RATE = 80;
 
-    @Autowired
-    private PaymentRepository paymentRepository;
-    @Autowired
-    private OrderEventPublisher orderEventPublisher;
-    @Autowired
-    private PaymentEventPublisher paymentEventPublisher;
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final PaymentRepository paymentRepository;
+    private final KafkaPublisher kafkaPublisher;
 
     @Transactional
-    public void createPayment(OrderIntegrationEvent orderEvent) {
+    public void createPayment(UUID orderId, Long userId, BigDecimal amount) {
 
         Payment payment = Payment.builder()
-                .orderId(orderEvent.orderId())
-                .userId(authenticationService.getToken())
-                .amount(orderEvent.totalPrice())
+                .orderId(orderId)
+                .userId(userId)
+                .amount(amount)
                 .createdAt(new Date())
                 .paymentStatus(PaymentStatus.PENDING).build();
 
@@ -48,11 +45,10 @@ public class PaymentService {
     public void processPayment(Payment payment) {
         if (random.nextInt(100) < SIMULATION_SUCCESS_RATE) {
             updatePaymentStatus(payment, PaymentStatus.SUCCESS);
-            sendPaymentSuccessEvent(payment);
+            kafkaPublisher.publish(PAYMENT_SUCCESS_TOPIC, new PaymentEvent.Success(payment.getOrderId(), payment.getUserId()));
         } else {
-            updatePaymentStatus(payment, PaymentStatus.CANCELLED);
-            sendPaymentCancelEvent(payment);
-            sendOrderCancelEvent(payment);
+            updatePaymentStatus(payment, PaymentStatus.FAIL);
+            kafkaPublisher.publish(PAYMENT_FAIL_TOPIC, new PaymentEvent.Fail(payment.getOrderId(), payment.getUserId()));
         }
     }
 
@@ -64,29 +60,4 @@ public class PaymentService {
         paymentRepository.save(paymentToUpdate);
     }
 
-    public void sendPaymentSuccessEvent(Payment payment) {
-        PaymentIntegrationEvent paymentSucceededEvent = new PaymentIntegrationEvent(PaymentIntegrationEvent.EventType.SUCCEEDED,
-                payment.getId(),
-                payment.getOrderId(),
-                authenticationService.getToken(),
-                payment.getAmount());
-        paymentEventPublisher.publishPaymentEvent(paymentSucceededEvent);
-    }
-
-    public void sendPaymentCancelEvent(Payment payment) {
-        PaymentIntegrationEvent paymentCancelledEvent = new PaymentIntegrationEvent(PaymentIntegrationEvent.EventType.CANCELLED,
-                payment.getId(),
-                payment.getOrderId(),
-                authenticationService.getToken(),
-                payment.getAmount());
-        paymentEventPublisher.publishPaymentEvent(paymentCancelledEvent);
-    }
-
-    public void sendOrderCancelEvent(Payment payment) {
-        OrderIntegrationEvent orderCancelledEvent = new OrderIntegrationEvent(OrderIntegrationEvent.EventType.CANCELLED,
-                payment.getOrderId(),
-                authenticationService.getToken(),
-                payment.getAmount());
-        orderEventPublisher.publishOrderEvent(orderCancelledEvent);
-    }
 }
