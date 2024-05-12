@@ -167,7 +167,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_DB: tour_operator
     # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
+    #   - postgres_to_data:/var/lib/postgresql/data
     ports:
       - "3307:5432"
     networks:
@@ -192,12 +192,11 @@ services:
         condition: service_started 
     networks:
       - rsww-network
-# volumes:
-#   mongo_read_db:
-# #  eventstore-volume-data:
-# #  eventstore-volume-logs:
-#   postgres_data:
-  # mysql_to_data:
+volumes:
+  # mongo_read_db:
+#  eventstore-volume-data:
+#  eventstore-volume-logs:
+  postgres_data:
 networks:
   rsww-network:
     driver: bridge
