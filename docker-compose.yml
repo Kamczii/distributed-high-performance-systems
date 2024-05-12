@@ -67,8 +67,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
-#      - SPRING_KAFKA_PRODUCER_VALUE-SERIALIZER=pl.rsww.order.core.EventSerde
-#      - SPRING_KAFKA_CONSUMER_VALUE-DESERIALIZER=pl.rsww.order.core.EventSerde
+    #      - SPRING_KAFKA_PRODUCER_VALUE-SERIALIZER=pl.rsww.order.core.EventSerde
+    #      - SPRING_KAFKA_CONSUMER_VALUE-DESERIALIZER=pl.rsww.order.core.EventSerde
   payment:
     container_name: payment
     build:
@@ -187,8 +187,6 @@ services:
     container_name: postgres
     image: postgres:15.4
     restart: always
-#    volumes:
-      #      - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin

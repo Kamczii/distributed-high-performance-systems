@@ -1,13 +1,17 @@
 package pl.rsww.offerread.offers.getting_offers;
 
+import jakarta.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.validation.annotation.Validated;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.UUID;
 
 @Document
@@ -27,9 +31,17 @@ public class OfferShortInfo {
     private LocalDate end;
     private AvailableOfferStatus status;
 
+    private Collection<AgeRangePrice> priceList;
+
     public OfferShortInfo changeStatus(AvailableOfferStatus status) {
         setStatus(status);
         return this;
+    }
+
+    public BigDecimal getPrice(int age) {
+        return priceList.stream().filter(price -> price.startingRange() <= age && age <= price.endingRange()).findAny()
+                .map(AgeRangePrice::price)
+                .orElse(BigDecimal.ZERO);
     }
 
     @Data
@@ -56,4 +68,11 @@ public class OfferShortInfo {
         private String city;
         private String country;
     }
+
+    @Validated
+    public record AgeRangePrice(
+            @Nonnull Integer startingRange,
+            @Nonnull Integer endingRange,
+            @Nonnull BigDecimal price
+    ){}
 }

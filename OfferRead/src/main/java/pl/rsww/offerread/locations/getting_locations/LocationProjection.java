@@ -20,7 +20,6 @@ public class LocationProjection extends MongoProjection<Location, UUID> {
 
     @KafkaListener(topics = OFFER_INTEGRATION_TOPIC, groupId = "OfferRead2", containerFactory = "locationEventConsumerFactory",autoStartup = "${listen.auto.start:true}")
     public void listenOffer(OfferIntegrationEvent event) {
-        log.info("Listener");
         if (event instanceof OfferIntegrationEvent.Created created) {
             log.info(event.toString());
             add(() -> map(created.departure()));

@@ -1,6 +1,11 @@
 package pl.rsww.offerwrite.api.integration;
 
+import jakarta.annotation.Nonnull;
+import org.springframework.validation.annotation.Validated;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.UUID;
 
 public sealed interface OfferIntegrationEvent {
@@ -10,7 +15,9 @@ public sealed interface OfferIntegrationEvent {
                    Location destination,
                    LocalDate start,
                    LocalDate end,
-                   AvailableOfferStatus status
+                   AvailableOfferStatus status,
+                   Collection<AgeRangePrice> priceList
+
     ) implements OfferIntegrationEvent {}
 
     record StatusChanged(UUID offerId,
@@ -32,4 +39,10 @@ public sealed interface OfferIntegrationEvent {
     record Location(String city, String country) {
 
     }
+    @Validated
+    record AgeRangePrice(
+            @Nonnull Integer startingRange,
+            @Nonnull Integer endingRange,
+            @Nonnull BigDecimal price
+    ){}
 }
