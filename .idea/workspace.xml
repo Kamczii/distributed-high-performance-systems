@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="order and payment reworked communication + front request">
-      <change afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/config/KafkaProducerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/config/KafkaProducerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/config/KafkaConsumerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/core/config/KafkaConsumerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/java/pl/rsww/order/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Order/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Order/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/config/KafkaConsumerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/pl/rsww/payment/core/config/KafkaConsumerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" afterDir="false" />
-    </list>
+    <list default="true" id="998b8ce1-ff32-4c41-8f09-a9234ca726f4" name="Changes" comment="Fix and reworked communication OfferWrite &lt;-&gt; Order &lt;-&gt; Payment" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -94,100 +85,99 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Docker.OfferWrite/Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.RUN ALL.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.Run all for offer display.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.Run all.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.eureka_server: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.event-store: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.event_store: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.frontend: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.gateway: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.kafka: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.mongo-express: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.mongo_read_model: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.offer_read: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.offer_write: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.order: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.payment: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.postgres-order: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.postgres-payment: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.postgres: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml.zookeeper: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment.executor&quot;: &quot;Run&quot;,
-    &quot;Docker.frontend/Dockerfile.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.generated-requests | #1.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.http-requests-log | #2.executor&quot;: &quot;Run&quot;,
-    &quot;HTTP Request.scratch | #1.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FlightAggregateTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FlightAggregateTest.testCancelConfirmation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FlightAggregateTest.testExpiredReservation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FlightAggregateTest.testReservationNotFound.executor&quot;: &quot;Debug&quot;,
-    &quot;JUnit.FlightTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.FlightTest.testConfirmReservation.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelRoomRepositoryTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelRoomRepositoryTest.should_returnNothingIfBooked.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelRoomRepositoryTest.should_returnNothing_ifBooked.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelRoomRepositoryTest.should_returnRoom_ifBookingNotOverlaps.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelRoomRepositoryTest.testFindByRoomNumber (1).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelRoomRepositoryTest.testFindByRoomNumber.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.lock_all_rooms_should_result_in_four_reservations.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.lock_non_overlying_reservations.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.testConfirmLock.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.testConfirmLock_ReservationNotFound.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.testCreateHotel.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.testLockOverlappingRooms.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.testLockOverlappingRooms2.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.HotelTest.testLockRoom.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.OfferReadApplicationTests.contextLoads.executor&quot;: &quot;Run&quot;,
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.OfferRead [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Remote JVM Debug.Unnamed.executor&quot;: &quot;Debug&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.EurekaServerApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.OfferReadApplication.executor&quot;: &quot;Debug&quot;,
-    &quot;Spring Boot.OfferWriteApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#1 on dima__t&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;22&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_directory_selection&quot;: &quot;D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/dimik/IdeaProjects/distributed-high-performance-systems/postgres-init&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.build&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\k4mcz\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\233.11799.241\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Docker.OfferWrite/Dockerfile.executor": "Run",
+    "Docker.RUN ALL.executor": "Run",
+    "Docker.Run all for offer display.executor": "Run",
+    "Docker.Run all.executor": "Run",
+    "Docker.docker-compose.yml.eureka_server: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.event-store: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.event_store: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.frontend: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.gateway: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.kafka: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.mongo-express: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.mongo_read_model: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.offer_read: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.offer_write: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.order: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.payment: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.postgres-order: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.postgres-payment: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.postgres: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.zookeeper: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml[offer_read, offer_write, kafka, zookeeper]: Compose Deployment.executor": "Run",
+    "Docker.frontend/Dockerfile.executor": "Run",
+    "HTTP Request.generated-requests | #1.executor": "Run",
+    "HTTP Request.http-requests-log | #2.executor": "Run",
+    "HTTP Request.scratch | #1.executor": "Run",
+    "JUnit.FlightAggregateTest.executor": "Run",
+    "JUnit.FlightAggregateTest.testCancelConfirmation.executor": "Run",
+    "JUnit.FlightAggregateTest.testExpiredReservation.executor": "Run",
+    "JUnit.FlightAggregateTest.testReservationNotFound.executor": "Debug",
+    "JUnit.FlightTest.executor": "Run",
+    "JUnit.FlightTest.testConfirmReservation.executor": "Run",
+    "JUnit.HotelRoomRepositoryTest.executor": "Run",
+    "JUnit.HotelRoomRepositoryTest.should_returnNothingIfBooked.executor": "Run",
+    "JUnit.HotelRoomRepositoryTest.should_returnNothing_ifBooked.executor": "Run",
+    "JUnit.HotelRoomRepositoryTest.should_returnRoom_ifBookingNotOverlaps.executor": "Run",
+    "JUnit.HotelRoomRepositoryTest.testFindByRoomNumber (1).executor": "Run",
+    "JUnit.HotelRoomRepositoryTest.testFindByRoomNumber.executor": "Run",
+    "JUnit.HotelTest.executor": "Run",
+    "JUnit.HotelTest.lock_all_rooms_should_result_in_four_reservations.executor": "Run",
+    "JUnit.HotelTest.lock_non_overlying_reservations.executor": "Run",
+    "JUnit.HotelTest.testConfirmLock.executor": "Run",
+    "JUnit.HotelTest.testConfirmLock_ReservationNotFound.executor": "Run",
+    "JUnit.HotelTest.testCreateHotel.executor": "Run",
+    "JUnit.HotelTest.testLockOverlappingRooms.executor": "Run",
+    "JUnit.HotelTest.testLockOverlappingRooms2.executor": "Run",
+    "JUnit.HotelTest.testLockRoom.executor": "Run",
+    "JUnit.OfferReadApplicationTests.contextLoads.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.OfferRead [clean].executor": "Run",
+    "Remote JVM Debug.Unnamed.executor": "Debug",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.EurekaServerApplication.executor": "Run",
+    "Spring Boot.GatewayApplication.executor": "Run",
+    "Spring Boot.OfferReadApplication.executor": "Debug",
+    "Spring Boot.OfferWriteApplication.executor": "Run",
+    "jdk.selected.JAVA_MODULE": "22",
+    "kotlin-language-version-configured": "true",
+    "last_directory_selection": "D:/Studia/projekty/Mikroserwisy/Projekt/OfferWrite/src/main/java/pl/rsww/offerwrite/listeners",
+    "last_opened_file_path": "C:/Users/dimik/IdeaProjects/distributed-high-performance-systems/postgres-init",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Facets",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "configurable.group.build",
+    "ts.external.directory.path": "C:\\Users\\k4mcz\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\233.11799.241\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ],
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;HTTP Request&quot;
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "HTTP Request"
     ],
-    &quot;vue.recent.templates&quot;: [
-      &quot;Vue Composition API Component&quot;
+    "vue.recent.templates": [
+      "Vue Composition API Component"
     ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -445,7 +435,7 @@
       <workItem from="1715385421533" duration="5317000" />
       <workItem from="1715391509772" duration="12445000" />
       <workItem from="1715444149332" duration="2748000" />
-      <workItem from="1715447318821" duration="9617000" />
+      <workItem from="1715447318821" duration="10231000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <option name="closed" value="true" />
@@ -655,7 +645,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715445956629</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Fix and reworked communication OfferWrite &lt;-&gt; Order &lt;-&gt; Payment">
+      <option name="closed" value="true" />
+      <created>1715518621933</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1715518621933</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -697,14 +695,15 @@
     <MESSAGE value="rename" />
     <MESSAGE value="commands &amp; responses" />
     <MESSAGE value="order and payment reworked communication + front request" />
-    <option name="LAST_COMMIT_MESSAGE" value="order and payment reworked communication + front request" />
+    <MESSAGE value="Fix and reworked communication OfferWrite &lt;-&gt; Order &lt;-&gt; Payment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix and reworked communication OfferWrite &lt;-&gt; Order &lt;-&gt; Payment" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/OfferWrite/src/test/java/pl/rsww/offerwrite/HotelTest.java</url>
-          <line>76</line>
+          <line>77</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
