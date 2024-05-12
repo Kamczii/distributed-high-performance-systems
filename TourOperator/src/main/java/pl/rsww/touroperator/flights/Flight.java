@@ -13,6 +13,7 @@ public class Flight {
     @ManyToOne
     private FlightLine line;
     private LocalDate departureDate;
+    private Boolean isItReturningFlight;
 
     public int getId() {
         return id;
@@ -36,5 +37,13 @@ public class Flight {
 
     public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
+    }
+
+    public Boolean getItReturningFlight() {
+        return isItReturningFlight;
+    }
+
+    public void setItReturningFlight(Boolean itReturningFlight) {
+        isItReturningFlight = itReturningFlight;
     }
 }

@@ -158,25 +158,18 @@ services:
       - "5432:5432"
     networks:
       - rsww-network
-  mysql_to:
-    container_name: mysql_to
-    image: mysql:8
+  postgres_to:
+    container_name: postgres_to
+    image: postgres:15.4
     restart: always
-    environment: # remember to delete volume to re-init
-      MYSQL_ROOT_PASSWORD: miAJy0VKTCk4eHK
-      MYSQL_USER: 'springuser'
-      MYSQL_PASSWORD: 'ThePassword'
-      MYSQL_DATABASE: hotels
-      MYSQL_ROOT_HOST: "%"
-    healthcheck: # healthcheck so tour_operator do not run before db user init
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      interval: 15s
-      timeout: 5s
-      retries: 5
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: tour_operator
     # volumes:
-    #   - mysql_to_data:/var/lib/mysql
+    #   - postgres_data:/var/lib/postgresql/data
     ports:
-      - "3307:3306"
+      - "3307:5432"
     networks:
       - rsww-network
   tour_operator:
@@ -188,13 +181,15 @@ services:
       - "8083:8080"
       - "5083:5003"
     environment:
-      - spring.datasource.url=jdbc:mysql://mysql_to:3306/hotels?allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_to:5432/tour_operator
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
       - BOOTSTRAP_SERVER=kafka:9092
     depends_on:
       kafka:
         condition: service_started
-      mysql_to:
-        condition: service_healthy
+      postgres_to:
+        condition: service_started 
     networks:
       - rsww-network
 # volumes:
