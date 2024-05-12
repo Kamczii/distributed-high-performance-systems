@@ -28,7 +28,7 @@ public class HotelInitializer {
     private List<FlightLine> flightLines;
     private PriceListGenerator priceListGenerator;
     private Set<AgeRangePriceItem> priceList;
-
+    private Random random;
     private Map<PlaneConnectionHolder, HashSet<String>> planeConnections;
 
     private void initLocation(){
@@ -36,23 +36,36 @@ public class HotelInitializer {
         if(location == null){
             location = new AirportLocation();
             location.setCountry(country);
-
             location.setCity(info.getCity());
-//            location.setHotels(new LinkedList<>());
             airportLocationRepository.save(location);
         }
-//        location.addHotel(hotel);
         airportLocationRepository.save(location);
         hotel.setLocation(location);
     }
 
+    private List<Integer> generateRandomPersonNumbers(){
+        List<Integer> numbers = new ArrayList<>(2);
+        int c = random.nextInt() % 2;
+        if(c == 0){
+            numbers.add(2);
+            numbers.add(2);
+        } else if (c == 1) {
+            numbers.add(2);
+            numbers.add(4);
+        }else{
+            numbers.add(3);
+            numbers.add(3);
+        }
+        return numbers;
+    }
+
     private void initRooms(){
         List<HotelRoom> rooms = new LinkedList<>();
-//        roomRequests = new LinkedList<>();
         int numRooms = 2;
+        List<Integer> generatedNumbers = generateRandomPersonNumbers();
         for(String roomDesc: info.getRooms()){
-            int numBeds = 2;
-            int capacity = numBeds;
+            int numBeds = generatedNumbers.get(0);
+            int capacity = generatedNumbers.get(1);
             HotelRoom r = new HotelRoom();
             r.setHotel(hotel);
             r.setDescription(roomDesc);
@@ -110,7 +123,6 @@ public class HotelInitializer {
         this.info = info;
         hotel = new Hotel();
         hotel.setName(info.getName());
-//        hotel.setLocalRegionName(info.getRegion());
         country = info.getCountry();
         hotelRepository.save(hotel);
         initLocation();
@@ -125,6 +137,7 @@ public class HotelInitializer {
     public HotelInitializer(HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository,
                             AirportLocationRepository airportLocationRepository, AgeRangePriceItemRepository ageRangePriceItemRepository)
     {
+        random = new Random();
         this.hotelRepository = hotelRepository;
         this.hotelRoomRepository = hotelRoomRepository;
         this.airportLocationRepository = airportLocationRepository;

@@ -15,11 +15,11 @@ public class AirportLocation {
 //    @OneToMany
 //    private List<Hotel> hotels;
 
-    public java.lang.String getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(java.lang.String city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
