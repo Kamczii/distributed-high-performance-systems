@@ -1,5 +1,6 @@
 <template>
   <div class="offer-short-info" v-if="offer">
+    <ConfigurationComponent></ConfigurationComponent>
     <h2>Offer Details</h2>
     <h3>Hotel Information</h3>
     <p>Status: {{offer.status}}</p>
@@ -15,6 +16,7 @@
     <h3>Date Information</h3>
     <p>Start Date: {{ formatDate(offer.start) }}</p>
     <p>End Date: {{ formatDate(offer.end) }}</p>
+    <p>Cena: {{ offer.price }} zł</p>
 
 
     <button type="submit">Buy now!</button>
@@ -22,8 +24,11 @@
 </template>
 
 <script>
+import ConfigurationComponent from "@/components/search/ConfigurationComponent.vue";
+
 export default {
   name: 'OfferShortInfo',
+  components: {ConfigurationComponent},
   props: ['id'],
   data() {
     return {
@@ -40,6 +45,18 @@ export default {
         .then(res => res.json())
         .then(data => this.offer = data)
         .catch(err => console.log(err))
+  },
+  watch: {
+    "$route.query": {
+      immediate: true,
+      handler(newQuery) {
+        const params = new URLSearchParams(newQuery).toString()
+        fetch(`http://localhost:8081/offers/${this.$route.params.id}?${params}` )
+            .then(res => res.json())
+            .then(data => this.offer = data)
+            .catch(err => console.log(err))
+      }
+    }
   }
 }
 </script>

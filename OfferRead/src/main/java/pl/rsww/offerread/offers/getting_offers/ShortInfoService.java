@@ -26,16 +26,24 @@ public class ShortInfoService {
     private final OfferShortInfoMapper offerShortInfoMapper;
     public List<OfferShortInfoDTO> search(GetOffers getOffers) {
         final var query = buildQuery(getOffers);
-        final var adults = getAdultsCount(getOffers);
+        final var adults = getAdultsCount(getOffers.persons(), getOffers.kids());
         return mongoTemplate.find(query, OfferShortInfo.class)
                 .stream()
                 .map(offer -> map(offer, adults, getOffers.kids()))
                 .toList();
     }
 
-    private static Integer getAdultsCount(GetOffers getOffers) {
-        return Optional.ofNullable(getOffers.persons())
-                .map(persons -> persons - Optional.ofNullable(getOffers.kids()).map(Collection::size).orElse(0))
+    public OfferShortInfoDTO getById(UUID offerId, Integer persons, Collection<LocalDate> kids) {
+        final var adults = getAdultsCount(persons, kids);
+        return shortInfoRepository.findById(offerId)
+                .map(offer -> map(offer, adults, kids))
+                .orElseThrow(() -> new ResourceNotFoundException(OfferShortInfo.class.getName(), offerId.toString()));
+    }
+
+
+    private static Integer getAdultsCount(Integer persons, Collection<LocalDate> kids) {
+        return Optional.ofNullable(persons)
+                .map(p -> p - Optional.ofNullable(kids).map(Collection::size).orElse(0))
                 .orElse(1);
     }
 
@@ -61,13 +69,8 @@ public class ShortInfoService {
         return Stream.generate(() -> 18).limit(persons != null ? persons : 1);
     }
 
-    public Integer calculateAge(LocalDate birthday) {
+    private Integer calculateAge(LocalDate birthday) {
         return Period.between(birthday, LocalDate.now()).getYears();
-    }
-
-    public OfferShortInfo getById(UUID offerId) {
-        return shortInfoRepository.findById(offerId)
-                .orElseThrow(() -> new ResourceNotFoundException(OfferShortInfo.class.getName(), offerId.toString()));
     }
 
     private static Query buildQuery(GetOffers getOffers) {
