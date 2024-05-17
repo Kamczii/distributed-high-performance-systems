@@ -30,14 +30,14 @@ public class OfferServiceAdvice {
         publish(event);
     }
 
-    @AfterReturning(value = "execution(public * pl.rsww.offerwrite.offer.OfferService.confirmOffer(..)) && args(offerId, orderId)", returning = "result", argNames = "offerId,orderId,result")
-    public void afterConfirmOffer(UUID offerId, UUID orderId, Object result) {
+    @AfterReturning(value = "execution(public * pl.rsww.offerwrite.offer.OfferService.confirmOffer(..)) && args(offerId, orderId)", argNames = "offerId,orderId")
+    public void afterConfirmOffer(UUID offerId, UUID orderId) {
         final var event = new OfferResponse.ConfirmLock(offerId, orderId, AvailableLockStatus.SUCCESS);
         publish(event);
     }
 
-    @AfterThrowing(value = "execution(public * pl.rsww.offerwrite.offer.OfferService.reserveOffer(..)) && args(offerId, orderId)", throwing = "ex", argNames = "offerId,orderId,ex")
-    public void handleReserveOfferException(UUID offerId, UUID orderId, Exception ex) {
+    @AfterThrowing(value = "execution(public * pl.rsww.offerwrite.offer.OfferService.reserveOffer(..)) && args(offerId, orderId,ageOfVisitors)", throwing = "ex", argNames = "offerId,orderId,ageOfVisitors,ex")
+    public void handleReserveOfferException(UUID offerId, UUID orderId, Collection<Integer> ageOfVisitors, Exception ex) {
         final var event = new OfferResponse.Lock(offerId, orderId, BigDecimal.TEN, AvailableLockStatus.FAIL);
         publish(event);
     }

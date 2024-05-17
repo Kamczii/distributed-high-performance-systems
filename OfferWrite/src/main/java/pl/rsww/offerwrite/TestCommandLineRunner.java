@@ -25,14 +25,15 @@ public class TestCommandLineRunner {
     private final FlightService flightService;
 
     @Bean
-    @ConditionalOnProperty(
-            prefix = "command.line.runner",
-            value = "enabled",
-            havingValue = "false",
-            matchIfMissing = true)
+//    @ConditionalOnProperty(
+//            prefix = "command.line.runner",
+//            value = "enabled",
+//            havingValue = "true",
+//            matchIfMissing = true)
     public CommandLineRunner run(HotelService hotelService, FlightService flightService, OfferService offerService,
                                  OfferRepository offerRepository) {
         return args -> {
+            log.info("Init");
             init(hotelService, flightService);
         };
     }
