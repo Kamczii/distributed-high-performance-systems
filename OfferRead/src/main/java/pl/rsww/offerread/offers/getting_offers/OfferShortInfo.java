@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
@@ -21,6 +22,9 @@ import java.util.UUID;
 public class OfferShortInfo {
     @Id
     private UUID id;
+
+    @Indexed(unique = true)
+    private UUID offerId;
 
     private Hotel hotel;
     private Location departure;

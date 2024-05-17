@@ -35,7 +35,7 @@ public class ShortInfoService {
 
     public OfferShortInfoDTO getById(UUID offerId, Integer persons, Collection<LocalDate> kids) {
         final var adults = getAdultsCount(persons, kids);
-        return shortInfoRepository.findById(offerId)
+        return shortInfoRepository.findByOfferId(offerId)
                 .map(offer -> map(offer, adults, kids))
                 .orElseThrow(() -> new ResourceNotFoundException(OfferShortInfo.class.getName(), offerId.toString()));
     }

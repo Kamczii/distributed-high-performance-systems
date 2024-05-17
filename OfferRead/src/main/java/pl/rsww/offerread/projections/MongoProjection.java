@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import pl.rsww.offerread.events.EventEnvelope;
 import pl.rsww.offerread.views.VersionedView;
 
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -32,7 +33,7 @@ public abstract class MongoProjection<View, Id> {
     Id viewId,
     Function<View, View> handle
   ) {
-    var view = repository.findById(viewId);
+    var view = findById(viewId);
 
     if (view.isEmpty()) {
       logger.warn("View with id %s was not found".formatted(viewId));
@@ -42,6 +43,10 @@ public abstract class MongoProjection<View, Id> {
     var result = handle.apply(view.get());
 
     repository.save(result);
+  }
+
+  protected Optional<View> findById(Id id) {
+    return repository.findById(id);
   }
 
   protected void deleteById(Id viewId) {

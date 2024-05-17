@@ -1,6 +1,5 @@
 package pl.rsww.offerread.offers.getting_offers;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -8,6 +7,7 @@ import pl.rsww.offerread.mapper.AgeRangePriceMapper;
 import pl.rsww.offerread.projections.MongoProjection;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_INTEGRATION_TOPIC;
@@ -15,9 +15,11 @@ import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_INTEGRATION_TOPIC;
 @Component
 @Slf4j
 public class OfferShortInfoProjection extends MongoProjection<OfferShortInfo, UUID> {
+    private final OfferShortInfoRepository repository;
     private final AgeRangePriceMapper ageRangePriceMapper;
     public OfferShortInfoProjection(OfferShortInfoRepository repository, AgeRangePriceMapper ageRangePriceMapper) {
         super(repository);
+        this.repository = repository;
         this.ageRangePriceMapper = ageRangePriceMapper;
     }
 
@@ -32,6 +34,7 @@ public class OfferShortInfoProjection extends MongoProjection<OfferShortInfo, UU
 
     public OfferShortInfo mapToShortInfo(OfferIntegrationEvent.Created event) {
         return new OfferShortInfo(
+                UUID.randomUUID(),
                 event.offerId(),
                 new OfferShortInfo.Hotel(
                         event.hotel().name(),
@@ -51,4 +54,8 @@ public class OfferShortInfoProjection extends MongoProjection<OfferShortInfo, UU
     }
 
 
+    @Override
+    protected Optional<OfferShortInfo> findById(UUID uuid) {
+        return repository.findByOfferId(uuid);
+    }
 }
