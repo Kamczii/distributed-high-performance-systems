@@ -77,7 +77,7 @@ export default {
 
     function createOrder() {
       const offerId = route.params.id;
-      const url = `http://localhost:8083/order/create`;
+      const url = `http://localhost:8086/order/create`;
       const data = {
         offerId: offerId,
         ageOfVisitors: [18, 20, 22]
