@@ -23,41 +23,12 @@ import java.util.*;
 @Controller
 public class InitializerController {
     @Autowired
-    private HotelRepository hotelRepository;
-    @Autowired
-    private HotelRoomRepository hotelRoomRepository;
-    @Autowired
-    private FlightLineRepository flightLineRepository;
-    @Autowired
-    private FlightRepository flightRepository;
-    @Autowired
-    private AirportLocationRepository airportLocationRepository;
-    @Autowired
-    private AgeRangePriceItemRepository ageRangePriceItemRepository;
+    private InitService initService;
 
     @GetMapping(path="/init")
     public @ResponseBody String initialize() {
-
-        JsonDataExtractor extractor = new JsonDataExtractor();
-        List<HotelInfo> hotelInfoList = extractor.extract();
-        HotelInitializer hotelInitializer = new HotelInitializer(hotelRepository, hotelRoomRepository, airportLocationRepository, ageRangePriceItemRepository);
-
-//        EventSender eventSender = new EventSender();
-        Map<PlaneConnectionHolder, HashSet<String>> connections = new Hashtable<>();
-
-//        initializer.setEventSender(eventSender);
-        hotelInitializer.setPlaneConnections(connections);
-
-        for(HotelInfo info: hotelInfoList){
-            hotelInitializer.initialize(info);
-            hotelInitializer.clear();
-        }
-
-        FlightInitializer flightInitializer = new FlightInitializer(flightLineRepository, connections, airportLocationRepository, flightRepository, ageRangePriceItemRepository);
-        flightInitializer.initFlightLines();
-        flightInitializer.initFlights();
-
-        return "OK";
+        initService.initialize();
+        return "Asynchronous initialization started";
     }
 
 }

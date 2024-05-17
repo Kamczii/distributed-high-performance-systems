@@ -17,7 +17,7 @@ public class FlightLine {
     private AirportLocation destinationLocation;
     @ManyToOne
     private AirportLocation homeLocation;
-    @OneToMany(mappedBy="flightLine")
+    @OneToMany(mappedBy="flightLine", fetch = FetchType.EAGER)
     private Set<AgeRangePriceItem> priceList;
 
     public int getId() {

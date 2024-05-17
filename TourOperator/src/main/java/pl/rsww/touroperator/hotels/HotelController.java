@@ -18,36 +18,12 @@ import java.util.*;
 @RequestMapping(path="/hotels")
 public class HotelController {
     @Autowired
-    private HotelRepository hotelRepository;
-    private EventSender eventSender;
-
-    private void sendRequest(Hotel hotel){
-        UUID uuid = hotel.getId();
-        HotelRequests.LocationRequest requestLoc = new HotelRequests.LocationRequest(hotel.getLocation().getCountry(), hotel.getLocation().getCity());
-        List<HotelRequests.RoomRequest> roomRequests = new LinkedList<>();
-        for(HotelRoom room: hotel.getRooms()){
-            Set<HotelRequests.AgeRangePrice> priceListRequests = new HashSet<>();
-            for(AgeRangePriceItem item: room.getPriceList()){
-                priceListRequests.add(new HotelRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
-            }
-            for(int i = 0; i < room.getNumberInHotel(); i++){
-                roomRequests.add(new HotelRequests.RoomRequest(room.getDescription(), room.getMaxPeople(), room.getNumberOfBeds(), priceListRequests));
-            }
-        }
-
-        HotelRequests.CreateHotel hotelRequest = new HotelRequests.CreateHotel(uuid, hotel.getName(), requestLoc, roomRequests);
-        String key = uuid.toString();
-        eventSender.sendHotel(hotelRequest, key);
-    }
+    private HotelService hotelService;
 
     @GetMapping(path="/send")
     public @ResponseBody String sendRequests() {
-        eventSender = EventSender.getEventSender();
-        Iterable<Hotel> hotels = hotelRepository.findAll();
-        for(Hotel hotel: hotels){
-            sendRequest(hotel);
-        }
-        return "OK";
+        hotelService.sendRequests();
+        return "Started publishing hotels";
     }
 
 }

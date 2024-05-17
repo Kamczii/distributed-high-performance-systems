@@ -19,41 +19,11 @@ import java.util.Set;
 @RequestMapping(path="/flights")
 public class FlightController {
     @Autowired
-    private FlightRepository flightRepository;
-    @Autowired
-    private FlightLineRepository flightLineRepository;
-    private EventSender eventSender;
-
-
-    private void sendRequest(Flight flight){
-        FlightLine line = flight.getLine();
-        FlightRequests.LocationRequest lrHome = new FlightRequests.LocationRequest(line.getHomeLocation().getCountry(), line.getHomeLocation().getCity());
-        FlightRequests.LocationRequest lrDest = new FlightRequests.LocationRequest(line.getDestinationLocation().getCountry(), line.getDestinationLocation().getCity());
-        String flightNumber = line.flightNumber();
-        String key = flightNumber + flight.getDepartureDate();
-
-        Set<FlightRequests.AgeRangePrice> priceListRequests = new HashSet<>();
-        for(AgeRangePriceItem item: line.getPriceList()){
-            priceListRequests.add(new FlightRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
-        }
-
-        FlightRequests.CreateFlight flightRequest;
-        if(!flight.getItReturningFlight()){
-            flightRequest = new FlightRequests.CreateFlight(flightNumber, line.getMaxPassengers(), lrHome, lrDest, flight.getDepartureDate(), priceListRequests);
-        }else{
-            flightRequest = new FlightRequests.CreateFlight(flightNumber, line.getMaxPassengers(), lrDest, lrHome, flight.getDepartureDate(), priceListRequests);
-        }
-
-        eventSender.sendFlight(flightRequest, key);
-    }
+    private FlightService flightService;
 
     @GetMapping(path="/send")
     public @ResponseBody String sendRequests() {
-        eventSender = EventSender.getEventSender();
-        Iterable<Flight> flights = flightRepository.findAll();
-        for(Flight flight: flights){
-            sendRequest(flight);
-        }
-        return "OK";
+        flightService.sendRequests();
+        return "Started publishing flights";
     }
 }

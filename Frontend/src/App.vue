@@ -10,14 +10,23 @@
 h1 {
   text-align: center;
 }
-
-.layout {
-  display: grid;
-  grid-template-columns: .5fr 3fr 1fr;
-  grid-gap: .5rem;
+button {
+  border: none;
+  border-radius: 5px;
 }
 
-.layout > div {
-  padding: .5rem;
+.button {
+  background-color: #42b883;
+  color: #f7f7f7;
+}
+a {
+  text-decoration: none;
+  color: #f7f7f7;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 </style>

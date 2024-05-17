@@ -17,7 +17,7 @@ public class Hotel {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private UUID id;
     private String name;
-    @OneToMany(mappedBy="hotel")
+    @OneToMany(mappedBy="hotel", fetch = FetchType.EAGER)
     private List<HotelRoom> rooms;
     @ManyToOne
     private AirportLocation location;

@@ -18,7 +18,7 @@ public class HotelRoom {
     @ManyToOne
     @JoinColumn(name="hotel_id", nullable=false)
     private Hotel hotel;
-    @OneToMany(mappedBy="hotelRoom")
+    @OneToMany(mappedBy="hotelRoom", fetch = FetchType.EAGER)
     private Set<AgeRangePriceItem> priceList;
 
     public int getId() {
