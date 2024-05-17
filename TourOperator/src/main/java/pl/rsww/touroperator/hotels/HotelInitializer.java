@@ -3,7 +3,7 @@ package pl.rsww.touroperator.hotels;
 
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.data.PlaneConnectionHolder;
-import pl.rsww.touroperator.data_extraction.HotelInfo;
+import pl.rsww.touroperator.data.HotelInfo;
 import pl.rsww.touroperator.flights.lines.FlightLine;
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItemRepository;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
@@ -30,6 +30,7 @@ public class HotelInitializer {
     private Set<AgeRangePriceItem> priceList;
     private Random random;
     private Map<PlaneConnectionHolder, HashSet<String>> planeConnections;
+    private ModesOfTransport modeOfTransport;
 
     private void initLocation(){
         location = airportLocationRepository.findByCityAndCountry(info.getCity(), country);
@@ -125,13 +126,15 @@ public class HotelInitializer {
         hotel.setName(info.getName());
         country = info.getCountry();
         hotelRepository.save(hotel);
-        initLocation();
         initRooms();
+        initPriceList();
+
+        modeOfTransport = info.getModeOfTransport();
+        hotel.setModeOfTransport(modeOfTransport);
+        initLocation();
         collectConnections();
 
-        initPriceList();
         hotelRepository.save(hotel);
-
     }
 
     public HotelInitializer(HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository,

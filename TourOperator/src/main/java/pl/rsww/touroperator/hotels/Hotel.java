@@ -21,15 +21,7 @@ public class Hotel {
     private List<HotelRoom> rooms;
     @ManyToOne
     private AirportLocation location;
-//    private String localRegionName;
-//    @ManyToMany
-//    @JoinTable(
-//            name = "hotel_flight_lines",
-//            joinColumns = @JoinColumn(name = "hotel_id"),
-//            inverseJoinColumns = @JoinColumn(name = "flight_line_id"))
-//    private Set<FlightLine> hotelFlightLines;
-
-
+    private ModesOfTransport modeOfTransport;
 
     public UUID getId() {return id;}
 
@@ -61,28 +53,11 @@ public class Hotel {
         this.location = location;
     }
 
-//    public Set<FlightLine> getFlightLines() {
-//        return hotelFlightLines;
-//    }
-//
-//    public void setFlightLines(Set<FlightLine> flightLines) {
-//        this.hotelFlightLines = flightLines;
-//    }
-//
-//    public Set<FlightLine> getHotelFlightLines() {
-//        return hotelFlightLines;
-//    }
-//
-//    public void setHotelFlightLines(Set<FlightLine> hotelFlightLines) {
-//        this.hotelFlightLines = hotelFlightLines;
-//    }
+    public ModesOfTransport getModeOfTransport() {
+        return modeOfTransport;
+    }
 
-//    public String getLocalRegionName() {
-//        return localRegionName;
-//    }
-//
-//    public void setLocalRegionName(String localRegionName) {
-//        this.localRegionName = localRegionName;
-//    }
-
+    public void setModeOfTransport(ModesOfTransport modeOfTransport) {
+        this.modeOfTransport = modeOfTransport;
+    }
 }

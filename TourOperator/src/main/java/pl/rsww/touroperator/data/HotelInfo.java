@@ -1,8 +1,12 @@
-package pl.rsww.touroperator.data_extraction;
+package pl.rsww.touroperator.data;
+
+import pl.rsww.touroperator.hotels.ModesOfTransport;
 
 import java.util.List;
 
 public class HotelInfo {
+    public final static String DRIVE_INDIVIDUAL = "Dojazd własny";
+    public final static String DRIVE_AIRPLANE = "Samolot";
     private String name;
     private String country;
     private String region;
@@ -65,5 +69,13 @@ public class HotelInfo {
 
     public void setDepartures(List<String> departures) {
         this.departures = departures;
+    }
+
+    public ModesOfTransport getModeOfTransport(){
+        if(drive.equals(HotelInfo.DRIVE_INDIVIDUAL)){
+            return ModesOfTransport.INDIVIDUAL;
+        } else {
+            return ModesOfTransport.AIRPLANE;
+        }
     }
 }
