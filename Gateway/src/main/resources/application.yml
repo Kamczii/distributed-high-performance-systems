@@ -20,20 +20,24 @@ spring:
           filters:
           #            - TokenRelay=
         - id: NOTIFICATIONS
-          uri: lb://payment
+          uri: lb://notifications
           predicates:
-            - Path=/ws/**, /notifications/**
+            - Path=/ws/**, /notifications/**, /initial/**
           filters:
           #            - TokenRelay=
-        - id: ORDERS
-          uri: lb://order
-          predicates:
-            - Path=/orders/**
-          filters:
-#            - TokenRelay=
-        - id: PAYMENTS
-          uri: lb://payments
-          predicates:
-            - Path=/payments/**
-          filters:
-      #            - TokenRelay=
+#        - id: ORDERS
+#          uri: lb://order
+#          predicates:
+#            - Path=/orders/**
+#          filters:
+##            - TokenRelay=
+#        - id: PAYMENTS
+#          uri: lb://payments
+#          predicates:
+#            - Path=/payments/**
+#          filters:
+#      #            - TokenRelay=
+eureka:
+    client:
+      serviceUrl:
+        defaultZone: http://eureka:8761/eureka/  # Zaktualizuj tę wartość do odpowiedniej nazwy hosta serwera Eureka
