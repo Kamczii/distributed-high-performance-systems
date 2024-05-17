@@ -1,9 +1,9 @@
 <template>
   <div class="offer-short-info" v-if="offer">
-    <ConfigurationComponent></ConfigurationComponent>
+    <ConfigurationComponent />
     <h2>Offer Details</h2>
     <h3>Hotel Information</h3>
-    <p>Status: {{offer.status}}</p>
+    <p>Status: {{ offer.status }}</p>
     <p>Name: {{ offer.hotel.name }}</p>
     <p>Room Type: {{ offer.hotel.room.type }}</p>
     <p>Persons: {{ offer.hotel.room.capacity }}</p>
@@ -18,30 +18,65 @@
     <p>End Date: {{ formatDate(offer.end) }}</p>
     <p>Cena: {{ offer.price }} zł</p>
 
-
+    <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage" />
     <button type="submit" @click="createOrder">Buy now!</button>
   </div>
 </template>
 
 <script>
+import { ref, onMounted } from 'vue';
+import SockJS from 'sockjs-client';
+import Stomp from 'webstomp-client';
+import PopupComponent from "@/components/PopupComponent.vue";
 import ConfigurationComponent from "@/components/search/ConfigurationComponent.vue";
+import { useRoute } from 'vue-router';
 
 export default {
-  name: 'OfferShortInfo',
-  components: {ConfigurationComponent},
-  props: ['id'],
-  data() {
-    return {
-      offer: null,
-      orderId: null
-    }
+  components: {
+    PopupComponent,
+    ConfigurationComponent
   },
-  methods: {
-    formatDate(value) {
+  setup() {
+    const popupMessage = ref('');
+    const offer = ref(null);
+    const stompClient = ref(null);
+    const route = useRoute();
+
+    onMounted(() => {
+      fetch(`http://localhost:8081/offers/${route.params.id}`)
+        .then(res => res.json())
+        .then(data => {
+          offer.value = data;
+        })
+        .catch(err => console.error(err));
+
+      connectWebSocket();
+    });
+
+    function formatDate(value) {
       return value ? new Date(value).toLocaleDateString() : '';
-    },
-    createOrder() {
-      const offerId = this.$route.params.id;
+    }
+
+    function connectWebSocket() {
+      const socket = new SockJS('http://localhost:8083/ws');
+      stompClient.value = Stomp.over(socket);
+      stompClient.value.connect({}, () => {
+        stompClient.value.subscribe(`/topic/notifications/${route.params.id}`, notification => {
+          const event = JSON.parse(notification.body);
+          popupMessage.value = event.title;
+          console.log('Received message:', event);
+        });
+      }, error => {
+        console.error('Error connecting to WebSocket:', error);
+      });
+    }
+
+    function resetPopupMessage() {
+      popupMessage.value = '';
+    }
+
+    function createOrder() {
+      const offerId = route.params.id;
       const url = `http://localhost:8083/order/create`;
       const data = {
         offerId: offerId,
@@ -59,63 +94,16 @@ export default {
         body: JSON.stringify(data),
         ...config
       })
-          .then(res => res.text())
-          .then(data =>  this.orderId = data)
-          .catch(err => console.log(err))
+        .then(res => res.text())
+        .then(data => console.log(data))
+        .catch(err => console.error(err));
     }
-  },
-  mounted() {
-    fetch("http://localhost:8081/offers/" + this.$route.params.id)
-        .then(res => res.json())
-        .then(data => this.offer = data)
-        .catch(err => console.log(err))
-  },
-  watch: {
-    "$route.query": {
-      immediate: true,
-      handler(newQuery) {
-        const params = new URLSearchParams(newQuery).toString()
-        fetch(`http://localhost:8081/offers/${this.$route.params.id}?${params}` )
-            .then(res => res.json())
-            .then(data => this.offer = data)
-            .catch(err => console.log(err))
-      }
-    }
+
+    return { formatDate, resetPopupMessage, createOrder, popupMessage, offer };
   }
 }
 </script>
 
 <style scoped>
-.offer-short-info {
-  font-family: 'Arial', sans-serif;
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  max-width: 400px;
-}
-h2, h3 {
-  color: #333;
-}
-p {
-  color: #666;
-  font-size: 16px;
-  margin: 5px 0;
-}
-
-button {
-  background-color: #42b883;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  margin: 10px 0 5px;
-}
-
-button:hover {
-  background-color: #35495e;
-}
+/* Twoje style */
 </style>

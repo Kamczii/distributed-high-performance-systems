@@ -1,8 +1,3 @@
-<script setup>
-import SearchComponent from "@/components/search/SearchComponent.vue";
-import LastUpdates from "@/components/LastUpdates";
-</script>
-
 <template>
   <h1>Travel office</h1>
   <div class="layout">
@@ -17,6 +12,13 @@ import LastUpdates from "@/components/LastUpdates";
     <div><LastUpdates/></div>
   </div>
 </template>
+
+<script setup>
+
+import SearchComponent from "@/components/search/SearchComponent.vue";
+import LastUpdates from "@/components/LastUpdates";
+
+</script>
 
 <style scoped>
 nav ul {
