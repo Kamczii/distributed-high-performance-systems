@@ -22,7 +22,7 @@ export default {
   },
   mounted() {
     // Fetch initial messages using fetch
-    fetch('http://localhost:8080/initial')
+    fetch('http://localhost:8083/initial')
       .then(response => {
         if (response.ok) {
           return response.json();
