@@ -3,11 +3,16 @@ spring:
     name: Gateway
   cloud:
     gateway:
+      default-filters: DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Headers
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: '*'
-            allowedMethods: '*'
+            allowed-origin-patterns:
+              - '*'
+            allowedMethods:
+              - '*'
+            allowed-headers:
+              - '*'
       discovery:
         locator:
           enabled: true
@@ -20,10 +25,17 @@ spring:
           filters:
           #            - TokenRelay=
         - id: NOTIFICATIONS
-          uri: lb://notifications
+          uri: lb://notification
           predicates:
-            - Path=/ws/**, /notifications/**, /initial/**
-          filters:
+            - Path=/initial/**
+        - id: websocket-sockjs-route
+          uri: lb://notification
+          predicates:
+            - Path=/ws/info/**
+        - id: websocket_route
+          uri: lb:ws://notification
+          predicates:
+            - Path=/ws/**
           #            - TokenRelay=
 #        - id: ORDERS
 #          uri: lb://order
@@ -38,6 +50,10 @@ spring:
 #          filters:
 #      #            - TokenRelay=
 eureka:
-    client:
-      serviceUrl:
-        defaultZone: http://eureka:8761/eureka/  # Zaktualizuj tę wartość do odpowiedniej nazwy hosta serwera Eureka
+  client:
+    fetchRegistry: true
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
