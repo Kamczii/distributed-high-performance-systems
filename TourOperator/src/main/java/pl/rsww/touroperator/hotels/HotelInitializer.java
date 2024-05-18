@@ -1,6 +1,7 @@
 package pl.rsww.touroperator.hotels;
 
 
+import pl.rsww.touroperator.data.ModesOfTransportSetting;
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.data.PlaneConnectionHolder;
 import pl.rsww.touroperator.data.HotelInfo;
@@ -30,7 +31,7 @@ public class HotelInitializer {
     private Set<AgeRangePriceItem> priceList;
     private Random random;
     private Map<PlaneConnectionHolder, HashSet<String>> planeConnections;
-    private ModesOfTransport modeOfTransport;
+    private ModesOfTransportSetting modeOfTransport;
 
     private void initLocation(){
         location = airportLocationRepository.findByCityAndCountry(info.getCity(), country);

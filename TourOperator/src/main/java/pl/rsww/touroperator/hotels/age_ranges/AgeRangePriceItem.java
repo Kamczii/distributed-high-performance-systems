@@ -1,6 +1,7 @@
 package pl.rsww.touroperator.hotels.age_ranges;
 
 import jakarta.persistence.*;
+import pl.rsww.touroperator.busses.lines.BusLine;
 import pl.rsww.touroperator.flights.lines.FlightLine;
 import pl.rsww.touroperator.hotels.Hotel;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
@@ -21,6 +22,9 @@ public class AgeRangePriceItem {
     @ManyToOne
     @JoinColumn(name="flight_line_id", nullable=true)
     private FlightLine flightLine;
+    @ManyToOne
+    @JoinColumn(name="bus_line_id", nullable=true)
+    private BusLine busLine;
 
     public Integer getStartingRange() {
         return startingRange;
@@ -78,5 +82,21 @@ public class AgeRangePriceItem {
 
     public void setFlightLine(FlightLine flightLine) {
         this.flightLine = flightLine;
+    }
+
+    public HotelRoom getHotelRoom() {
+        return hotelRoom;
+    }
+
+    public void setHotelRoom(HotelRoom hotelRoom) {
+        this.hotelRoom = hotelRoom;
+    }
+
+    public BusLine getBusLine() {
+        return busLine;
+    }
+
+    public void setBusLine(BusLine busLine) {
+        this.busLine = busLine;
     }
 }

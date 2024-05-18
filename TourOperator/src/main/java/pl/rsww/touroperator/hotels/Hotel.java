@@ -1,14 +1,11 @@
 package pl.rsww.touroperator.hotels;
 
-import pl.rsww.touroperator.flights.lines.FlightLine;
-import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
+import pl.rsww.touroperator.data.ModesOfTransportSetting;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import pl.rsww.touroperator.locations.AirportLocation;
 import jakarta.persistence.*;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -21,7 +18,7 @@ public class Hotel {
     private List<HotelRoom> rooms;
     @ManyToOne
     private AirportLocation location;
-    private ModesOfTransport modeOfTransport;
+    private ModesOfTransportSetting modeOfTransport;
 
     public UUID getId() {return id;}
 
@@ -36,9 +33,7 @@ public class Hotel {
     }
 
     public List<HotelRoom> getRooms() {
-        if(rooms != null)
-            return rooms;
-        return new LinkedList<HotelRoom>();
+        return rooms;
     }
 
     public void setRooms(List<HotelRoom> rooms) {
@@ -53,11 +48,12 @@ public class Hotel {
         this.location = location;
     }
 
-    public ModesOfTransport getModeOfTransport() {
+    public ModesOfTransportSetting getModeOfTransport() {
         return modeOfTransport;
     }
 
-    public void setModeOfTransport(ModesOfTransport modeOfTransport) {
+    public void setModeOfTransport(ModesOfTransportSetting modeOfTransport) {
         this.modeOfTransport = modeOfTransport;
     }
+
 }

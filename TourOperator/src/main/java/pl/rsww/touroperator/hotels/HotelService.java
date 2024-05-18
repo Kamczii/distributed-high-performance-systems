@@ -4,9 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import pl.rsww.tour_operator.api.HotelRequests;
+import pl.rsww.touroperator.data.ModesOfTransportSetting;
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import pl.rsww.touroperator.initialization.EventSender;
@@ -34,7 +33,8 @@ public class HotelService {
             }
         }
 
-        HotelRequests.CreateHotel hotelRequest = new HotelRequests.CreateHotel(uuid, hotel.getName(), requestLoc, roomRequests);
+        List<HotelRequests.ModesOfTransport> modesOfTransport = translateModeOfTransportAsRequest(hotel.getModeOfTransport());
+        HotelRequests.CreateHotel hotelRequest = new HotelRequests.CreateHotel(uuid, hotel.getName(), requestLoc, roomRequests, modesOfTransport);
         String key = uuid.toString();
         eventSender.sendHotel(hotelRequest, key);
     }
@@ -48,5 +48,16 @@ public class HotelService {
             sendRequest(hotel);
         }
         log.info("Finished sending hotels");
+    }
+
+    public static List<HotelRequests.ModesOfTransport> translateModeOfTransportAsRequest(ModesOfTransportSetting mode){
+        List<HotelRequests.ModesOfTransport> transportOptions = new ArrayList<>();
+        if(mode == ModesOfTransportSetting.INDIVIDUAL){
+            transportOptions.add(HotelRequests.ModesOfTransport.INDIVIDUAL);
+        }else{
+            transportOptions.add(HotelRequests.ModesOfTransport.AIRPLANE);
+            transportOptions.add(HotelRequests.ModesOfTransport.BUS);
+        }
+        return transportOptions;
     }
 }

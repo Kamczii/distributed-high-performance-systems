@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import pl.rsww.touroperator.busses.BusInitializer;
+import pl.rsww.touroperator.busses.BusRepository;
+import pl.rsww.touroperator.busses.lines.BusLineRepository;
 import pl.rsww.touroperator.data.PlaneConnectionHolder;
 import pl.rsww.touroperator.data.HotelInfo;
 import pl.rsww.touroperator.data_extraction.JsonDataExtractor;
@@ -33,6 +36,10 @@ public class InitService {
     @Autowired
     private FlightRepository flightRepository;
     @Autowired
+    private BusRepository busRepository;
+    @Autowired
+    private BusLineRepository busLineRepository;
+    @Autowired
     private AirportLocationRepository airportLocationRepository;
     @Autowired
     private AgeRangePriceItemRepository ageRangePriceItemRepository;
@@ -44,10 +51,8 @@ public class InitService {
         List<HotelInfo> hotelInfoList = extractor.extract();
         HotelInitializer hotelInitializer = new HotelInitializer(hotelRepository, hotelRoomRepository, airportLocationRepository, ageRangePriceItemRepository);
 
-//        EventSender eventSender = new EventSender();
         Map<PlaneConnectionHolder, HashSet<String>> connections = new Hashtable<>();
 
-//        initializer.setEventSender(eventSender);
         hotelInitializer.setPlaneConnections(connections);
 
         for(HotelInfo info: hotelInfoList){
@@ -58,6 +63,10 @@ public class InitService {
         FlightInitializer flightInitializer = new FlightInitializer(flightLineRepository, connections, airportLocationRepository, flightRepository, ageRangePriceItemRepository);
         flightInitializer.initFlightLines();
         flightInitializer.initFlights();
+
+        BusInitializer busInitializer = new BusInitializer(busLineRepository, connections, airportLocationRepository, busRepository, ageRangePriceItemRepository);
+        busInitializer.initBusLines();
+        busInitializer.initBusses();
 
         log.info("Init finished");
     }

@@ -1,7 +1,5 @@
 package pl.rsww.touroperator.data;
 
-import pl.rsww.touroperator.hotels.ModesOfTransport;
-
 import java.util.List;
 
 public class HotelInfo {
@@ -71,11 +69,11 @@ public class HotelInfo {
         this.departures = departures;
     }
 
-    public ModesOfTransport getModeOfTransport(){
+    public ModesOfTransportSetting getModeOfTransport(){
         if(drive.equals(HotelInfo.DRIVE_INDIVIDUAL)){
-            return ModesOfTransport.INDIVIDUAL;
+            return ModesOfTransportSetting.INDIVIDUAL;
         } else {
-            return ModesOfTransport.AIRPLANE;
+            return ModesOfTransportSetting.AIRPLANE_OR_BUS;
         }
     }
 }
