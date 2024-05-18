@@ -31,8 +31,8 @@ public class NotificationService {
         log.info("Listener");
         if (event instanceof OfferIntegrationEvent.Created created) {
             log.info(event.toString());
-                    String timestamp = LocalDateTime.now().format(formatter);
-        EventMessage message = new EventMessage("Created", created.offerId().toString(), timestamp);
+            String timestamp = LocalDateTime.now().format(formatter);
+            EventMessage message = new EventMessage("Created", created.offerId().toString(), timestamp);
 
         synchronized (messageQueue) {
             if (messageQueue.size() >= MAX_MESSAGES) {

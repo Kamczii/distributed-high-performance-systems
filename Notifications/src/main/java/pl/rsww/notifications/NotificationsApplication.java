@@ -11,12 +11,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import pl.rsww.notifications.consumer.EventMessage;
 import pl.rsww.notifications.consumer.NotificationService;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -30,6 +34,7 @@ public class NotificationsApplication {
     public static void main(String[] args) {
         SpringApplication.run(NotificationsApplication.class, args);
     }
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
@@ -39,7 +44,6 @@ public class NotificationsApplication {
     @Bean
     public CommandLineRunner run(NotificationService notification) {
         return args -> {
-
             OfferIntegrationEvent.Created offerEvent = new OfferIntegrationEvent.Created(
                     UUID.fromString("b01a4efb-8255-490b-bee6-b0e00c2768df"),  // offerId
                     new OfferIntegrationEvent.Hotel(
@@ -55,6 +59,7 @@ public class NotificationsApplication {
             );
             notification.listen(offerEvent);
         };
+
     }
 
     @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
@@ -62,9 +67,20 @@ public class NotificationsApplication {
 
         executorService.schedule(() -> {
             try {
+                Random random = new Random();
+                AvailableOfferStatus[] statuses = AvailableOfferStatus.values();
+                int index = random.nextInt(statuses.length);  // Losuje indeks od 0 do (długość tablicy - 1)
+                AvailableOfferStatus randomStatus = statuses[index];  // Pobiera losowy status
+                System.out.println("Randomly selected status: " + randomStatus);
+                OfferIntegrationEvent.StatusChanged offer_event = new OfferIntegrationEvent.StatusChanged(
+                        UUID.fromString("b01a4efb-8255-490b-bee6-b0e00c2768df"),
+                        randomStatus
+                );
+                String timestamp = LocalDateTime.now().format(formatter);
+                EventMessage message = new EventMessage("Available Offer Status Changed", offer_event.offerId().toString(), timestamp);
                 log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                messagingTemplate.convertAndSend("/topic/notifications", "TEST");
-                messagingTemplate.convertAndSend("/topic/notifications/" +  UUID.randomUUID(), "TEST");
+                messagingTemplate.convertAndSend("/topic/notifications", message);
+                messagingTemplate.convertAndSend("/topic/notifications/" +  offer_event.offerId().toString(), message);
                 log.info("Sent offer change to topic \"/topic/notifications\"");
             } catch (Exception e) {
                 log.error("Error sending WebSocket message", e);
