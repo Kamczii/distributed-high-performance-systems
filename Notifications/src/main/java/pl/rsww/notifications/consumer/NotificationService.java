@@ -7,6 +7,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.rsww.offerwrite.api.OfferWriteTopics;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,7 @@ public class NotificationService {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    @KafkaListener(topics = "pl.rsww.offerwrite.test", groupId = "notification-group",containerFactory = "offerEventConsumerFactory")
+    @KafkaListener(topics = OfferWriteTopics.OFFER_INTEGRATION_TOPIC, groupId = "notification-group",containerFactory = "offerEventConsumerFactory")
     public void listen(OfferIntegrationEvent event) {
         log.info("Listener");
         if (event instanceof OfferIntegrationEvent.Created created) {
