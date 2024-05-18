@@ -1,26 +1,40 @@
 package pl.rsww.notifications;
 
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import pl.rsww.notifications.consumer.NotificationService;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
-import  pl.rsww.notifications.consumer.NotificationService;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableScheduling
 public class NotificationsApplication {
     public static void main(String[] args) {
         SpringApplication.run(NotificationsApplication.class, args);
     }
+
+    private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @Bean
     public CommandLineRunner run(NotificationService notification) {
@@ -41,6 +55,21 @@ public class NotificationsApplication {
             );
             notification.listen(offerEvent);
         };
+    }
+
+    @Scheduled(fixedRate = 10, timeUnit = TimeUnit.SECONDS)
+    public void schedule() {
+
+        executorService.schedule(() -> {
+            try {
+                log.info("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                messagingTemplate.convertAndSend("/topic/notifications", "TEST");
+                messagingTemplate.convertAndSend("/topic/notifications/" +  UUID.randomUUID(), "TEST");
+                log.info("Sent offer change to topic \"/topic/notifications\"");
+            } catch (Exception e) {
+                log.error("Error sending WebSocket message", e);
+            }
+        }, 30, TimeUnit.SECONDS);
     }
 
 //    public static void main(String[] args) {

@@ -22,7 +22,7 @@ export default {
   },
   mounted() {
     // Fetch initial messages using fetch
-    fetch('http://localhost:8083/initial')
+    fetch('http://localhost:8080/initial')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -37,7 +37,7 @@ export default {
       });
 
     // Set up WebSocket connection
-    const socket = new SockJS('http://localhost:8083/ws');
+    const socket = new SockJS('http://localhost:8080/ws');
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe('/topic/notifications', notification => {
