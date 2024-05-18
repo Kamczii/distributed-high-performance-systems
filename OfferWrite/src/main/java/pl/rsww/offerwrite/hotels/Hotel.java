@@ -1,6 +1,7 @@
 package pl.rsww.offerwrite.hotels;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.common.location.Location;
@@ -15,11 +16,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static pl.rsww.offerwrite.constants.Constants.LOCK_TIME_IN_SECONDS;
 import static pl.rsww.offerwrite.hotels.HotelEvent.HotelCreated;
 
 @Getter
 public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
-    public static final int LOCK_TIME_IN_SECONDS = 2*60;
+;
 
     private HotelRooms rooms;
     private Location location;
@@ -99,7 +101,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
         return activeReservations.get(roomType);
     }
 
-    private static boolean onGoingReservation(HotelEvent.RoomReserved roomReserved) {
+    private boolean onGoingReservation(HotelEvent.RoomReserved roomReserved) {
         return roomReserved.time().isAfter(LocalDateTime.now().minusSeconds(LOCK_TIME_IN_SECONDS));
     }
 
@@ -113,7 +115,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
         enqueue(new HotelEvent.RoomReserved(orderId, roomType, LocalDateTime.now(), checkInDate, checkOutDate));
     }
 
-    private boolean roomAvailable(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
+    public boolean roomAvailable(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
         return getReservationsForRoom(roomType)
                 .stream()
                 .anyMatch(roomReservations -> available(roomReservations, checkInDate, checkOutDate));

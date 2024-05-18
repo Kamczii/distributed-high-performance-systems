@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 import pl.rsww.offerwrite.flights.FlightCommand;
 import pl.rsww.offerwrite.hotels.HotelCommand;
 import pl.rsww.offerwrite.flights.FlightService;
 import pl.rsww.offerwrite.flights.getting_flight_seats.Flight;
 import pl.rsww.offerwrite.hotels.HotelService;
+import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoom;
 import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 
@@ -47,6 +49,7 @@ public class OfferService {
 
             final var hotelLockRequest = buildHotelLockRequest(orderId, offer);
             hotelService.handle(hotelLockRequest);
+            log.info("Successful lock");
         } catch (Exception e) {
             rollbacks.forEach(this::handle);
             throw new IllegalStateException("Failed to lock offer");
@@ -103,6 +106,14 @@ public class OfferService {
     private void handle(FlightCommand command) {
         try {
             flightService.handle(command);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
+
+    private void handle(HotelCommand command) {
+        try {
+            hotelService.handle(command);
         } catch (Exception e) {
             log.error(e.getMessage());
         }

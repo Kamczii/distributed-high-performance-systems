@@ -15,6 +15,14 @@ public sealed interface HotelCommand {
             @Nonnull LocalDate endDate
     ) implements HotelCommand{}
 
+    record ReleaseLock(
+            @Nonnull UUID hotelId,
+            @Nonnull UUID orderId,
+            @Nonnull String type,
+            @Nonnull LocalDate startDate,
+            @Nonnull LocalDate endDate
+    ) implements HotelCommand{}
+
 
     record ConfirmLock(
             @Nonnull UUID hotelId,

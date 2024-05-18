@@ -1,6 +1,7 @@
 package pl.rsww.offerwrite.flights;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
@@ -12,9 +13,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static pl.rsww.offerwrite.constants.Constants.LOCK_TIME_IN_SECONDS;
+
 @Getter
 public class Flight extends AbstractAggregate<FlightEvent, String> {
-    public static final int LOCK_TIME_IN_SECONDS = 2;
+;
+
     private Location departure;
     private Location destination;
     private String flightNumber;
@@ -159,7 +163,8 @@ public class Flight extends AbstractAggregate<FlightEvent, String> {
                 .findAny();
     }
 
-    private boolean seatsAvailable(Integer seats) {
+    public boolean seatsAvailable(Integer seats) {
         return this.capacity >= seats;
     }
+
 }

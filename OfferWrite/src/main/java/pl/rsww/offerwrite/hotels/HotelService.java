@@ -3,6 +3,7 @@ package pl.rsww.offerwrite.hotels;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.rsww.offerwrite.flights.FlightCommand;
 import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 
@@ -12,6 +13,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class HotelService {
     private final AggregateStore<Hotel, HotelEvent, UUID> hotelStore;
+
+    public void handle(HotelCommand command) {
+        if (command instanceof HotelCommand.ConfirmLock confirmLock) {
+            handle(confirmLock);
+        } else if (command instanceof HotelCommand.Lock lock) {
+            handle(lock);
+        } else if (command instanceof HotelCommand.ReleaseLock releaseLock) {
+            handle(releaseLock);
+        }
+    }
 
     public void handle(HotelRequests.CreateHotel create) {
         try {
@@ -33,6 +44,11 @@ public class HotelService {
 
     public void handle(HotelCommand.ConfirmLock hotelConfirmLockRequest) {
         hotelStore.getAndUpdate(hotel -> hotel.confirmLock(hotelConfirmLockRequest.orderId()), hotelConfirmLockRequest.hotelId());
+    }
+
+    public void handle(HotelCommand.ReleaseLock releaseLock) {
+//        hotelStore.getAndUpdate(hotel -> hotel.confirmLock(hotelConfirmLockRequest.orderId()), hotelConfirmLockRequest.hotelId());
+        //todo
     }
 
     public void handle(HotelRequests request) {
