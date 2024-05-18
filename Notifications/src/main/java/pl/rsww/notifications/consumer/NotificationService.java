@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.rsww.offerwrite.api.OfferWriteTopics;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,19 +19,18 @@ import java.util.List;
 public class NotificationService {
     private static final int MAX_MESSAGES = 10;
     private final LinkedList<EventMessage> messageQueue = new LinkedList<>();
-
+    @Autowired
+    private DescriptionService descriptionService;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @KafkaListener(topics = OfferWriteTopics.OFFER_INTEGRATION_TOPIC, groupId = "notification-group",containerFactory = "offerEventConsumerFactory")
     public void listen(OfferIntegrationEvent event) {
         log.info("Listener");
         if (event instanceof OfferIntegrationEvent.Created created) {
             log.info(event.toString());
-            String timestamp = LocalDateTime.now().format(formatter);
-            EventMessage message = new EventMessage("Created", created.offerId().toString(), timestamp);
+            EventMessage message = descriptionService.describe(created);
 
         synchronized (messageQueue) {
             if (messageQueue.size() >= MAX_MESSAGES) {
@@ -50,8 +47,7 @@ public class NotificationService {
         }
     } else if (event instanceof OfferIntegrationEvent.StatusChanged statusChanged) {
             log.info(event.toString());
-            String timestamp = LocalDateTime.now().format(formatter);
-            EventMessage message = new EventMessage("Available Offer Status Changed", statusChanged.offerId().toString(), timestamp);
+            EventMessage message = descriptionService.describe(statusChanged);
 
             synchronized (messageQueue) {
                 if (messageQueue.size() >= MAX_MESSAGES) {
