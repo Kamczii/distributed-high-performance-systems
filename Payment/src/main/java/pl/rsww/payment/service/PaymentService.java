@@ -1,10 +1,12 @@
 package pl.rsww.payment.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.errors.ResourceNotFoundException;
 import pl.rsww.payment.api.PaymentEvent;
 import pl.rsww.payment.model.Payment;
 import pl.rsww.payment.publisher.KafkaPublisher;
 import pl.rsww.payment.repository.PaymentRepository;
+import pl.rsww.payment.request.PaymentRequest;
 import pl.rsww.payment.status.PaymentStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,26 +40,39 @@ public class PaymentService {
 
         payment = paymentRepository.save(payment);
 
-        processPayment(payment);
+        kafkaPublisher.publish(PAYMENT_BASIC_TOPIC, new PaymentEvent.Pending(payment.getId(), payment.getUserId(), payment.getAmount()));
+//        processPayment(payment);
 
     }
 
-    public void processPayment(Payment payment) {
+    public Boolean processPayment(Payment payment) {
         if (random.nextInt(100) < SIMULATION_SUCCESS_RATE) {
             updatePaymentStatus(payment, PaymentStatus.SUCCESS);
             kafkaPublisher.publish(PAYMENT_SUCCESS_TOPIC, new PaymentEvent.Success(payment.getOrderId(), payment.getUserId()));
+            return true;
         } else {
             updatePaymentStatus(payment, PaymentStatus.FAIL);
             kafkaPublisher.publish(PAYMENT_FAIL_TOPIC, new PaymentEvent.Fail(payment.getOrderId(), payment.getUserId()));
+            return false;
         }
     }
 
     public void updatePaymentStatus(Payment payment, PaymentStatus paymentStatus) {
-        Payment paymentToUpdate = paymentRepository.findById(payment.getId()).orElse(null);
+        Payment paymentToUpdate = paymentRepository.findById(payment.getId()).orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + payment.getId()));
 
-        assert paymentToUpdate != null;
         paymentToUpdate.setPaymentStatus(paymentStatus);
         paymentRepository.save(paymentToUpdate);
+    }
+
+    public Boolean acceptPayment(PaymentRequest paymentRequest, Long userId) {
+        Payment payment = paymentRepository.findById(paymentRequest.getPaymentId()).orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + paymentRequest.getPaymentId()));
+        return processPayment(payment);
+    }
+
+    public void cancelPayment(PaymentRequest paymentRequest, Long userId) {
+        Payment payment = paymentRepository.findById(paymentRequest.getPaymentId()).orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + paymentRequest.getPaymentId()));
+        updatePaymentStatus(payment, PaymentStatus.FAIL);
+        kafkaPublisher.publish(PAYMENT_FAIL_TOPIC, new PaymentEvent.Fail(payment.getOrderId(), payment.getUserId()));
     }
 
 }

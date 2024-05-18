@@ -41,7 +41,7 @@ public class OrderService {
         order = orderRepository.save(order);
 
         kafkaPublisher.publish(OFFER_COMMAND_TOPIC, new OfferCommand.Lock(order.getOfferId(), order.getOrderId(), orderRequest.getAgeOfVisitors()));
-//        kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Pending(order.getOrderId(), order.getUserId(), BigDecimal.valueOf(245)));
+//        kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Pending(order.getOrderId(), order.getUserId(), BigDecimal.valueOf(333)));
         return order.getOrderId();
     }
 

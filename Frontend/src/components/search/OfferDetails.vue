@@ -1,6 +1,6 @@
 <template>
   <div class="offer-short-info" v-if="offer">
-    <ConfigurationComponent />
+    <ConfigurationComponent @update-kids="handleKidsUpdate"/>
     <h2>Offer Details</h2>
     <h3>Hotel Information</h3>
     <p>Status: {{ offer.status }}</p>
@@ -19,7 +19,15 @@
     <p>Cena: {{ offer.price }} zł</p>
 
     <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage" />
-    <button type="submit" @click="createOrder">Buy now!</button>
+    <button type="submit" class="buy-now-button" @click="createOrder">Buy now!</button>
+
+    <PaymentConfirmationModal
+        v-if="isPaymentModalVisible"
+        :order-id="orderId"
+        :payment-id="paymentId"
+        @accept="acceptPayment"
+        @cancel="cancelPayment"
+    />
   </div>
 </template>
 
@@ -29,29 +37,38 @@ import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
 import PopupComponent from "@/components/PopupComponent.vue";
 import ConfigurationComponent from "@/components/search/ConfigurationComponent.vue";
+import PaymentConfirmationModal from "@/components/PaymentConfirmationModal.vue";
 import { useRoute } from 'vue-router';
 
 export default {
   components: {
     PopupComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    PaymentConfirmationModal
   },
   setup() {
     const popupMessage = ref('');
     const offer = ref(null);
     const stompClient = ref(null);
     const route = useRoute();
+    const kids = ref([]);
+    const isPaymentModalVisible = ref(false);
+    const orderId = ref(null);
+    const paymentId = ref(null);
 
     onMounted(() => {
       fetch(`http://localhost:8081/offers/${route.params.id}`)
-        .then(res => res.json())
-        .then(data => {
-          offer.value = data;
-        })
-        .catch(err => console.error(err));
+          .then(res => res.json())
+          .then(data => {
+            offer.value = data;
+          })
+          .catch(err => console.error(err));
 
       connectWebSocket();
     });
+    function handleKidsUpdate(kidsArray) {
+      kids.value = kidsArray;
+    }
 
     function formatDate(value) {
       return value ? new Date(value).toLocaleDateString() : '';
@@ -75,12 +92,32 @@ export default {
       popupMessage.value = '';
     }
 
+    function showPaymentConfirmation() {
+      isPaymentModalVisible.value = true;
+    }
+
+    function cancelPayment() {
+      isPaymentModalVisible.value = false;
+    }
+
+    function acceptPayment() {
+      isPaymentModalVisible.value = false;
+      createOrder();
+    }
+
     function createOrder() {
+      showPaymentConfirmation()
+
+      for (let i = 0; i < kids.value.length; i++) {
+        kids.value[i] = calculateAge(kids.value[i]);
+      }
+
+      console.log('Kids ages:', kids.value);
       const offerId = route.params.id;
       const url = `http://localhost:8086/order/create`;
       const data = {
         offerId: offerId,
-        ageOfVisitors: [18, 20, 22]
+        ageOfVisitors: kids.value
       };
       const config = {
         mode: 'cors',
@@ -94,16 +131,45 @@ export default {
         body: JSON.stringify(data),
         ...config
       })
-        .then(res => res.text())
-        .then(data => console.log(data))
-        .catch(err => console.error(err));
+          .then(res => res.text())
+          .then(data => orderId.value = data)
+          .catch(err => console.error(err));
+
     }
 
-    return { formatDate, resetPopupMessage, createOrder, popupMessage, offer };
+    function calculateAge(birthDate) {
+      const today = new Date();
+      const birthDateObj = new Date(birthDate);
+      let age = today.getFullYear() - birthDateObj.getFullYear();
+
+      if (
+          today.getMonth() < birthDateObj.getMonth() ||
+          (today.getMonth() === birthDateObj.getMonth() && today.getDate() < birthDateObj.getDate())
+      ) {
+        age--;
+      }
+
+      console.log(age.toString())
+      return age.toString();
+    }
+
+    return { formatDate, resetPopupMessage, createOrder, cancelPayment, acceptPayment, popupMessage, offer, isPaymentModalVisible, handleKidsUpdate, paymentId, orderId };
   }
 }
 </script>
 
 <style scoped>
-/* Twoje style */
+.buy-now-button {
+  background-color: #42b883;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.buy-now-button:hover {
+  background-color: #35495e;
+}
 </style>
