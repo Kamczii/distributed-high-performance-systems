@@ -11,19 +11,19 @@ export default {
   },
   methods: {
     init() {
-      fetch('http://localhost:8085/init')
+      fetch(process.env.VUE_APP_GATEWAY + '/init')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
     },
     flights() {
-      fetch('http://localhost:8085/flights/send')
+      fetch(process.env.VUE_APP_GATEWAY + '/flights/send')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
     },
     hotels() {
-      fetch('http://localhost:8085/hotels/send')
+      fetch(process.env.VUE_APP_GATEWAY + '/hotels/send')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));

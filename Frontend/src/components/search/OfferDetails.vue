@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import {onMounted, ref} from 'vue';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
 import PopupComponent from "@/components/PopupComponent.vue";
 import ConfigurationComponent from "@/components/search/ConfigurationComponent.vue";
-import { useRoute } from 'vue-router';
+import {useRoute} from 'vue-router';
 
 export default {
   components: {
@@ -58,7 +58,7 @@ export default {
     }
 
     function connectWebSocket() {
-      const socket = new SockJS('http://localhost:8080/ws');
+      const socket = new SockJS(process.env.VUE_APP_GATEWAY + '/ws');
       stompClient.value = Stomp.over(socket);
       stompClient.value.connect({}, () => {
         stompClient.value.subscribe(`/topic/notifications/${route.params.id}`, notification => {

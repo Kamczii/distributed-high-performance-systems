@@ -43,27 +43,26 @@ services:
       - "5761:5005"
     networks:
       - rsww-network
-#  offer_write:
-#    container_name: offer_write
-#    build:
-#      context: .
-#      dockerfile: ./OfferWrite/Dockerfile
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/offer
-#      - SPRING_DATASOURCE_USERNAME=admin
-#      - SPRING_DATASOURCE_PASSWORD=admin
-#      #      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-#      - ESDB_CONNECTIONSTRING=esdb://eventstore:2113?tls=false
-#      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
-#    ports:
-#      - "8082:8080"
-#      - "5082:5005"
-#    depends_on:
-#      - event_store
-#      - postgres
-#    networks:
-#      - rsww-network
-#      - rsww-network
+  offer_write:
+    container_name: offer_write
+    build:
+      context: .
+      dockerfile: ./OfferWrite/Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/offer
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      #      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - ESDB_CONNECTIONSTRING=esdb://eventstore:2113?tls=false
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+    ports:
+      - "8082:8082"
+      - "5082:5005"
+    depends_on:
+      - event_store
+      - postgres
+    networks:
+      - rsww-network
   order:
     container_name: order
     build:
@@ -117,26 +116,26 @@ services:
       - kafka
     networks:
       - rsww-network
-  tour_operator:
-    container_name: tour_operator
-    build:
-      context: .
-      dockerfile: ./TourOperator/Dockerfile
-    ports:
-      - "8085:8080"
-      - "5085:5003"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tour_operator
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - BOOTSTRAP_SERVER=kafka:9092
-    depends_on:
-      kafka:
-        condition: service_started
-      postgres:
-        condition: service_started
-    networks:
-      - rsww-network
+#  tour_operator:
+#    container_name: tour_operator
+#    build:
+#      context: .
+#      dockerfile: ./TourOperator/Dockerfile
+#    ports:
+#      - "8085:8080"
+#      - "5085:5003"
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tour_operator
+#      - SPRING_DATASOURCE_USERNAME=admin
+#      - SPRING_DATASOURCE_PASSWORD=admin
+#      - BOOTSTRAP_SERVER=kafka:9092
+#    depends_on:
+#      kafka:
+#        condition: service_started
+#      postgres:
+#        condition: service_started
+#    networks:
+#      - rsww-network
   mongo_read_model:
     container_name: mongo_read_model
     image: mongo:7.0.7

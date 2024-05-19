@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     fetchflights() {
-      fetch("http://localhost:8082/test/flights")
+      fetch(process.env.VUE_APP_GATEWAY + "/test/flights")
           .then(res => res.json())
           .then(data => this.flights = data)
           .catch(err => console.log(err))

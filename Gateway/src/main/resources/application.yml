@@ -18,37 +18,34 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
-        - id: OFFERS_READ
-          uri: lb://offer_read
+        - id: OfferRead
+          uri: lb://OfferRead
           predicates:
-            - Path=/offers/**
-          filters:
-          #            - TokenRelay=
-        - id: NOTIFICATIONS
+            - Path=/offers/**,/locations
+        - id: OfferWrite
+          uri: lb://OfferWrite
+          predicates:
+            - Path=/test/flights, /test/hotels, /test/offers
+        - id: Notification
           uri: lb://notification
           predicates:
             - Path=/initial/**
-        - id: websocket-sockjs-route
+        - id: NotificationSockJS
           uri: lb://notification
           predicates:
             - Path=/ws/info/**
-        - id: websocket_route
+        - id: NotificationWS
           uri: lb:ws://notification
           predicates:
             - Path=/ws/**
-          #            - TokenRelay=
-#        - id: ORDERS
-#          uri: lb://order
-#          predicates:
-#            - Path=/orders/**
-#          filters:
-##            - TokenRelay=
-#        - id: PAYMENTS
-#          uri: lb://payments
-#          predicates:
-#            - Path=/payments/**
-#          filters:
-#      #            - TokenRelay=
+        - id: Order
+          uri: lb://order
+          predicates:
+            - Path=/order/**
+        - id: TourOperator
+          uri: lb://TourOperator
+          predicates:
+            - Path=/init, /flights/send, /hotels/send
 eureka:
   client:
     fetchRegistry: true

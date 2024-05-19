@@ -57,7 +57,7 @@ export default {
     OfferList
   },
   mounted() {
-    fetch("http://localhost:8081/locations")
+    fetch(process.env.VUE_APP_GATEWAY + "/locations")
         .then(res => res.json())
         .then(data => this.locations = data)
         .catch(err => console.log(err))

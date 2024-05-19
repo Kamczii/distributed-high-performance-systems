@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.rsww.offerwrite.core.aggregates.AggregateStore;
 import pl.rsww.offerwrite.flights.FlightCommand;
-import pl.rsww.offerwrite.hotels.HotelCommand;
 import pl.rsww.offerwrite.flights.FlightService;
 import pl.rsww.offerwrite.flights.getting_flight_seats.Flight;
+import pl.rsww.offerwrite.hotels.HotelCommand;
 import pl.rsww.offerwrite.hotels.HotelService;
-import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoom;
 import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
 
@@ -32,8 +30,9 @@ public class OfferService {
         final var offer = fetchOffer(offerId);
         final var capacity = offer.getHotelRoom().getCapacity();
 
-        if (ageOfVisitors.size() > capacity) {
-            throw new IllegalStateException("The number of people exceeds the capacity");
+        final var visitorsCount = ageOfVisitors.size();
+        if (visitorsCount > capacity) {
+            throw new IllegalStateException(String.format("The number of people exceeds the capacity, required %d, got %d. (Offer %s, Order %s)", visitorsCount, capacity, offerId, orderId));
         }
 
         ArrayList<FlightCommand> rollbacks = new ArrayList<>();
@@ -49,10 +48,10 @@ public class OfferService {
 
             final var hotelLockRequest = buildHotelLockRequest(orderId, offer);
             hotelService.handle(hotelLockRequest);
-            log.info("Successful lock");
+            log.info(String.format("Successful lock (Offer %s, Order %s)", offerId, orderId));
         } catch (Exception e) {
             rollbacks.forEach(this::handle);
-            throw new IllegalStateException("Failed to lock offer");
+            throw new IllegalStateException(String.format("Failed to lock (Offer %s, Order %s), reason: %s", offerId, orderId, e.getMessage()));
         }
 
 

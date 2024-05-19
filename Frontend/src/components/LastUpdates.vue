@@ -22,7 +22,7 @@ export default {
   },
   mounted() {
     // Fetch initial messages using fetch
-    fetch('http://localhost:8080/initial')
+    fetch(process.env.VUE_APP_GATEWAY + '/initial')
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -37,7 +37,7 @@ export default {
       });
 
     // Set up WebSocket connection
-    const socket = new SockJS('http://localhost:8080/ws');
+    const socket = new SockJS(process.env.VUE_APP_GATEWAY + '/ws');
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe('/topic/notifications', notification => {

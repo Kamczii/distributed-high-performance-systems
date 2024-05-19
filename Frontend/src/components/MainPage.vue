@@ -1,5 +1,5 @@
 <template>
-  <h1>Travel office</h1>
+  <h1>TRAVEL OFFICE</h1>
   <div class="layout">
     <div>
       <OfferDebug></OfferDebug>
@@ -16,7 +16,6 @@ import SearchComponent from "@/components/search/SearchComponent.vue";
 import LastUpdates from "@/components/LastUpdates";
 import InitButtons from "@/components/init/InitButtons.vue";
 import OfferDebug from "@/components/debug/OfferDebug.vue";
-
 </script>
 
 <style scoped>

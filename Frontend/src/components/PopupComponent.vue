@@ -36,12 +36,16 @@ export default {
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
-  background: white;
-  border: 1px solid black;
+  background-color: #42b883; /* Vue Green */
+  color: #ffffff; /* White */
+  border-radius: 5px;
   padding: 20px;
   z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center; /* Opcjonalne, aby wyśrodkować zawartość */
+  -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
 }
 </style>
