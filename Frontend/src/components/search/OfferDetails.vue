@@ -46,6 +46,18 @@ export default {
     ConfigurationComponent,
     PaymentConfirmationModal
   },
+  watch: {
+    "$route.query": {
+      immediate: true,
+      handler(newQuery) {
+        const params = new URLSearchParams(newQuery).toString()
+        fetch(`http://localhost:8081/offers/${this.$route.params.id}?${params}` )
+            .then(res => res.json())
+            .then(data => this.offer = data)
+            .catch(err => console.log(err))
+      }
+    }
+  },
   setup() {
     const popupMessage = ref('');
     const offer = ref(null);

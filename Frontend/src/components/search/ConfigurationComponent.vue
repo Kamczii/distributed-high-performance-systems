@@ -67,7 +67,7 @@ export default {
         persons: this.persons,
         kids: this.kidAges
       };
-
+      console.log(params)
       this.emitKids();
 
       // Filter out empty parameters
@@ -76,6 +76,7 @@ export default {
         if (params[key]) searchParams[key] = params[key];
       });
 
+      console.log(searchParams)
 
       this.$router.push({ name: '', query: searchParams }).catch(err => {
         // Handle duplicate navigation errors or any other router error
