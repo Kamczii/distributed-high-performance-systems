@@ -11,6 +11,6 @@ import java.util.UUID;
 
 public sealed interface HotelEvent {
     record HotelCreated(UUID hotelId, String name, Location location, HotelRooms rooms) implements HotelEvent {}
-    record RoomReserved(UUID orderId, String type, LocalDateTime time, LocalDate checkInDate, LocalDate checkOutDate) implements HotelEvent {}
-    record RoomConfirmed(UUID orderId, String type, LocalDate checkInDate, LocalDate checkOutDate) implements HotelEvent {}
+    record RoomReserved(UUID hotelId, UUID orderId, String type, LocalDateTime time, LocalDate checkInDate, LocalDate checkOutDate) implements HotelEvent {}
+    record RoomConfirmed(UUID hotelId, UUID orderId, String type, LocalDate checkInDate, LocalDate checkOutDate) implements HotelEvent {}
 }

@@ -32,7 +32,7 @@ class HotelTest {
                 new HotelRequests.RoomRequest(SINGLE_ROOM_TYPE, 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
                 new HotelRequests.RoomRequest(SINGLE_ROOM_TYPE, 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
                 new HotelRequests.RoomRequest(DOUBLE_ROOM_TYPE, 2, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))
-        ));
+        ), List.of(HotelRequests.ModesOfTransport.AIRPLANE));
         
         hotel = Hotel.create(createHotelRequest);
     }

@@ -112,7 +112,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
     public void lock(UUID orderId, String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
         if (!roomAvailable(roomType, checkInDate, checkOutDate))
             throw new IllegalStateException("No available room for this type");
-        enqueue(new HotelEvent.RoomReserved(orderId, roomType, LocalDateTime.now(), checkInDate, checkOutDate));
+        enqueue(new HotelEvent.RoomReserved(id(), orderId, roomType, LocalDateTime.now(), checkInDate, checkOutDate));
     }
 
     public boolean roomAvailable(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
@@ -140,7 +140,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
 
     public void confirmLock(UUID orderId) {
         findOrder(orderId).ifPresentOrElse(reservation ->
-                        enqueue(new HotelEvent.RoomConfirmed(orderId, reservation.roomType(), reservation.checkInDate(), reservation.checkOutDate())),
+                        enqueue(new HotelEvent.RoomConfirmed(id(), orderId, reservation.roomType(), reservation.checkInDate(), reservation.checkOutDate())),
                 () -> {
                     throw new IllegalStateException("Reservation not found");
                 });

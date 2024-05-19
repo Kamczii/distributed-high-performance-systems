@@ -34,7 +34,7 @@ public class OfferServiceAdvice {
 
     private final ObjectRequestKafkaProducer objectRequestKafkaProducer;
     private final PriceCalculatorService priceCalculatorService;
-    private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private final OfferStatusService offerStatusService;
 
     @AfterReturning(value = "execution(public * pl.rsww.offerwrite.offer.OfferService.reserveOffer(..)) && args(offerId, orderId,ageOfVisitors)", argNames = "offerId,orderId,ageOfVisitors")

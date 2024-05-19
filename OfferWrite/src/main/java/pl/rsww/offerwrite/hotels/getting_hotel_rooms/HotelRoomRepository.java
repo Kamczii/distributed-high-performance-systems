@@ -17,4 +17,6 @@ public interface HotelRoomRepository extends JpaRepository<HotelRoom, UUID> {
                   AND (?3 < b.checkOut AND b.checkIn < ?4)
               )""")
     List<HotelRoom> find(Location location, Integer maxCapacity, LocalDate checkIn, LocalDate checkOut); //todo
+
+    List<HotelRoom> findAllByTypeAndHotelId(String type, UUID uuid);
 }
