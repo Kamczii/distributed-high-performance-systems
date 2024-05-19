@@ -12,8 +12,6 @@ public class AirportLocation {
     int id;
     private String city;
     private String country;
-//    @OneToMany
-//    private List<Hotel> hotels;
 
     public String getCity() {
         return city;
@@ -27,23 +25,10 @@ public class AirportLocation {
         return country;
     }
 
-//    public List<Hotel> getHotels() {
-//        return hotels;
-//    }
-
-//    public void setHotels(List<Hotel> hotels) {
-//        this.hotels = hotels;
-//    }
-
     public void setCountry(String country) {
         this.country = country;
     }
 
-//    public void addHotel(Hotel hotel){
-//        if(hotels != null){
-//            hotels.add(hotel);
-//        }
-//    }
 
     public int getId() {
         return id;

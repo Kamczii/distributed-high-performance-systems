@@ -2,8 +2,10 @@ package pl.rsww.touroperator.data_extraction;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import pl.rsww.touroperator.data.HotelInfo;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -68,11 +70,16 @@ public class JsonDataExtractor implements DataExtractor{
         String country = jsonObject.getString("destination_country");
         String region = jsonObject.getString("destination_region");
         String drive = jsonObject.getString("drive");
-        String city = jsonObject.getString("destination_airport");
         JSONArray jsonRooms = jsonObject.getJSONArray("room_list");
         List<String> rooms = fromList(jsonRooms);
-        JSONArray jsonDepartures = jsonObject.getJSONArray("departures");
-        List<String> departures = fromList(jsonDepartures);
+
+        String city = "";
+        List<String> departures = new ArrayList<>();
+        if(drive.equals(HotelInfo.DRIVE_AIRPLANE)){
+            city = jsonObject.getString("destination_airport");
+            JSONArray jsonDepartures = jsonObject.getJSONArray("departures");
+            departures = fromList(jsonDepartures);
+        }
 
         if(city.contains("(")){
             city = city.split("\\(")[0];

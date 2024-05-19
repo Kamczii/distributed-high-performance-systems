@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.UUID;
 
 public sealed interface HotelRequests {
+    enum ModesOfTransport{
+        INDIVIDUAL, AIRPLANE, BUS
+    }
 
     @Validated
     record AgeRangePrice(
@@ -36,6 +39,7 @@ public sealed interface HotelRequests {
             @Nonnull UUID hotelId,
             @Nonnull String name,
             @Nonnull LocationRequest location,
-            @Nonnull Collection<RoomRequest> rooms
+            @Nonnull Collection<RoomRequest> rooms,
+            @Nonnull Collection<ModesOfTransport> modesOfTransports
     ) implements HotelRequests {}
 }

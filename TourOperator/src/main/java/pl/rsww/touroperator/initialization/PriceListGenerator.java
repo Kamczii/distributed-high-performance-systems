@@ -13,6 +13,8 @@ public class PriceListGenerator {
     private static final double HOTEL_MIN = 1000.0;
     private static final double FLIGHT_MAX = 1000.0;
     private static final double FLIGHT_MIN = 500.0;
+    private static final double BUS_MAX = 900.0;
+    private static final double BUS_MIN = 200.0;
     private static final int PRECISION = 2;
 
     private double mainPrice;
@@ -43,12 +45,21 @@ public class PriceListGenerator {
         return ranges;
     }
 
+    public List<AgeRangePriceItem> getNextBusRanges(){
+        generateRanges(mainPrice);
+        return ranges;
+    }
+
     public void startHotel(){
         mainPrice = generateRandomPrice(HOTEL_MIN, HOTEL_MAX);
     }
 
     public void startFlight(){
         mainPrice = generateRandomPrice(FLIGHT_MIN, FLIGHT_MAX);
+    }
+
+    public void startBus(){
+        mainPrice = generateRandomPrice(BUS_MIN, BUS_MAX);
     }
 
     public PriceListGenerator() {
