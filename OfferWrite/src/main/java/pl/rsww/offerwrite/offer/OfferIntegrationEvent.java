@@ -14,7 +14,6 @@ import pl.rsww.offerwrite.flights.getting_flight_seats.FlightRepository;
 import pl.rsww.offerwrite.hotels.Hotel;
 import pl.rsww.offerwrite.hotels.HotelEvent;
 import pl.rsww.offerwrite.hotels.HotelService;
-import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRepository;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoom;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoomRepository;
 import pl.rsww.offerwrite.location.Location;
@@ -28,13 +27,18 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_INTEGRATION_TOPIC;
+import static pl.rsww.offerwrite.constants.Constants.LOCK_TIME_IN_SECONDS;
 
 @Component
 @RequiredArgsConstructor
 public class OfferIntegrationEvent {
+    private static final int WAIT = 10;
     private final FlightService flightService;
     private final HotelService hotelService;
     private final ObjectRequestKafkaProducer objectRequestKafkaProducer;
@@ -43,6 +47,8 @@ public class OfferIntegrationEvent {
     private final PriceCalculatorService priceCalculatorService;
     private final AgeRangePriceMapper ageRangePriceMapper;
     private final HotelRoomRepository hotelRoomRepository;
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+    private final OfferStatusService offerStatusService;
 
     @EventListener
     void handleSeatReserved(EventEnvelope<FlightEvent.SeatReserved> eventEnvelope) {
@@ -74,7 +80,19 @@ public class OfferIntegrationEvent {
     }
 
     private void publish(pl.rsww.offerwrite.api.integration.OfferIntegrationEvent event) {
+
         objectRequestKafkaProducer.produce(OFFER_INTEGRATION_TOPIC, event);
+
+        if (event instanceof pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.StatusChanged statusChanged &&
+                statusChanged.status().equals(AvailableOfferStatus.RESERVED)) {
+            scheduleStatusUpdate(statusChanged);
+        }
+    }
+
+    private void scheduleStatusUpdate(pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.StatusChanged statusChanged) {
+        executorService.schedule(() -> {
+            offerStatusService.updateStatus(statusChanged.offerId());
+        }, LOCK_TIME_IN_SECONDS + WAIT, TimeUnit.SECONDS);
     }
 
     @EventListener
