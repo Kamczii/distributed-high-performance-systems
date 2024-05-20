@@ -5,10 +5,10 @@ services:
     build:
       context: Frontend
       dockerfile: ./Dockerfile
-    ports:
-      - "4200:8080"
+    environment:
+      - GATEWAY=http://test
     networks: 
-      - rsww-network
+      - rsww-180066-network
   notification:
     container_name: notification
     build:
@@ -20,19 +20,30 @@ services:
       - "8083:8080"
       - "5083:5005"
     networks:
-      - rsww-network
+      - rsww-180066-network
   gateway:
     container_name: gateway
     build:
       context: ./Gateway
       dockerfile: ./Dockerfile
     ports:
-      - "8080:8080"
+      - "8099:8099"
       - "5080:5005"
     depends_on:
       - eureka
     networks:
-      - rsww-network
+      - rsww-180066-network
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - frontend
+      - gateway
+    networks:
+      - rsww-180066-network
   eureka:
     container_name: eureka
     build:
@@ -42,14 +53,14 @@ services:
       - "8761:8761"
       - "5761:5005"
     networks:
-      - rsww-network
+      - rsww-180066-network
   offer_write:
     container_name: offer_write
     build:
       context: .
       dockerfile: ./OfferWrite/Dockerfile
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/offer
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_offer
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
       #      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
@@ -62,7 +73,7 @@ services:
       - event_store
       - postgres
     networks:
-      - rsww-network
+      - rsww-180066-network
   order:
     container_name: order
     build:
@@ -72,11 +83,11 @@ services:
       - "8086:8080"
       - "5086:5005"
     networks:
-      - rsww-network
+      - rsww-180066-network
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/order
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_order
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
@@ -90,11 +101,11 @@ services:
       - "8084:8080"
       - "5084:5005"
     networks:
-      - rsww-network
+      - rsww-180066-network
     depends_on:
       - postgres
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/payment
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_payment
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
@@ -115,27 +126,27 @@ services:
       - mongo_read_model
       - kafka
     networks:
-      - rsww-network
-#  tour_operator:
-#    container_name: tour_operator
-#    build:
-#      context: .
-#      dockerfile: ./TourOperator/Dockerfile
-#    ports:
-#      - "8085:8080"
-#      - "5085:5003"
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/tour_operator
-#      - SPRING_DATASOURCE_USERNAME=admin
-#      - SPRING_DATASOURCE_PASSWORD=admin
-#      - BOOTSTRAP_SERVER=kafka:9092
-#    depends_on:
-#      kafka:
-#        condition: service_started
-#      postgres:
-#        condition: service_started
-#    networks:
-#      - rsww-network
+      - rsww-180066-network
+  tour_operator:
+    container_name: tour_operator
+    build:
+      context: .
+      dockerfile: ./TourOperator/Dockerfile
+    ports:
+      - "8085:8080"
+      - "5085:5003"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_tour_operator
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - BOOTSTRAP_SERVER=kafka:9092
+    depends_on:
+      kafka:
+        condition: service_started
+      postgres:
+        condition: service_started
+    networks:
+      - rsww-180066-network
   mongo_read_model:
     container_name: mongo_read_model
     image: mongo:7.0.7
@@ -148,7 +159,7 @@ services:
     volumes:
       - mongo_read_db:/data/db
     networks:
-      - rsww-network
+      - rsww-180066-network
   mongo-express:
     image: mongo-express
     restart: always
@@ -160,7 +171,7 @@ services:
       ME_CONFIG_MONGODB_AUTH_DATABASE: read_model
       ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo_read_model:27017/
     networks:
-      - rsww-network
+      - rsww-180066-network
   event_store:
     container_name: eventstore
     image: eventstore/eventstore
@@ -175,7 +186,7 @@ services:
       - '1113:1113'
       - '2113:2113'
     networks:
-      - rsww-network
+      - rsww-180066-network
     volumes:
       - type: volume
         source: eventstore-volume-data
@@ -192,7 +203,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
     networks:
-      - rsww-network
+      - rsww-180066-network
   kafka:
     image: 'bitnami/kafka:3.5.1'
     container_name: kafka
@@ -214,7 +225,7 @@ services:
       KAFKA_CFG_MAX_REQUEST_SIZE: 20971520
       KAFKA_CFG_PRODUCER_MAX_REQUEST_SIZE: 20971520
     networks:
-      - rsww-network
+      - rsww-180066-network
   postgres:
     container_name: postgres
     image: postgres:15.4
@@ -228,12 +239,12 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - rsww-network
+      - rsww-180066-network
 volumes:
   mongo_read_db:
   eventstore-volume-data:
   eventstore-volume-logs:
   postgres_data:
 networks:
-  rsww-network:
+  rsww-180066-network:
     driver: bridge
