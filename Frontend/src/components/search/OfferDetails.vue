@@ -52,7 +52,7 @@ export default {
       immediate: true,
       handler(newQuery) {
         const params = new URLSearchParams(newQuery).toString()
-        fetch(`http://localhost:8081/offers/${this.$route.params.id}?${params}` )
+        fetch(process.env.VUE_APP_GATEWAY + `/offers/${this.$route.params.id}?${params}` )
             .then(res => res.json())
             .then(data => this.offer = data)
             .catch(err => console.log(err))
@@ -70,7 +70,7 @@ export default {
     const paymentId = ref(null);
 
     onMounted(() => {
-      fetch(`http://localhost:8081/offers/${route.params.id}`)
+      fetch(process.env.VUE_APP_GATEWAY + `/offers/${route.params.id}`)
           .then(res => res.json())
           .then(data => {
             offer.value = data;
@@ -127,7 +127,7 @@ export default {
 
       console.log('Kids ages:', kids.value);
       const offerId = route.params.id;
-      const url = `http://localhost:8086/order/create`;
+      const url = process.env.VUE_APP_GATEWAY  + `/order/create`;
       const data = {
         offerId: offerId,
         ageOfVisitors: kids.value

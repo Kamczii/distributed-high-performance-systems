@@ -31,7 +31,7 @@ export default {
       immediate: true,
       handler(newQuery) {
         const params = new URLSearchParams(newQuery).toString()
-        fetch(`http://localhost:8081/offers?${params}` )
+        fetch(process.env.VUE_APP_GATEWAY + `/offers?${params}` )
             .then(res => res.json())
             .then(data => this.offers = data.sort())
             .catch(err => console.log(err))

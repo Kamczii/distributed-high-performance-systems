@@ -38,11 +38,11 @@ export default {
   methods: {
     acceptPayment() {
       this.$emit('accept');
-      this.sendChoice(`http://localhost:8084/payment/accept`)
+      this.sendChoice(process.env.VUE_APP_GATEWAY  + `/payment/accept`)
     },
     cancelPayment() {
       this.$emit('cancel');
-      this.sendChoice(`http://localhost:8084/payment/cancel`)
+      this.sendChoice(process.env.VUE_APP_GATEWAY  + `/payment/cancel`)
     },
     sendChoice(url) {
       const data = {
