@@ -88,7 +88,7 @@ export default {
     }
 
     function connectWebSocket() {
-      const socket = new SockJS(process.env.VUE_APP_GATEWAY + '/ws');
+      const socket = new SockJS(process.env.VUE_APP_WS_GATEWAY + '/ws');
       stompClient.value = Stomp.over(socket);
       stompClient.value.connect({}, () => {
         stompClient.value.subscribe(`/topic/notifications/${route.params.id}`, notification => {
