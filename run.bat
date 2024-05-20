@@ -3,7 +3,7 @@ REM Stop and remove all running containers
 docker-compose down
 
 REM Define the services to build and run
-set SERVICES=frontend offer_write offer_read kafka event_store postgres notification eureka gateway payment order
+set SERVICES=frontend offer_write offer_read kafka event_store postgres eureka gateway notification tour_operator
 
 REM Remove all Docker volumes except projekt_postgres_data
 for /F "delims=" %%i in ('docker volume ls -q') do (

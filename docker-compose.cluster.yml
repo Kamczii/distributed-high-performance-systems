@@ -136,31 +136,6 @@ services:
         condition: service_started
     networks:
       - rsww-network
-  mongo_read_model:
-    container_name: mongo_read_model
-    image: mongo:7.0.7
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_read_db:/data/db
-    networks:
-      - rsww-network
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - "8089:8081"
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
-      ME_CONFIG_MONGODB_AUTH_DATABASE: read_model
-      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo_read_model:27017/
-    networks:
-      - rsww-network
   event_store:
     container_name: eventstore
     image: eventstore/eventstore
@@ -213,20 +188,6 @@ services:
       KAFKA_MAX_REQUEST_SIZE: 20971520
       KAFKA_CFG_MAX_REQUEST_SIZE: 20971520
       KAFKA_CFG_PRODUCER_MAX_REQUEST_SIZE: 20971520
-    networks:
-      - rsww-network
-  postgres:
-    container_name: postgres
-    image: postgres:15.4
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin
-      POSTGRES_DB: offer
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     networks:
       - rsww-network
 volumes:
