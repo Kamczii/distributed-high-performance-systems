@@ -17,13 +17,13 @@ export default {
           .catch(err => console.error(err));
     },
     flights() {
-      fetch(process.env.VUE_APP_GATEWAY + '/flights/send?limit=10')
+      fetch(process.env.VUE_APP_GATEWAY + '/flights/send?limit=100')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
     },
     busses() {
-      fetch(process.env.VUE_APP_GATEWAY + '/busses/send?limit=10')
+      fetch(process.env.VUE_APP_GATEWAY + '/busses/send?limit=100')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
