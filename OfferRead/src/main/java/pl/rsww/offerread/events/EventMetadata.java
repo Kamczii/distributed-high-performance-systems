@@ -1,9 +1,0 @@
-package pl.rsww.offerread.events;
-
-public record EventMetadata(
-  String eventId,
-  long streamPosition,
-  long logPosition,
-  String eventType
-) {
-}
