@@ -1,9 +1,0 @@
-sudo docker build . -f ./EurekaServer/Dockerfile -t 10.40.71.55:5000/RSWW_180066_EurekaServer
-sudo docker build ./Frontend -t 10.40.71.55:5000/rsww_180066_frontend
-sudo docker build . -f ./Gateway/Dockerfile -t 10.40.71.55:5000/RSWW_180066_Gateway
-sudo docker build . -f ./Notifications/Dockerfile -t 10.40.71.55:5000/RSWW_180066_Notifications
-sudo docker build . -f ./OfferRead/Dockerfile -t 10.40.71.55:5000/RSWW_180066_OfferRead
-sudo docker build . -f ./OfferWrite/Dockerfile -t 10.40.71.55:5000/RSWW_180066_OfferWrite
-sudo docker build . -f ./Order/Dockerfile -t 10.40.71.55:5000/RSWW_180066_Order
-sudo docker build . -f ./Payment/Dockerfile -t 10.40.71.55:5000/RSWW_180066_Payment
-sudo docker build . -f ./TourOperator/Dockerfile -t 10.40.71.55:5000/RSWW_180066_TourOperator
