@@ -2,6 +2,7 @@ package pl.rsww.offerwrite.api.integration;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.validation.annotation.Validated;
+import pl.rsww.tour_operator.api.HotelRequests;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ public sealed interface OfferIntegrationEvent {
                    LocalDate start,
                    LocalDate end,
                    AvailableOfferStatus status,
+                   AvailableTransportType transport,
                    Collection<AgeRangePrice> priceList
 
     ) implements OfferIntegrationEvent {}

@@ -30,6 +30,13 @@
         <option v-for="location in locations" :key="location" :value="location">{{ location.city }} / {{location.country}}</option>
       </select>
 
+      <!-- Transport -->
+      <label for="transport">Transport:</label>
+      <select id="transport" v-model="transport">
+        <option disabled value="">Please select one</option>
+        <option v-for="transport in transports" :key="transport" :value="transport">{{ transport }}</option>
+      </select>
+
       <!-- Date Range Picker -->
       <label for="startDate">When (start):</label>
       <input type="date" id="startDate" v-model="startDate">
@@ -74,6 +81,7 @@ export default {
       endDate: '', // Added for end date of the trip
       kidAges: [], // Array to store each kid's age
       locations: [], // Example cities
+      transports: ['BUS', 'FLIGHT']
     };
   },
   watch: {

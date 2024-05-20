@@ -2,16 +2,12 @@ package pl.rsww.touroperator.busses;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.rsww.tour_operator.api.BusRequests;
-import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.touroperator.busses.lines.BusLine;
-import pl.rsww.touroperator.busses.lines.BusLineRepository;
-import pl.rsww.touroperator.flights.Flight;
-import pl.rsww.touroperator.flights.FlightRepository;
-import pl.rsww.touroperator.flights.lines.FlightLine;
-import pl.rsww.touroperator.flights.lines.FlightLineRepository;
 import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
 import pl.rsww.touroperator.initialization.EventSender;
 
@@ -26,10 +22,10 @@ public class BusService {
     private EventSender eventSender;
 
     @Async
-    public void sendRequests() {
+    public void sendRequests(Integer limit) {
         log.info("Started sending busses");
         eventSender = EventSender.getEventSender();
-        Iterable<Bus> busses = busRepository.findAll();
+        Iterable<Bus> busses = busRepository.findAll(Pageable.ofSize(limit));
         for(Bus bus: busses){
             sendRequest(bus);
         }

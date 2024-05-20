@@ -13,6 +13,7 @@ import pl.rsww.offerwrite.hotels.Hotel;
 import pl.rsww.offerwrite.hotels.HotelService;
 import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
+import pl.rsww.offerwrite.offer.getting_offers.strategy.context.impl.OfferStrategyContextImpl;
 import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 
 import java.util.UUID;
@@ -27,42 +28,23 @@ import static pl.rsww.offerwrite.api.OfferWriteTopics.OFFER_INTEGRATION_TOPIC;
 @RequiredArgsConstructor
 public class OfferStatusService {
 
-    private final FlightService flightService;
     private final OfferRepository offerRepository;
-    private final HotelService hotelService;
     private final ObjectRequestKafkaProducer objectRequestKafkaProducer;
+    private final OfferStrategyContextImpl offerStrategyContext;
 
 
     public void updateStatus(UUID offerId) {
         final var offer = fetchOffer(offerId);
-        final var initialFlight = getFlightCurrentState(offer.getInitialFlight());
-        final var returnFlight = getFlightCurrentState(offer.getReturnFlight());
-        final var hotelRoom = offer.getHotelRoom();
-        final var hotel = getHotelCurrentState(hotelRoom.getHotel().getId());
-
-        final var offerAvailable = Stream.of(
-                hotel.roomAvailable(hotelRoom.getType(), offer.getInitialFlight().getDate(), offer.getReturnFlight().getDate()),
-                initialFlight.seatsAvailable(hotelRoom.getCapacity()),
-                returnFlight.seatsAvailable(hotelRoom.getCapacity())
-        ).allMatch(TRUE::equals);
+        final var offerAvailable = offerStrategyContext.resolve(offer)
+                .isOfferAvailable(offer);
 
         if (offerAvailable) {
-            log.info("Unlocking " + offerId);
+            log.info("Unlocking " + offer.getId());
             final var message = map(offer, AvailableOfferStatus.OPEN);
             publish(message);
         }
     }
 
-    private String flightId(Flight flight) {
-        return FlightUtils.flightId(flight.getFlightNumber(), flight.getDate());
-    }
-
-    private pl.rsww.offerwrite.flights.Flight getFlightCurrentState(Flight flight) {
-        return flightService.get(flightId(flight));
-    }
-    private Hotel getHotelCurrentState(UUID hotelId) {
-        return hotelService.getEntity(hotelId);
-    }
     private Offer fetchOffer(UUID offerId) {
         return offerRepository.findById(offerId)
                               .orElseThrow(() -> new ResourceNotFoundException(Offer.class.toString(), offerId.toString()));

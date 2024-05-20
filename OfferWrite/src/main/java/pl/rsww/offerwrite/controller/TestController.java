@@ -117,8 +117,7 @@ public class TestController {
     private Map<String, Object> map(Offer offer) {
         return Map.of(
                 "hotel-"+offer.getHotelRoom().getType(), hotelService.getEntity(offer.getHotelRoom().getHotel().getId()),
-                "initialFlight", flightService.get(offer.getInitialFlight().getFlightId()),
-                "returnFlight", flightService.get(offer.getReturnFlight().getFlightId())
+                "type", offer.getClass()
         );
     }
 }

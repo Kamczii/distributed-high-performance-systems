@@ -11,6 +11,7 @@ import pl.rsww.offerwrite.hotels.Hotel;
 import pl.rsww.offerwrite.hotels.HotelService;
 import pl.rsww.offerwrite.offer.getting_offers.Offer;
 import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
+import pl.rsww.offerwrite.offer.getting_offers.strategy.context.impl.OfferStrategyContextImpl;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
@@ -25,58 +26,12 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class PriceCalculatorService {
     private final OfferRepository offerRepository;
-    private final FlightService flightService;
-    private final HotelService hotelService;
+    private final OfferStrategyContextImpl offerStrategyContext;
 
     public BigDecimal calculate(UUID offerId, Collection<Integer> ageOfVisitors) {
         final var offer = fetchOffer(offerId);
-        final var tripDuration = getTripDuration(offer);
-
-        final var hotel = getHotel(offer);
-        final var component1 = calculateTotalPrice(ageOfVisitors, age -> hotel.getPrice(offer.getHotelRoom().getType(), age))
-                .multiply(BigDecimal.valueOf(tripDuration));
-
-        final var initialFlight = getFlight(offer.getInitialFlight());
-        final var component2 = calculateTotalPrice(ageOfVisitors, initialFlight::getPrice);
-
-        final var returnFlight = getFlight(offer.getReturnFlight());
-        final var component3 = calculateTotalPrice(ageOfVisitors, returnFlight::getPrice);
-
-        return component1.add(component2).add(component3);
-    }
-
-    public Collection<AgeRangePrice> getPriceList(UUID offerId) {
-        final var offer = fetchOffer(offerId);
-        final var hotel = getHotel(offer);
-        final var room = hotel.getRooms().rooms().stream()
-                .filter(r -> r.type().equals(offer.getHotelRoom().getType()))
-                .findAny()
-                .orElseThrow();
-        final var initialFlight = getFlight(offer.getInitialFlight());
-        final var returnFlight = getFlight(offer.getReturnFlight());
-
-        final var priceLists = Stream.of(room.priceList(), initialFlight.getPriceList(), returnFlight.getPriceList()).toList();
-        return AgeRangePriceHelper.calculateSummedPrices(priceLists);
-    }
-
-    private BigDecimal calculateTotalPrice(Collection<Integer> ageOfVisitors, Function<Integer, BigDecimal> priceFunction) {
-        return ageOfVisitors.stream()
-                .map(priceFunction)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private Flight getFlight(pl.rsww.offerwrite.flights.getting_flight_seats.Flight flight) {
-        final var initialFlightId = flight.getFlightId();
-        return flightService.get(initialFlightId);
-    }
-
-    private Hotel getHotel(Offer offer) {
-        final var hotelId = offer.getHotelRoom().getHotel().getId();
-        return hotelService.getEntity(hotelId);
-    }
-
-    private static long getTripDuration(Offer offer) {
-        return ChronoUnit.DAYS.between(offer.getInitialFlight().getDate(), offer.getReturnFlight().getDate());
+        return offerStrategyContext.resolve(offer)
+                .calculatePrice(offer, ageOfVisitors);
     }
 
     private Offer fetchOffer(UUID offerId) {

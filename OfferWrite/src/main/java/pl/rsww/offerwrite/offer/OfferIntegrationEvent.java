@@ -16,11 +16,7 @@ import pl.rsww.offerwrite.hotels.HotelEvent;
 import pl.rsww.offerwrite.hotels.HotelService;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoom;
 import pl.rsww.offerwrite.hotels.getting_hotel_rooms.HotelRoomRepository;
-import pl.rsww.offerwrite.location.Location;
-import pl.rsww.offerwrite.mapper.AgeRangePriceMapper;
-import pl.rsww.offerwrite.offer.getting_offers.Offer;
-import pl.rsww.offerwrite.offer.getting_offers.OfferEvent;
-import pl.rsww.offerwrite.offer.getting_offers.OfferRepository;
+import pl.rsww.offerwrite.offer.getting_offers.*;
 import pl.rsww.offerwrite.producer.ObjectRequestKafkaProducer;
 
 import java.time.LocalDate;
@@ -44,11 +40,12 @@ public class OfferIntegrationEvent {
     private final ObjectRequestKafkaProducer objectRequestKafkaProducer;
     private final FlightRepository flightRepository;
     private final OfferRepository offerRepository;
-    private final PriceCalculatorService priceCalculatorService;
-    private final AgeRangePriceMapper ageRangePriceMapper;
     private final HotelRoomRepository hotelRoomRepository;
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private final OfferStatusService offerStatusService;
+    private final OfferAvailabilityService offerAvailabilityService;
+    private final CreateOfferEventMapper createOfferEventMapper;
+    private final FlightOfferRepository flightOfferRepository;
 
     @EventListener
     void handleSeatReserved(EventEnvelope<FlightEvent.SeatReserved> eventEnvelope) {
@@ -72,7 +69,7 @@ public class OfferIntegrationEvent {
     }
 
     private List<Offer> findAffectedOffers(Integer availableSeats, pl.rsww.offerwrite.flights.getting_flight_seats.Flight flight) {
-        return offerRepository.findAllByHotelRoomCapacityGreaterThanAndInitialFlightIdOrReturnFlightId(availableSeats, flight.getId(), flight.getId());
+        return flightOfferRepository.findAllByHotelRoomCapacityGreaterThanAndInitialFlightIdOrReturnFlightId(availableSeats, flight.getId(), flight.getId());
     }
 
     private pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.StatusChanged map(Offer offer, AvailableOfferStatus status) {
@@ -108,22 +105,11 @@ public class OfferIntegrationEvent {
     }
 
     private boolean isOfferAvailable(Offer offer) {
-        final var hotelId = offer.getHotelRoom().getHotel().getId();
-        final var roomType = offer.getHotelRoom().getType();
-        final var hotelCurrentState = getHotelCurrentState(hotelId);
-        final var availableSeats = Math.min(getFlightCurrentState(offer.getInitialFlight().getFlightId()).getCapacity(),
-                getFlightCurrentState(offer.getReturnFlight().getFlightId()).getCapacity());
-        return hotelCurrentState.getRooms().rooms().stream().anyMatch(room ->
-                roomType.equals(room.type()) && availableSeats >= room.capacity()
-        );
+        return offerAvailabilityService.isOfferAvailable(offer.getId());
     }
 
     private Hotel getHotelCurrentState(UUID hotelId) {
         return hotelService.getEntity(hotelId);
-    }
-
-    private Flight getFlightCurrentState(String id) {
-        return flightService.get(id);
     }
 
     @EventListener
@@ -194,35 +180,8 @@ public class OfferIntegrationEvent {
     }
 
     private void onOfferCreated(OfferEvent offerEvent) {
-        var offer = offerRepository.findById(offerEvent.getEntityId())
-                .orElseThrow();
-
-        var departure = mapLocation(offer.getInitialFlight().getDeparture());
-        var destination = mapLocation(offer.getInitialFlight().getDestination());
-        var room = mapRoom(offer);
-        var hotel = mapHotel(offer, room);
-        var start = offer.getInitialFlight().getDate();
-        var end = offer.getReturnFlight().getDate();
-        var priceList = getPriceListForOffer(offer);
-        var event = new pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Created(offer.getId(), hotel, departure, destination, start, end, AvailableOfferStatus.OPEN, priceList);
+        final var event = createOfferEventMapper.createOfferCreatedEvent(offerEvent.getEntityId());
         publish(event);
-    }
-
-    private static pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Location mapLocation(Location offer) {
-        return new pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Location(offer.getCity(), offer.getCountry());
-    }
-
-    private static pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Room mapRoom(Offer offer) {
-        return new pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Room(offer.getHotelRoom().getType(), offer.getHotelRoom().getCapacity(), offer.getHotelRoom().getBeds());
-    }
-
-    private static pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Hotel mapHotel(Offer offer, pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Room room) {
-        return new pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Hotel(offer.getHotelRoom().getHotel().getName(), room);
-    }
-
-    private Collection<pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.AgeRangePrice> getPriceListForOffer(Offer offer) {
-        final var priceList = priceCalculatorService.getPriceList(offer.getId());
-        return ageRangePriceMapper.map(priceList);
     }
 
     @TransactionalEventListener

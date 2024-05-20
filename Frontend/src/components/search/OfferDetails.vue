@@ -4,6 +4,7 @@
     <h2>Offer Details</h2>
     <h3>Hotel Information</h3>
     <p>Status: {{ offer.status }}</p>
+    <p>Transport: {{ offer.transport }}</p>
     <p>Name: {{ offer.hotel.name }}</p>
     <p>Room Type: {{ offer.hotel.room.type }}</p>
     <p>Persons: {{ offer.hotel.room.capacity }}</p>

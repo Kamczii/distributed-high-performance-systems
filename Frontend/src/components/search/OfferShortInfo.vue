@@ -3,7 +3,7 @@
     <div class="offer-short-info">
       <div><strong>ID: </strong> {{offer.id}}</div>
       <div><strong>Hotel:</strong> {{ offer.hotel.name }} - {{ offer.hotel.room.type }} ({{ offer.hotel.room.capacity }} persons, {{ offer.hotel.room.beds }} beds)</div>
-      <div><strong>Travel:</strong> From {{ offer.departure.city }} / {{ offer.departure.country }} to {{ offer.destination.city }} / {{ offer.destination.country }}</div>
+      <div><strong>Travel:</strong> {{offer.transport}} From {{ offer.departure.city }} / {{ offer.departure.country }} to {{ offer.destination.city }} / {{ offer.destination.country }}</div>
       <div><strong>Dates:</strong> {{ formatDate(offer.start) }} to {{ formatDate(offer.end) }}</div>
       <div  v-if="offer.price"><strong>Price:</strong> {{ offer.price }} </div>
     </div>

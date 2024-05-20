@@ -6,6 +6,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import pl.rsww.offerwrite.buses.BusService;
+import pl.rsww.tour_operator.api.BusRequests;
 import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.flights.FlightService;
@@ -26,10 +28,10 @@ public class TestCommandLineRunner {
 
     @Bean
     public CommandLineRunner run(HotelService hotelService, FlightService flightService, OfferService offerService,
-                                 OfferRepository offerRepository) {
+                                 OfferRepository offerRepository, BusService busService) {
         return args -> {
             log.info("Init");
-            init(hotelService, flightService);
+            init(hotelService, flightService, busService);
         };
     }
 
@@ -66,7 +68,7 @@ public class TestCommandLineRunner {
     }
 
 
-    private static void init(HotelService hotelService, FlightService flightService) {
+    private static void init(HotelService hotelService, FlightService flightService, BusService busService) {
         hotelService.handle(new HotelRequests.CreateHotel(UUID.randomUUID(),
                         "Jagódka",
                 new HotelRequests.LocationRequest("Poland", "Gdańsk"),
@@ -129,6 +131,22 @@ public class TestCommandLineRunner {
                 new FlightRequests.LocationRequest("Poland", "Warsaw"),
                 LocalDate.now().plusDays(5)
                 , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
+        ));
+
+        busService.handle(new BusRequests.CreateBus(UUID.randomUUID().toString(),
+                15,
+                new BusRequests.LocationRequest("Poland", "Warsaw"),
+                new BusRequests.LocationRequest("Poland", "Gdańsk"),
+                LocalDate.now()
+                , List.of(new BusRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
+        ));
+
+        busService.handle(new BusRequests.CreateBus(UUID.randomUUID().toString(),
+                15,
+                new BusRequests.LocationRequest("Poland", "Gdańsk"),
+                new BusRequests.LocationRequest("Poland", "Warsaw"),
+                LocalDate.now().plusDays(5)
+                , List.of(new BusRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
         ));
     }
 }

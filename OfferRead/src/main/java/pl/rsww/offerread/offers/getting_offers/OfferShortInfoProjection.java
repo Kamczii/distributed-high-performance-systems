@@ -49,6 +49,7 @@ public class OfferShortInfoProjection extends MongoProjection<OfferShortInfo, UU
                 event.start(),
                 event.end(),
                 event.status(),
+                event.transport(),
                 ageRangePriceMapper.map(event.priceList())
         );
     }

@@ -2,10 +2,10 @@ package pl.rsww.touroperator.flights;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.touroperator.flights.lines.FlightLine;
 import pl.rsww.touroperator.flights.lines.FlightLineRepository;
@@ -27,10 +27,10 @@ public class FlightService {
     private EventSender eventSender;
 
     @Async
-    public void sendRequests() {
+    public void sendRequests(Integer limit) {
         log.info("Started sending flights");
         eventSender = EventSender.getEventSender();
-        Iterable<Flight> flights = flightRepository.findAll();
+        Iterable<Flight> flights = flightRepository.findAll(Pageable.ofSize(limit));
         for(Flight flight: flights){
             sendRequest(flight);
         }

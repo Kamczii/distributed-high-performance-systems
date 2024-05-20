@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
+import pl.rsww.offerwrite.api.integration.AvailableTransportType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public class OfferShortInfo {
 
     private LocalDate end;
     private AvailableOfferStatus status;
+    private AvailableTransportType transport;
 
     private Collection<AgeRangePrice> priceList;
 

@@ -50,6 +50,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
                 .stream()
                 .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds(),
                         roomRequest.priceList().stream().map(price -> new AgeRangePrice(price.startingRange(), price.endingRange(), price.price())).toList()))
+                .distinct() //TODO: usunac
                 .collect(Collectors.collectingAndThen(toList(), HotelRooms::new));
         return new Hotel(create.hotelId(), create.name(), location, rooms);
     }

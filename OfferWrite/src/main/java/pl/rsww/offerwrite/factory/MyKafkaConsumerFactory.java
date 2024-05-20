@@ -5,17 +5,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import pl.rsww.tour_operator.api.BusRequests;
 import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.tour_operator.api.HotelRequests;
-import pl.rsww.offerwrite.api.requests.OfferRequests;
 
 @EnableKafka
 @Configuration
 @RequiredArgsConstructor
 public class MyKafkaConsumerFactory {
     private final ConsumerFactory<FlightRequests> flightRequestsConsumerFactory;
+    private final ConsumerFactory<BusRequests> busRequestsConsumerFactory;
     private final ConsumerFactory<HotelRequests> hotelRequestsConsumerFactory;
-    private final ConsumerFactory<OfferRequests> offerRequestsConsumerFactory;
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> flightConsumerFactory() {
@@ -23,13 +23,12 @@ public class MyKafkaConsumerFactory {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> hotelConsumerFactory() {
-        return hotelRequestsConsumerFactory.create(HotelRequests.class);
+    public ConcurrentKafkaListenerContainerFactory<String, Object> busConsumerFactory() {
+        return busRequestsConsumerFactory.create(BusRequests.class);
     }
 
-
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> offerConsumerFactory() {
-        return offerRequestsConsumerFactory.create(OfferRequests.class);
+    public ConcurrentKafkaListenerContainerFactory<String, Object> hotelConsumerFactory() {
+        return hotelRequestsConsumerFactory.create(HotelRequests.class);
     }
 }

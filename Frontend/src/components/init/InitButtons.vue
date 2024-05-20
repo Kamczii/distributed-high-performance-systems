@@ -17,13 +17,19 @@ export default {
           .catch(err => console.error(err));
     },
     flights() {
-      fetch(process.env.VUE_APP_GATEWAY + '/flights/send')
+      fetch(process.env.VUE_APP_GATEWAY + '/flights/send?limit=10')
+          .then(res => res.text())
+          .then(data => this.popupMessage = data)
+          .catch(err => console.error(err));
+    },
+    busses() {
+      fetch(process.env.VUE_APP_GATEWAY + '/busses/send?limit=10')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
     },
     hotels() {
-      fetch(process.env.VUE_APP_GATEWAY + '/hotels/send')
+      fetch(process.env.VUE_APP_GATEWAY + '/hotels/send?limit=100')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
@@ -41,6 +47,7 @@ export default {
     <ul>
       <li class="button" @click="init">Init</li>
       <li class="button" @click="flights">Flight publish</li>
+      <li class="button" @click="busses">Bus publish</li>
       <li class="button" @click="hotels">Hotel publish</li>
     </ul>
   </nav>

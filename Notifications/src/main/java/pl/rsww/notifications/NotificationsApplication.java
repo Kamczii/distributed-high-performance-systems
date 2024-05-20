@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import pl.rsww.notifications.consumer.EventMessage;
 import pl.rsww.notifications.consumer.NotificationService;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
+import pl.rsww.offerwrite.api.integration.AvailableTransportType;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 import java.time.LocalDate;
@@ -55,6 +56,7 @@ public class NotificationsApplication {
                     LocalDate.of(2024, 4, 15),  // start date
                     LocalDate.of(2024, 4, 25),   // end date,
                     AvailableOfferStatus.OPEN,
+                    AvailableTransportType.FLIGHT,
                     Collections.emptyList()
             );
             notification.listen(offerEvent);

@@ -10,6 +10,7 @@ import pl.rsww.offerread.offers.getting_offers.OfferShortInfoProjection;
 import pl.rsww.offerread.offers.getting_offers.OfferShortInfoRepository;
 import pl.rsww.offerread.offers.getting_offers.ShortInfoService;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
+import pl.rsww.offerwrite.api.integration.AvailableTransportType;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 
 import java.time.LocalDate;
@@ -42,6 +43,7 @@ public class OfferReadApplication {
                     LocalDate.of(2024, 4, 15),  // start date
                     LocalDate.of(2024, 4, 25),   // end date,
                     AvailableOfferStatus.OPEN,
+                    AvailableTransportType.FLIGHT,
                     Collections.emptyList()
             );
             projection.listenOffer(offerEvent);
