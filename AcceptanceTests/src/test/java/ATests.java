@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Navigating Offers Webpage")
 public class ATests {
-    private static final String ADDRESS = "http://localhost:4200";
+    private static final String ADDRESS = "http://localhost:8080";
     private WebDriver driver = new ChromeDriver();
     private WebTools tools = new WebTools(driver);
 
