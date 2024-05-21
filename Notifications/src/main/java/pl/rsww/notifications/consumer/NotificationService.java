@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.rsww.offerwrite.api.OfferWriteTopics;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
-
+import pl.rsww.payment.api.PaymentEvent;
+import pl.rsww.payment.api.PaymentTopics;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +25,26 @@ public class NotificationService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @KafkaListener(topics = PaymentTopics.PAYMENT_BASIC_TOPIC, groupId = "payment-notification-group")
+    public void listenToPaymentBasic(PaymentEvent event) {
+        if (event instanceof PaymentEvent.Pending pending) {
+            log.info(event.toString());
+            EventMessage message = descriptionService.describe(pending);
 
+            synchronized (messageQueue) {
+                if (messageQueue.size() >= MAX_MESSAGES) {
+                    messageQueue.pollLast();
+                }
+                messageQueue.addFirst(message);
+            }
+            try {
+                messagingTemplate.convertAndSend("/topic/notifications/payment" + pending.orderId().toString(), message);
+                //log.info("Sent offer change to topic \"/topic/notifications\"");
+            } catch (Exception e) {
+                log.error("Error sending WebSocket message", e);
+            }
+        }
+    }
     @KafkaListener(topics = OfferWriteTopics.OFFER_INTEGRATION_TOPIC, groupId = "notification-group",containerFactory = "offerEventConsumerFactory")
     public void listen(OfferIntegrationEvent event) {
         log.info("Listener");

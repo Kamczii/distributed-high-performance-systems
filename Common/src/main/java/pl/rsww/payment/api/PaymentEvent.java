@@ -9,6 +9,7 @@ import java.util.UUID;
 public sealed interface PaymentEvent {
     record Pending(
             @Nonnull UUID paymentId,
+            @Nonnull UUID orderId,
             @Nonnull Long userId,
             @Nonnull BigDecimal amount
     ) implements PaymentEvent {}
