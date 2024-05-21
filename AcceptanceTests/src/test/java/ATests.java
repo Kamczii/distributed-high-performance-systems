@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("Navigating Offers Webpage")
 public class ATests {
     private static final String ADDRESS = "http://localhost:4200";
-    private WebDriver driver;
-    private WebTools tools;
+    private WebDriver driver = new ChromeDriver();
+    private WebTools tools = new WebTools(driver);
 
     @BeforeEach
     void beforeEach() {
@@ -43,6 +43,7 @@ public class ATests {
         assertFalse(offerCards.isEmpty(), "No offers found in search results.");
 
         for (int i = 0; i < 30; i++) {
+            System.out.println("Offer: " + i);
             tools.clickOffer(i);
             tools.buyOffer();
             driver.get(ADDRESS); // Back to the main page
