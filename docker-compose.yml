@@ -46,6 +46,7 @@ services:
       context: ./EurekaServer
       dockerfile: ./Dockerfile
     ports:
+      - "8761:8761"
       - "5761:5005"
     networks:
       - rsww-180066-network

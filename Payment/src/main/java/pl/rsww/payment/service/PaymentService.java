@@ -40,7 +40,7 @@ public class PaymentService {
 
         payment = paymentRepository.save(payment);
 
-        kafkaPublisher.publish(PAYMENT_BASIC_TOPIC, new PaymentEvent.Pending(payment.getId(), payment.getUserId(), payment.getAmount()));
+        kafkaPublisher.publish(PAYMENT_BASIC_TOPIC, new PaymentEvent.Pending(payment.getId(),payment.getOrderId(), payment.getUserId(), payment.getAmount()));
 //        processPayment(payment);
 
     }
