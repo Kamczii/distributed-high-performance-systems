@@ -9,11 +9,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Navigating Offers Webpage")
 public class ATests {
-    private static final String ADDRESS = "http:/localhost:4200";
+    private static final String ADDRESS = "http://localhost:4200";
     private WebDriver driver;
     private WebTools tools;
 
@@ -27,42 +28,26 @@ public class ATests {
 
     @Test
     @DisplayName("Searches offers")
-    public void searchesOffers(){
-        beforeEach();
+    public void searchesOffers() {
         tools.clickSearch();
         List<WebElement> offerCards = tools.findOffers();
         int n = offerCards.size();
         assertTrue(n > 0);
-        afterEach();
     }
 
     @Test
-    @DisplayName("AAA") //TODO
-    public void buysOffers(){
-        beforeEach();
+    @DisplayName("Buys offers from the search list")
+    public void buysOffers() {
         tools.clickSearch();
-        tools.clickOffer(1); // goes to offer page
-        tools.buyOffer();
-        driver.get(ADDRESS); // back to main page
-        assertTrue(0 == 0); // TODO
-        afterEach();
-    }
+        List<WebElement> offerCards = tools.findOffers();
+        assertFalse(offerCards.isEmpty(), "No offers found in search results.");
 
-    //TODO
-    //offer not available after to many have bought it and there is no place in a plane
-    @Test
-    @DisplayName("Offer become not available")
-    public void offerNotBecomeAvailable(){
-        beforeEach();
-
-        for(int i = 0; i < 5; i++){
-            tools.clickOffer(1); // goes to offer page
+        for (int i = 0; i < 30; i++) {
+            tools.clickOffer(i);
             tools.buyOffer();
-            driver.get(ADDRESS); // back to main page
+            driver.get(ADDRESS); // Back to the main page
+            tools.clickSearch();
         }
-
-        assertTrue(0 == 0); // TODO
-        afterEach();
     }
 
     @AfterEach
