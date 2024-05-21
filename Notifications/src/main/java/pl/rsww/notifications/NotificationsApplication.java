@@ -16,7 +16,9 @@ import pl.rsww.notifications.consumer.NotificationService;
 import pl.rsww.offerwrite.api.integration.AvailableOfferStatus;
 import pl.rsww.offerwrite.api.integration.AvailableTransportType;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
+import pl.rsww.payment.api.PaymentEvent;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
