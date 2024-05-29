@@ -6,9 +6,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.touroperator.data.ModesOfTransportSetting;
-import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
+import pl.rsww.touroperator.price.AgeRangePriceItem;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import pl.rsww.touroperator.initialization.EventSender;
+import pl.rsww.touroperator.price.PriceListGenerator;
 
 import java.util.*;
 
@@ -25,7 +26,7 @@ public class HotelService {
         List<HotelRequests.RoomRequest> roomRequests = new LinkedList<>();
         for(HotelRoom room: hotel.getRooms()){
             Set<HotelRequests.AgeRangePrice> priceListRequests = new HashSet<>();
-            for(AgeRangePriceItem item: room.getPriceList()){
+            for(AgeRangePriceItem item: PriceListGenerator.getPriceList(room.getPrice().getPrice())){
                 priceListRequests.add(new HotelRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
             }
             for(int i = 0; i < room.getNumberInHotel(); i++){

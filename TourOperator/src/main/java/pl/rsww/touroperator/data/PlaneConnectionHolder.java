@@ -1,28 +1,17 @@
 package pl.rsww.touroperator.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Setter
+@Getter
 public class PlaneConnectionHolder {
     private String destinationCity;
     private String destinationCountry;
-
-    public String getDestinationCity() {
-        return destinationCity;
-    }
-
-    public void setDestinationCity(String destinationCity) {
-        this.destinationCity = destinationCity;
-    }
-
-    public String getDestinationCountry() {
-        return destinationCountry;
-    }
-
-    public void setDestinationCountry(String destinationCountry) {
-        this.destinationCountry = destinationCountry;
-    }
 
 
     @Override
@@ -41,7 +30,6 @@ public class PlaneConnectionHolder {
     public PlaneConnectionHolder(String destinationCity, String destinationCountry) {
         this.destinationCity = destinationCity;
         this.destinationCountry = destinationCountry;
-//        this.departures = new HashSet<>();
     }
 
 }

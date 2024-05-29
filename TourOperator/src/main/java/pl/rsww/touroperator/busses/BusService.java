@@ -2,14 +2,14 @@ package pl.rsww.touroperator.busses;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import pl.rsww.tour_operator.api.BusRequests;
 import pl.rsww.touroperator.busses.lines.BusLine;
-import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
+import pl.rsww.touroperator.price.AgeRangePriceItem;
 import pl.rsww.touroperator.initialization.EventSender;
+import pl.rsww.touroperator.price.PriceListGenerator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,12 +40,12 @@ public class BusService {
         String key = busNumber + bus.getDepartureDate();
 
         Set<BusRequests.AgeRangePrice> priceListRequests = new HashSet<>();
-        for(AgeRangePriceItem item: line.getPriceList()){
+        for(AgeRangePriceItem item: PriceListGenerator.getPriceList(line.getPrice().getPrice())){
             priceListRequests.add(new BusRequests.AgeRangePrice(item.getStartingRange(), item.getEndingRange(), item.getPrice()));
         }
 
         BusRequests.CreateBus busRequest;
-        if(!bus.getItReturning()){
+        if(!bus.getIsItReturning()){
             busRequest = new BusRequests.CreateBus(busNumber, line.getMaxPassengers(), lrHome, lrDest, bus.getDepartureDate(), priceListRequests);
         }else{
             busRequest = new BusRequests.CreateBus(busNumber, line.getMaxPassengers(), lrDest, lrHome, bus.getDepartureDate(), priceListRequests);

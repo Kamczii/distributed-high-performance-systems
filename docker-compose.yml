@@ -129,6 +129,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_tour_operator
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - BOOTSTRAP_SERVER=kafka:9092
     depends_on:
       kafka:
