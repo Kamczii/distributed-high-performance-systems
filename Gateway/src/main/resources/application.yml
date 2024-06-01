@@ -3,6 +3,10 @@ spring:
     name: Gateway
   cloud:
     gateway:
+      httpclient:
+        wiretap: true
+      httpserver:
+        wiretap: true
       default-filters: DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Headers
       globalcors:
         corsConfigurations:
@@ -41,7 +45,7 @@ spring:
         - id: Order
           uri: lb://order
           predicates:
-            - Path=/order/**
+            - Path=/order/create
         - id: TourOperator
           uri: lb://TourOperator
           predicates:

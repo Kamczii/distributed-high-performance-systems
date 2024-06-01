@@ -47,6 +47,7 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "5761:5005"
+      - "8761:8761"
     networks:
       - rsww-180066-network
   offer_write:

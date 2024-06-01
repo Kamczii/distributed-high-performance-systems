@@ -12,15 +12,19 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/")
 public class OrderController {
 
     @Autowired
     OrderService orderService;
 
-    @PostMapping(path="order/create")
-    public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest, @RequestHeader("userId") Long userId) {
+    @PostMapping("/order/create")
+    public ResponseEntity<String> createOrder(@RequestBody OrderRequest orderRequest, @RequestHeader(value = "userId", required = false) Long userId) {
+        UUID orderId = orderService.createOrder(orderRequest, userId);
+        return ResponseEntity.ok(orderId.toString());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<String> createOrder2(@RequestBody OrderRequest orderRequest, @RequestHeader(value = "userId", required = false) Long userId) {
         UUID orderId = orderService.createOrder(orderRequest, userId);
         return ResponseEntity.ok(orderId.toString());
     }

@@ -25,7 +25,7 @@
       <button type="submit" class="buy-now-button" @click="createOrder">Buy now!</button>
 
       <PaymentConfirmationModal
-          v-if="isPaymentModalVisible"
+          v-if="isPaymentModalVisible.value"
           :order-id="orderId"
           :payment-id="paymentId"
           @accept="acceptPayment"
@@ -148,7 +148,6 @@ export default {
       createOrder();
     }
     function createOrder() {
-      showPaymentConfirmation()
       for (let i = 0; i < kids.value.length; i++) {
         kids.value[i] = calculateAge(kids.value[i]);
       }
@@ -170,11 +169,13 @@ export default {
         method: 'POST',
         body: JSON.stringify(data),
         ...config
-      })
-          .then(res => res.text())
-          .then(data => orderId.value = data)
+      }).then(data => {
+             data.text().then(d => {
+               orderId.value = d
+              connectPaymentWebSocket();
+            });
+          })
           .catch(err => console.error(err));
-        connectPaymentWebSocket();
     }
     function calculateAge(birthDate) {
       const today = new Date();
@@ -194,6 +195,7 @@ export default {
             subscriptionPayment.value = stompClient.value.subscribe(`/topic/notifications/payment/${orderId.value}`, notification => {
               const event = JSON.parse(notification.body);
               paymentId.value = event;
+              showPaymentConfirmation();
               unsubscribePayment(subscriptionPayment);
             });
     }
