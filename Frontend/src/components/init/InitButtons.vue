@@ -34,6 +34,18 @@ export default {
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
     },
+    start_updating() {
+      fetch(process.env.VUE_APP_GATEWAY + '/update/start')
+          .then(res => res.text())
+          .then(data => this.popupMessage = data)
+          .catch(err => console.error(err));
+    },
+    stop_updating() {
+      fetch(process.env.VUE_APP_GATEWAY + '/update/stop')
+          .then(res => res.text())
+          .then(data => this.popupMessage = data)
+          .catch(err => console.error(err));
+    },
     resetPopupMessage() {
       this.popupMessage = '';
     }
@@ -49,6 +61,8 @@ export default {
       <li class="button" @click="flights">Flight publish</li>
       <li class="button" @click="busses">Bus publish</li>
       <li class="button" @click="hotels">Hotel publish</li>
+      <li class="button" @click="start_updating">Start updating prices</li>
+      <li class="button" @click="stop_updating">Stop updating prices</li>
     </ul>
   </nav>
   <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage"></PopupComponent>

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import pl.rsww.tour_operator.api.BusRequests;
 import pl.rsww.touroperator.busses.lines.BusLine;
 import pl.rsww.touroperator.price.AgeRangePriceItem;
-import pl.rsww.touroperator.initialization.EventSender;
+import pl.rsww.touroperator.events.EventSender;
 import pl.rsww.touroperator.price.PriceListGenerator;
 
 import java.util.HashSet;

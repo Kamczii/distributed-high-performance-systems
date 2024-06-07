@@ -8,7 +8,7 @@ import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.touroperator.data.ModesOfTransportSetting;
 import pl.rsww.touroperator.price.AgeRangePriceItem;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
-import pl.rsww.touroperator.initialization.EventSender;
+import pl.rsww.touroperator.events.EventSender;
 import pl.rsww.touroperator.price.PriceListGenerator;
 
 import java.util.*;
@@ -32,6 +32,7 @@ public class HotelService {
             for(int i = 0; i < room.getNumberInHotel(); i++){
                 roomRequests.add(new HotelRequests.RoomRequest(room.getDescription(), room.getMaxPeople(), room.getNumberOfBeds(), priceListRequests));
             }
+
         }
 
         List<HotelRequests.ModesOfTransport> modesOfTransport = translateModeOfTransportAsRequest(hotel.getModeOfTransport());

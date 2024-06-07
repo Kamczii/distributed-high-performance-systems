@@ -9,7 +9,7 @@ import pl.rsww.tour_operator.api.FlightRequests;
 import pl.rsww.touroperator.flights.lines.FlightLine;
 import pl.rsww.touroperator.flights.lines.FlightLineRepository;
 import pl.rsww.touroperator.price.AgeRangePriceItem;
-import pl.rsww.touroperator.initialization.EventSender;
+import pl.rsww.touroperator.events.EventSender;
 import pl.rsww.touroperator.price.PriceListGenerator;
 
 import java.util.HashSet;
