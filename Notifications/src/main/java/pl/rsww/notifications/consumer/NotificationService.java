@@ -11,8 +11,10 @@ import pl.rsww.offerwrite.api.OfferWriteTopics;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 import pl.rsww.payment.api.PaymentEvent;
 import pl.rsww.payment.api.PaymentTopics;
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -38,8 +40,9 @@ public class NotificationService {
                 messageQueue.addFirst(message);
             }
             try {
-                messagingTemplate.convertAndSend("/topic/notifications/payment" + pending.orderId().toString(), message);
-                //log.info("Sent offer change to topic \"/topic/notifications\"");
+                final var orderTopic = getOrderTopic(pending.orderId());
+                messagingTemplate.convertAndSend(orderTopic, message);
+                log.info("Sent payment notification change to topic \"" + orderTopic + "\"");
             } catch (Exception e) {
                 log.error("Error sending WebSocket message", e);
             }
@@ -60,7 +63,8 @@ public class NotificationService {
         }
         try {
             messagingTemplate.convertAndSend("/topic/notifications", message);
-            messagingTemplate.convertAndSend("/topic/notifications/" +  created.offerId().toString(), message);
+            final var dedicatedTopic = getOfferTopic(created.offerId());
+            messagingTemplate.convertAndSend(dedicatedTopic, message);
             log.info("Sent offer change to topic \"/topic/notifications\"");
         } catch (Exception e) {
             log.error("Error sending WebSocket message", e);
@@ -77,8 +81,9 @@ public class NotificationService {
             }
             try {
                 messagingTemplate.convertAndSend("/topic/notifications", message);
-                messagingTemplate.convertAndSend("/topic/notifications/" +  statusChanged.offerId().toString(), message);
-                log.info("Sent offer change to topic \"/topic/notifications\"");
+                final var dedicatedTopic = getOfferTopic(statusChanged.offerId());
+                messagingTemplate.convertAndSend(dedicatedTopic, message);
+                log.info("Sent offer change to topic \"" + dedicatedTopic + "\"");
             } catch (Exception e) {
                 log.error("Error sending WebSocket message", e);
             }
@@ -92,4 +97,17 @@ public class NotificationService {
             return new LinkedList<>(messageQueue);
         }
     }
+
+    private String getOfferTopic(UUID offerId) {
+        return "/topic/offers/" + offerId;
+    }
+
+    private String getPaymentTopic(UUID paymentId) {
+        return "/topic/payments/" + paymentId;
+    }
+
+    private String getOrderTopic(UUID orderId) {
+        return "/topic/orders/" + orderId;
+    }
+
 }

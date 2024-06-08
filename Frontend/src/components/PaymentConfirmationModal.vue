@@ -10,6 +10,10 @@
       </div>
     </div>
     <div class="modal-content" v-else>
+
+      <p>1: {{paymentId}}</p>
+      <p>2: {{orderId}}</p>
+      <p>3: {{isLoading}}</p>
       <div class="loading-animation">
         <div class="loading-circle"></div>
       </div>
@@ -19,10 +23,17 @@
 
 <script>
 export default {
+  mounted() {
+    // This is similar to ngOnInit in Angular
+    console.log('Component is mounted!');
+    console.log(this.props?.paymentId);
+    console.log(this.props?.orderId);
+    console.log(this.props?.isLoading);
+  },
   props: {
     isLoading: {
       type: Boolean,
-      default: true,
+      default: false,
       required: false
     },
     paymentId: {
@@ -46,7 +57,7 @@ export default {
     },
     sendChoice(url) {
       const data = {
-        orderId: this.props.orderId
+        paymentId: this.paymentId
       };
       const config = {
         mode: 'cors',
@@ -66,9 +77,9 @@ export default {
     }
   },
   watch: {
-    paymentId(newVal) {
-      if (newVal != null) this.props.isLoading.value = false;
-    }
+    // paymentId(newVal) {
+    //   if (newVal != null) this.props.isLoading.value = false;
+    // }
   }
 };
 </script>

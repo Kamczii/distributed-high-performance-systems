@@ -3,6 +3,7 @@ package pl.rsww.notifications.consumer;
 import org.springframework.stereotype.Service;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 import pl.rsww.payment.api.PaymentEvent;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,7 +12,9 @@ public class DescriptionService {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public EventMessage describe(PaymentEvent.Pending pending) {
-        return new EventMessage("Payment", pending.paymentId().toString(), getTimestamp());
+        final var payment = new EventMessage("Payment", pending.paymentId().toString(), getTimestamp());
+        payment.getData().put("paymentId", pending.paymentId());
+        return payment;
     }
 
     public EventMessage describe(OfferIntegrationEvent.Created created) {

@@ -22,6 +22,11 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        - id: Payment
+          uri: lb://Payment
+          predicates:
+            - Path=/payment/accept,
+              /payment/cancel
         - id: OfferRead
           uri: lb://OfferRead
           predicates:
@@ -43,7 +48,7 @@ spring:
           predicates:
             - Path=/ws/**
         - id: Order
-          uri: lb://order
+          uri: lb://Order
           predicates:
             - Path=/order/create
         - id: TourOperator

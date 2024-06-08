@@ -44,7 +44,7 @@ export default {
       this.kidAges = Array(newVal).fill(''); // Reset kidAges when number of kids changes
     },
     kidAges() {
-      this.emitKids();
+      this.emitPersons();
     }
   },
   computed: {
@@ -58,8 +58,11 @@ export default {
         this.kids = this.maxKids;
       }
     },
-    emitKids() {
-      this.$emit('update-kids', this.kidAges);
+    emitPersons() {
+      this.$emit('update-persons', {
+        persons: this.persons,
+        kids: this.kidAges
+      });
     },
     submitConfig() {
 
@@ -68,7 +71,7 @@ export default {
         kids: this.kidAges
       };
       console.log(params)
-      this.emitKids();
+      this.emitPersons();
 
       // Filter out empty parameters
       const searchParams = {};

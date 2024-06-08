@@ -2,7 +2,6 @@ package pl.rsww.offerwrite.offer.getting_offers.strategy.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.NotImplementedException;
 import org.springframework.stereotype.Component;
 import pl.rsww.offerwrite.api.integration.AvailableTransportType;
 import pl.rsww.offerwrite.buses.Bus;
@@ -10,7 +9,6 @@ import pl.rsww.offerwrite.buses.BusCommand;
 import pl.rsww.offerwrite.buses.BusService;
 import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.common.age_range_price.AgeRangePriceHelper;
-import pl.rsww.offerwrite.flights.FlightCommand;
 import pl.rsww.offerwrite.hotels.Hotel;
 import pl.rsww.offerwrite.hotels.HotelCommand;
 import pl.rsww.offerwrite.hotels.HotelService;
@@ -22,9 +20,11 @@ import pl.rsww.offerwrite.offer.getting_offers.strategy.OfferStrategy;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.lang.Boolean.TRUE;
@@ -167,8 +167,30 @@ public class BusOfferOfferStrategyImpl implements OfferStrategy<BusOffer> {
 
     @Override
     public BigDecimal calculatePrice(Offer offer, Collection<Integer> ageOfVisitors) {
-        throw new NotImplementedException();
+        final var busOffer = cast(offer);
+        final var tripDuration = getTripDuration(busOffer);
 
+        final var hotel = getHotel(offer);
+        final var component1 = calculateTotalPrice(ageOfVisitors, age -> hotel.getPrice(offer.getHotelRoom().getType(), age))
+                .multiply(BigDecimal.valueOf(tripDuration));
+
+        final var initialFlight = getBusCurrentState(busOffer.getInitialbus().getBusId());
+        final var component2 = calculateTotalPrice(ageOfVisitors, initialFlight::getPrice);
+
+        final var returnFlight = getBusCurrentState(busOffer.getReturnbus().getBusId());
+        final var component3 = calculateTotalPrice(ageOfVisitors, returnFlight::getPrice);
+
+        return component1.add(component2).add(component3);
+    }
+
+    private BigDecimal calculateTotalPrice(Collection<Integer> ageOfVisitors, Function<Integer, BigDecimal> priceFunction) {
+        return ageOfVisitors.stream()
+                            .map(priceFunction)
+                            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private static long getTripDuration(BusOffer offer) {
+        return ChronoUnit.DAYS.between(offer.getInitialbus().getDate(), offer.getReturnbus().getDate());
     }
 
     @Override
