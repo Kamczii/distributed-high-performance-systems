@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <!-- Offer Details -->
   <div class="offer-short-info" v-if="offer">
-    <ConfigurationComponent @update-persons="handleKidsUpdate"/>
+    <ConfigurationComponent @update-persons="handleKidsUpdate" :capacity="offer.hotel.room.capacity"/>
     <h2>Offer Details</h2>
     <h3>Hotel Information</h3>
     <p>Status: {{ offer.status }}</p>
@@ -128,7 +128,6 @@ export default {
       });
     }
     function fetchOfferDetails() {
-      console.log('Received message:',route.params.id);
       fetch(process.env.VUE_APP_GATEWAY + `/offers/${route.params.id}`)
         .then(res => res.json())
         .then(data => {
@@ -149,13 +148,12 @@ export default {
     }
     function acceptPayment() {
       isPaymentModalVisible.value = false;
-      createOrder();
     }
     function createOrder() {
       const ageOfVisitors = []
       let kidsCount = configuration.value.kids.length;
       for (let i = 0; i < kidsCount; i++) {
-        ageOfVisitors.push(calculateAge(configuration.value[i]));
+        ageOfVisitors.push(calculateAge(configuration.value.kids[i]));
       }
       for (let i = 0; i < configuration.value.persons - kidsCount; i++) {
         ageOfVisitors.push(25)
@@ -197,7 +195,7 @@ export default {
         age--;
       }
       console.log(age.toString())
-      return age.toString();
+      return age;
     }
 
     function getOrderTopic() {

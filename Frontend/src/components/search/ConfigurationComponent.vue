@@ -4,7 +4,7 @@
     <form @submit.prevent="submitConfig">
       <!-- Persons Range -->
       <label for="persons">Persons: {{ persons }}</label>
-      <input type="range" id="persons" min="1" max="6" v-model.number="persons" @input="validateKids">
+      <input type="range" id="persons" min="1" :max="capacity" v-model.number="persons" @input="validatePersons">
 
       <!-- Kids Range -->
       <label for="kids">Kids: {{ kids }}</label>
@@ -26,11 +26,13 @@
 <script>
 
 export default {
+  props: ['capacity'],
   components: {
 
   },
   mounted() {
-
+    this.persons = this.capacity;
+    this.submitConfig();
   },
   data() {
     return {
@@ -53,16 +55,26 @@ export default {
     }
   },
   methods: {
-    validateKids() {
+    validatePersons() {
       if (this.kids >= this.persons) {
         this.kids = this.maxKids;
       }
+
+      if (this.persons >= this.capacity) {
+        this.persons = this.capacity;
+      }
+
+      if (this.persons < 1) {
+        this.persons = 1;
+      }
     },
     emitPersons() {
-      this.$emit('update-persons', {
+      const emitting = {
         persons: this.persons,
         kids: this.kidAges
-      });
+      };
+      console.log("Emitting config ", emitting)
+      this.$emit('update-persons', emitting);
     },
     submitConfig() {
 
