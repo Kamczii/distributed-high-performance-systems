@@ -21,7 +21,7 @@ public class OrderPendingListener {
     @KafkaListener(topics = OrderTopics.ORDER_BASIC_TOPIC, autoStartup = "${listen.auto.start:true}", containerFactory = "pendingOrderFactory")
     public void listenOrder(OrderEvent orderEvent) {
         if (Objects.requireNonNull(orderEvent) instanceof OrderEvent.Pending pendingOrder) {
-            paymentService.createPayment(pendingOrder.orderId(), pendingOrder.userId(), pendingOrder.price());
+            paymentService.createPayment(pendingOrder.orderId(), pendingOrder.userId(), pendingOrder.price(), pendingOrder.location(), pendingOrder.hotel(), pendingOrder.room());
         } else {
             log.info(String.format("Ignored order event: %s", orderEvent));
         }

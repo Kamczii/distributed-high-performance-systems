@@ -3,6 +3,9 @@ package pl.rsww.order.service;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
 import pl.rsww.offerwrite.api.command.OfferCommand;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Location;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Hotel;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Room;
 import pl.rsww.offerwrite.api.response.AvailableLockStatus;
 import pl.rsww.order.api.OrderEvent;
 import pl.rsww.order.publisher.KafkaPublisher;
@@ -64,7 +67,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void setOrderPrice(UUID orderId, BigDecimal price, AvailableLockStatus lockStatus) {
+    public void setOrderPrice(UUID orderId, BigDecimal price, AvailableLockStatus lockStatus, Location location, Hotel hotel, Room room) {
 
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
 
@@ -76,7 +79,7 @@ public class OrderService {
         orderRepository.save(order);
 
         if (order.getOrderStatus() == OrderStatus.PENDING)
-            kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Pending(order.getOrderId(), order.getUserId(), order.getTotalPrice()));
+            kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Pending(order.getOrderId(), order.getUserId(), order.getTotalPrice(), hotel, room, location));
         if (order.getOrderStatus() == OrderStatus.CANCELLED)
             kafkaPublisher.publish(ORDER_BASIC_TOPIC, new OrderEvent.Cancelled(order.getOrderId()));
 

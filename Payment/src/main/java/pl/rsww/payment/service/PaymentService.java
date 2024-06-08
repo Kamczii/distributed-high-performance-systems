@@ -1,7 +1,12 @@
 package pl.rsww.payment.service;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Location;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Hotel;
+import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent.Room;
 import pl.rsww.payment.api.PaymentEvent;
 import pl.rsww.payment.model.Payment;
 import pl.rsww.payment.publisher.KafkaPublisher;
@@ -15,6 +20,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import static pl.rsww.payment.api.PaymentTopics.*;
 
@@ -27,9 +34,10 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final KafkaPublisher kafkaPublisher;
+    private final ConcurrentMap<UUID, PaymentTempDetails> paymentTempDetails = new ConcurrentHashMap<>();
 
     @Transactional
-    public void createPayment(UUID orderId, Long userId, BigDecimal amount) {
+    public void createPayment(UUID orderId, Long userId, BigDecimal amount, Location location, Hotel hotel, Room room) {
 
         Payment payment = Payment.builder()
                 .orderId(orderId)
@@ -40,6 +48,8 @@ public class PaymentService {
 
         payment = paymentRepository.save(payment);
 
+        paymentTempDetails.put(payment.getId(), new PaymentTempDetails(location, hotel, room));
+
         kafkaPublisher.publish(PAYMENT_BASIC_TOPIC, new PaymentEvent.Pending(payment.getId(),payment.getOrderId(), payment.getUserId(), payment.getAmount()));
 //        processPayment(payment);
 
@@ -48,7 +58,8 @@ public class PaymentService {
     public Boolean processPayment(Payment payment) {
         if (random.nextInt(100) < SIMULATION_SUCCESS_RATE) {
             updatePaymentStatus(payment, PaymentStatus.SUCCESS);
-            kafkaPublisher.publish(PAYMENT_SUCCESS_TOPIC, new PaymentEvent.Success(payment.getOrderId(), payment.getUserId()));
+            PaymentTempDetails details = paymentTempDetails.get(payment.getId());
+            kafkaPublisher.publish(PAYMENT_SUCCESS_TOPIC, new PaymentEvent.Success(payment.getOrderId(), payment.getUserId(), details.getHotel(), details.getRoom(), details.getLocation()));
             return true;
         } else {
             updatePaymentStatus(payment, PaymentStatus.FAIL);
@@ -73,6 +84,14 @@ public class PaymentService {
         Payment payment = paymentRepository.findById(paymentRequest.getPaymentId()).orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + paymentRequest.getPaymentId()));
         updatePaymentStatus(payment, PaymentStatus.FAIL);
         kafkaPublisher.publish(PAYMENT_FAIL_TOPIC, new PaymentEvent.Fail(payment.getOrderId(), payment.getUserId()));
+    }
+
+    @Getter
+    @AllArgsConstructor
+    private static class PaymentTempDetails {
+        private final Location location;
+        private final Hotel hotel;
+        private final Room room;
     }
 
 }

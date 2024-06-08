@@ -86,6 +86,23 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+  preference:
+    container_name: preference
+    build:
+      context: .
+      dockerfile: ./Preference/Dockerfile
+    ports:
+      - "5087:5005"
+    networks:
+      - rsww-180066-network
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_preference
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
   payment:
     container_name: payment
     build:
