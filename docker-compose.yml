@@ -219,6 +219,13 @@ services:
       - "5432:5432"
     networks:
       - rsww-180066-network
+  activemq:
+    build: ./ActiveMQ
+    environment:
+      - EUREKA_URI=http://eureka:8761/eureka
+      - BROKER_HOST=0.0.0.0
+    networks:
+      - rsww-180066-network
 volumes:
   mongo_read_db:
   eventstore-volume-data:
