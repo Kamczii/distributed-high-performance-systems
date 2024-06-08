@@ -107,7 +107,7 @@ public class HotelRoomRepositoryTest {
     }
 
     private List<HotelRoom> find(int checkIn, int checkOut) {
-        return hotelRoomRepository.find(location, 20, getDayOfOctober(checkIn), getDayOfOctober(checkOut));
+        return hotelRoomRepository.findAllByHotelLocationAndCapacityLessThanEqual(location, 20);
     }
 
     private static LocalDate getDayOfOctober(int dayOfMonth) {

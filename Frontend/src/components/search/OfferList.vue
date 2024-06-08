@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="offers.length > 0" >
     <h1>Available Offers</h1>
     <div v-for="offer in offers" :key="offer.id">
       <offer-short-info :offer="offer" />

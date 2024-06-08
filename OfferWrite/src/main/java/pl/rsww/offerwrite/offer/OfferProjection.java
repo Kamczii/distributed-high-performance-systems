@@ -96,7 +96,7 @@ public class OfferProjection {
         final var initialFlight = getFlightCurrentState(first);
         final var returnFlight = getFlightCurrentState(second);
         final var maxCapacity = Math.min(initialFlight.getCapacity(), returnFlight.getCapacity());
-        final var offers = findRoomsMatchingFlight(first.getDestination(), maxCapacity, initialFlight.getDate(), returnFlight.getDate())
+        final var offers = findRoomsMatchingFlight(first.getDestination(), maxCapacity)
                 .stream()
                 .map(room -> FlightOffer.builder()
                                         .hotelRoom(room)
@@ -113,7 +113,7 @@ public class OfferProjection {
         final var initialFlight = getBusCurrentState(first.getBusId());
         final var returnFlight = getBusCurrentState(second.getBusId());
         final var maxCapacity = Math.min(initialFlight.getCapacity(), returnFlight.getCapacity());
-        final var offers = findRoomsMatchingFlight(first.getDestination(), maxCapacity, initialFlight.getDate(), returnFlight.getDate())
+        final var offers = findRoomsMatchingFlight(first.getDestination(), maxCapacity)
                 .stream()
                 .map(room -> BusOffer.builder()
                                      .hotelRoom(room)
@@ -141,8 +141,8 @@ public class OfferProjection {
         log.info(String.format("Oferta: Od %s do %s, z %s do %s dla %d osób. Pokój: %s, %d łóżek",
                 offer.getInitialbus().getDate(), offer.getReturnbus().getDate(), offer.getInitialbus().getDeparture(), offer.getReturnbus().getDeparture(), offer.getHotelRoom().getCapacity(), offer.getHotelRoom().getType(), offer.getHotelRoom().getBeds()));
     }
-    private List<HotelRoom> findRoomsMatchingFlight(Location location, int maxCapacity, LocalDate checkIn, LocalDate checkout) {
-        return hotelRoomRepository.find(location, maxCapacity, checkIn, checkout);
+    private List<HotelRoom> findRoomsMatchingFlight(Location location, int maxCapacity) {
+        return hotelRoomRepository.findAllByHotelLocationAndCapacityLessThanEqual(location, maxCapacity);
     }
 
 

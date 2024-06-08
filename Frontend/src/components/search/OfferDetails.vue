@@ -21,7 +21,7 @@
       <p>End Date: {{ formatDate(offer.end) }}</p>
       <p>Price: {{ offer.price }} zł</p>
 
-      <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage" />
+<!--      <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage" />-->
       <button type="submit" class="buy-now-button" @click="createOrder">Buy now!</button>
 
     <p>Payment visible: {{ isPaymentModalVisible }}</p>
@@ -51,14 +51,12 @@
 import {onBeforeUnmount, onMounted, ref} from 'vue';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
-import PopupComponent from "@/components/PopupComponent.vue";
 import ConfigurationComponent from "@/components/search/ConfigurationComponent.vue";
 import PaymentConfirmationModal from "@/components/PaymentConfirmationModal.vue";
 import {useRoute} from 'vue-router';
 
 export default {
   components: {
-    PopupComponent,
     ConfigurationComponent,
     PaymentConfirmationModal
   },
@@ -116,7 +114,7 @@ export default {
       stompClient.value.connect({}, () => {
         subscription.value = stompClient.value.subscribe(getOfferTopic(), notification => {
           const event = JSON.parse(notification.body);
-          items.value.unshift(event); // Add to the start of the list
+          addIfDifferent(items.value, event); // Add to the start of the list
           if (items.value.length > 10) {
             items.value.pop(); // Remove the oldest item if the list exceeds 10
           }
@@ -208,6 +206,12 @@ export default {
 
     function getOfferTopic() {
       return `/topic/offers/${route.params.id}`;
+    }
+
+    function addIfDifferent(array, event) {
+      if (array.length === 0 || array[0].description !== event.description) {
+        array.unshift(event);
+      }
     }
 
     function connectPaymentWebSocket(){

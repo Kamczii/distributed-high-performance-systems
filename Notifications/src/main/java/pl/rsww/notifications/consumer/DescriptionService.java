@@ -22,7 +22,7 @@ public class DescriptionService {
     }
 
     public EventMessage describe(OfferIntegrationEvent.StatusChanged created) {
-        return new EventMessage("Status changed", created.offerId().toString() + " changed status to " + created.status(), getTimestamp());
+        return new EventMessage("Status changed", created.offerId().toString() + " updated status to " + created.status(), getTimestamp());
     }
 
     private static String getTimestamp() {
