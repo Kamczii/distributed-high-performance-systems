@@ -5,7 +5,7 @@ services:
     build:
       context: Frontend
       dockerfile: ./Dockerfile
-    networks: 
+    networks:
       - rsww-180066-network
   notification:
     container_name: notification
@@ -14,6 +14,7 @@ services:
       dockerfile: ./Notifications/Dockerfile
     environment:
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+      - BROKER_RELAY_HOST=activemq
     ports:
       - "5083:5005"
     networks:
@@ -25,6 +26,7 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "5080:5005"
+      - "8080:8080"
     depends_on:
       - eureka
     networks:
@@ -130,7 +132,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_tour_operator
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
       - BOOTSTRAP_SERVER=kafka:9092
     depends_on:
       kafka:
@@ -191,6 +192,8 @@ services:
     image: 'bitnami/kafka:3.5.1'
     container_name: kafka
     hostname: kafka
+    ports:
+      - "9092:9092"
     depends_on:
       - zookeeper
     environment:
@@ -221,10 +224,12 @@ services:
     networks:
       - rsww-180066-network
   activemq:
-    build: ./ActiveMQ
+    image: k444mczi/rsww_180066_activemq
     environment:
       - EUREKA_URI=http://eureka:8761/eureka
       - BROKER_HOST=0.0.0.0
+    depends_on:
+      - eureka
     networks:
       - rsww-180066-network
 volumes:
