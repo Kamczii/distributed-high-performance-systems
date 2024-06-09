@@ -1,10 +1,14 @@
 package pl.rsww.touroperator.locations;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.rsww.touroperator.hotels.Hotel;
 import jakarta.persistence.*;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class AirportLocation {
     @Id
@@ -12,29 +16,4 @@ public class AirportLocation {
     int id;
     private String city;
     private String country;
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }
