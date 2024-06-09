@@ -21,7 +21,7 @@ export default {
     };
   },
   mounted() {
-    fetch(process.env.VUE_APP_GATEWAY + "/offers")
+    fetch(process.env.VUE_APP_GATEWAY + "/offers?pageNumber=0&pageSize=20")
         .then(res => res.json())
         .then(data => this.offers = data)
         .catch(err => console.log(err))

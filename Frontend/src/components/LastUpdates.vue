@@ -11,6 +11,8 @@
  <script>
  import SockJS from 'sockjs-client';
  import Stomp from 'webstomp-client';
+
+ const N_LAST_EVENTS = 10;
  export default{
   data() {
     return {
@@ -64,7 +66,7 @@
          this.items.unshift(event);
        }
 
-       if (this.items.length > 10) {
+       if (this.items.length > N_LAST_EVENTS) {
          this.items.pop();
        }
      }

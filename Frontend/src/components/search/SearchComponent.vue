@@ -113,15 +113,15 @@ export default {
         endDate: this.endDate,
         transport: this.transport,
         pageNumber: 0,
-        pageSize: 20
+        pageSize: 40
       };
 
       // Filter out empty parameters
       const searchParams = {};
       Object.keys(params).forEach(key => {
-        if (params[key]) searchParams[key] = params[key];
+        const val = params[key]
+        if (val !== null && val !== undefined && val !== '' && !(Array.isArray(val) && val.length === 0) ) searchParams[key] = val;
       });
-
 
       this.$router.push({ name: '', query: searchParams }).catch(err => {
         // Handle duplicate navigation errors or any other router error

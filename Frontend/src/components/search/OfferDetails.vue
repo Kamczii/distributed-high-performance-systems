@@ -22,7 +22,7 @@
       <p>Price: {{ offer.price }} zł</p>
 
 <!--      <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage" />-->
-      <button type="submit" class="buy-now-button" @click="createOrder">Buy now!</button>
+      <button type="submit" class="buy-now-button" @click="createOrder" :disabled="offer.status !== 'OPEN'">Buy now!</button>
 
     <p>Payment visible: {{ isPaymentModalVisible }}</p>
     <p>Payment id: {{ paymentId }}</p>
@@ -115,7 +115,8 @@ export default {
         subscription.value = stompClient.value.subscribe(getOfferTopic(), notification => {
           const event = JSON.parse(notification.body);
           addIfDifferent(items.value, event); // Add to the start of the list
-          if (items.value.length > 10) {
+          const N_LAST_EVENTS = 20;
+          if (items.value.length > N_LAST_EVENTS) {
             items.value.pop(); // Remove the oldest item if the list exceeds 10
           }
           console.log(items);
