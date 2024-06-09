@@ -22,7 +22,7 @@ public class OfferResponseListener {
     public void listenOffer(OfferResponse offerResponse) {
         if (Objects.requireNonNull(offerResponse) instanceof OfferResponse.Lock lock) {
             log.info(String.format("Received offer response event: %s", offerResponse));
-            orderService.setOrderPrice(lock.orderId(), lock.price(), lock.status(), lock.location(), lock.hotel(), lock.room());
+            orderService.setOrderPrice(lock.orderId(), lock.price(), lock.status(), lock.location(), lock.hotel(), lock.hotel().room());
         } else {
             log.info(String.format("Ignored offer response event: %s", offerResponse));
         }
