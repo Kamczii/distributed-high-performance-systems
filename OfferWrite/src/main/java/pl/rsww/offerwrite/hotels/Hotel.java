@@ -1,7 +1,6 @@
 package pl.rsww.offerwrite.hotels;
 
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
 import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.common.age_range_price.AgeRangePrice;
 import pl.rsww.offerwrite.common.location.Location;
@@ -15,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.toList;
 import static pl.rsww.offerwrite.constants.Constants.LOCK_TIME_IN_SECONDS;
 import static pl.rsww.offerwrite.hotels.HotelEvent.HotelCreated;
@@ -26,7 +26,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
     private HotelRooms rooms;
     private Location location;
     private String name;
-    private Map<String, List<Set<ReservationDTO>>> activeReservations;
+    private Map<String, List<ReservationDTO>> activeReservations;
 
     Hotel() {
     }
@@ -46,11 +46,12 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
 
     public static Hotel create(HotelRequests.CreateHotel create) {
         var location = new Location(create.location().country(), create.location().city());
+        final var counts = create.rooms().stream().collect(Collectors.groupingBy(HotelRequests.RoomRequest::type, counting()));
+
         var rooms = create.rooms()
                 .stream()
-                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds(),
+                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds(), counts.get(roomRequest.type()),
                         roomRequest.priceList().stream().map(price -> new AgeRangePrice(price.startingRange(), price.endingRange(), price.price())).toList()))
-                .distinct() //TODO: usunac
                 .collect(Collectors.collectingAndThen(toList(), HotelRooms::new));
         return new Hotel(create.hotelId(), create.name(), location, rooms);
     }
@@ -63,17 +64,17 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
                 location = hotelCreated.location();
                 name = hotelCreated.name();
                 rooms = hotelCreated.rooms();
-                activeReservations = hotelCreated.rooms().rooms().stream().collect(
-                        Collectors.groupingBy(HotelRoom::type, Collectors.mapping(
-                                _ -> new HashSet<>(),
-                                toList()
-                        ))
+                activeReservations = hotelCreated.rooms().rooms().stream().map(HotelRoom::type).distinct().collect(
+                        Collectors.toMap(
+                                key -> key,
+                                _ -> new ArrayList<>()
+                        )
                 );
             }
             case HotelEvent.RoomReserved roomReserved -> {
                 if (onGoingReservation(roomReserved)) {
-                    getAvailableRoom(roomReserved.type(), roomReserved.checkInDate(), roomReserved.checkOutDate())
-                            .ifPresent(set -> set.add(new ReservationDTO(
+                    getRoomReservations(roomReserved.type(), roomReserved.checkInDate(), roomReserved.checkOutDate())
+                            .ifPresent(reservations -> reservations.add(new ReservationDTO(
                                     roomReserved.type(),
                                     roomReserved.orderId(),
                                     roomReserved.checkInDate(),
@@ -83,8 +84,8 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
             case HotelEvent.RoomConfirmed roomConfirmed -> {
                 final var shouldAddReservation = orderDoesntExist(roomConfirmed);
                 if (shouldAddReservation) {
-                    getAvailableRoom(roomConfirmed.type(), roomConfirmed.checkInDate(), roomConfirmed.checkOutDate())
-                            .ifPresent(set -> set.add(new ReservationDTO(
+                    getRoomReservations(roomConfirmed.type(), roomConfirmed.checkInDate(), roomConfirmed.checkOutDate())
+                            .ifPresent(reservations -> reservations.add(new ReservationDTO(
                                     roomConfirmed.type(),
                                     roomConfirmed.orderId(),
                                     roomConfirmed.checkInDate(),
@@ -98,7 +99,7 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
         return findOrder(roomConfirmed.orderId()).isEmpty();
     }
 
-    private List<Set<ReservationDTO>> getReservationsForRoom(String roomType) {
+    private List<ReservationDTO> getReservationsForRoom(String roomType) {
         return activeReservations.get(roomType);
     }
 
@@ -117,23 +118,29 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
     }
 
     public boolean roomAvailable(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
+        final var availableRoomsOfType = countRoomsOfType(roomType);
         return getReservationsForRoom(roomType)
                 .stream()
-                .anyMatch(roomReservations -> available(roomReservations, checkInDate, checkOutDate));
+                .filter(reservation -> isOverlap(reservation.checkInDate(), reservation.checkOutDate(), checkInDate, checkOutDate))
+                .count() < availableRoomsOfType;
     }
 
-    private Optional<Set<ReservationDTO>> getAvailableRoom(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
-        return getReservationsForRoom(roomType)
-                .stream()
-                .filter(roomReservations -> available(roomReservations, checkInDate, checkOutDate))
-                .findAny();
+    private long countRoomsOfType(String roomType) {
+        return this.rooms.rooms().stream().filter(room -> room.type().equals(roomType)).count();
+    }
+
+    private Optional<List<ReservationDTO>> getRoomReservations(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
+        if (roomAvailable(roomType, checkInDate, checkOutDate)) {
+            return Optional.ofNullable(getReservationsForRoom(roomType));
+        } else {
+            return Optional.empty();
+        }
     }
 
     private Optional<ReservationDTO> findOrder(UUID orderId) {
         return activeReservations.values()
                 .stream()
                 .flatMap(List::stream)
-                .flatMap(Set::stream)
                 .filter(reservationDTO -> reservationDTO.orderId().equals(orderId))
                 .findAny();
     }
@@ -174,14 +181,6 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
             return Objects.hash(orderId);
         }
     }
-
-
-
-    private boolean available(Set<ReservationDTO> reservations, LocalDate checkInDate, LocalDate checkOutDate) {
-        return reservations.stream()
-                .noneMatch(reservation -> isOverlap(checkInDate, checkOutDate, reservation.checkInDate(), reservation.checkOutDate()));
-    }
-
     boolean isOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
         return !(end1.isBefore(start2) || end1.equals(start2) || start1.isAfter(end2) || start1.equals(end2));
     }

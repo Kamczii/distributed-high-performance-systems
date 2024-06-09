@@ -75,78 +75,82 @@ public class TestCommandLineRunner {
                 List.of(
                     new HotelRequests.RoomRequest("Single bed", 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
                     new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+                    new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+                    new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
                     new HotelRequests.RoomRequest("Double bed + single bed", 3, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))))
         ,List.of(HotelRequests.ModesOfTransport.AIRPLANE)));
 
-        hotelService.handle(new HotelRequests.CreateHotel(UUID.randomUUID(), "Borówka",
-                new HotelRequests.LocationRequest("Poland", "Gdańsk"),
-                List.of(
-                        new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
-                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
-                        new HotelRequests.RoomRequest("Single bed", 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))),List.of(HotelRequests.ModesOfTransport.AIRPLANE)));
+//        hotelService.handle(new HotelRequests.CreateHotel(UUID.randomUUID(), "Borówka",
+//                new HotelRequests.LocationRequest("Poland", "Gdańsk"),
+//                List.of(
+//                        new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Single bed", 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))),List.of(HotelRequests.ModesOfTransport.AIRPLANE)));
 
-        hotelService.handle(new HotelRequests.CreateHotel(UUID.randomUUID(), "Kaszanka",
-                new HotelRequests.LocationRequest("Poland", "Gdańsk"),
-                List.of(
-                        new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
-                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
-                        new HotelRequests.RoomRequest("Single bed", 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))
-                ),List.of(HotelRequests.ModesOfTransport.AIRPLANE)));
+//        hotelService.handle(new HotelRequests.CreateHotel(UUID.randomUUID(), "Kaszanka",
+//                new HotelRequests.LocationRequest("Poland", "Gdańsk"),
+//                List.of(
+//                        new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Single bed", 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))
+//                ),List.of(HotelRequests.ModesOfTransport.AIRPLANE)));
 
-        hotelService.handle(new HotelRequests.CreateHotel(UUID.randomUUID(), "Mariot",
-                new HotelRequests.LocationRequest("Poland", "Warsaw"),
-                List.of(
-                        new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
-                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
-                        new HotelRequests.RoomRequest("Single bed", 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))
-                ),List.of(HotelRequests.ModesOfTransport.AIRPLANE)));
+//        hotelService.handle(new HotelRequests.CreateHotel(UUID.randomUUID(), "Mariot",
+//                new HotelRequests.LocationRequest("Poland", "Warsaw"),
+//                List.of(
+//                        new HotelRequests.RoomRequest("Double bed", 2, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Double bed + 2 single beds", 4, 2, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN))),
+//                        new HotelRequests.RoomRequest("Single bed", 1, 1, List.of(new HotelRequests.AgeRangePrice(0, 100, BigDecimal.TEN)))
+//                ),List.of(HotelRequests.ModesOfTransport.AIRPLANE)));
+
+//        flightService.handle(new FlightRequests.CreateFlight(UUID.randomUUID().toString(),
+//                10,
+//                new FlightRequests.LocationRequest("Poland", "Gdańsk"),
+//                new FlightRequests.LocationRequest("Poland", "Warsaw"),
+//                LocalDate.now()
+//                , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
+//        ));
+//
+//        flightService.handle(new FlightRequests.CreateFlight(UUID.randomUUID().toString(),
+//                10,
+//                new FlightRequests.LocationRequest("Poland", "Warsaw"),
+//                new FlightRequests.LocationRequest("Poland", "Gdańsk"),
+//                LocalDate.now()
+//                , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
+//        ));
+
+        flightService.handle(new FlightRequests.CreateFlight(UUID.randomUUID().toString(),
+                10,
+                new FlightRequests.LocationRequest("Poland", "Warsaw"),
+                new FlightRequests.LocationRequest("Poland", "Gdańsk"),
+                LocalDate.now().plusDays(5)
+                , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
+        ));
 
         flightService.handle(new FlightRequests.CreateFlight(UUID.randomUUID().toString(),
                 10,
                 new FlightRequests.LocationRequest("Poland", "Gdańsk"),
                 new FlightRequests.LocationRequest("Poland", "Warsaw"),
-                LocalDate.now()
+                LocalDate.now().plusDays(10)
                 , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
         ));
 
-        flightService.handle(new FlightRequests.CreateFlight(UUID.randomUUID().toString(),
-                10,
-                new FlightRequests.LocationRequest("Poland", "Warsaw"),
-                new FlightRequests.LocationRequest("Poland", "Gdańsk"),
-                LocalDate.now()
-                , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
-        ));
-
-        flightService.handle(new FlightRequests.CreateFlight(UUID.randomUUID().toString(),
-                15,
-                new FlightRequests.LocationRequest("Poland", "Warsaw"),
-                new FlightRequests.LocationRequest("Poland", "Gdańsk"),
-                LocalDate.now().plusDays(5)
-                , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
-        ));
-
-        flightService.handle(new FlightRequests.CreateFlight(UUID.randomUUID().toString(),
-                15,
-                new FlightRequests.LocationRequest("Poland", "Gdańsk"),
-                new FlightRequests.LocationRequest("Poland", "Warsaw"),
-                LocalDate.now().plusDays(5)
-                , List.of(new FlightRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
-        ));
-
-        busService.handle(new BusRequests.CreateBus(UUID.randomUUID().toString(),
-                15,
-                new BusRequests.LocationRequest("Poland", "Warsaw"),
-                new BusRequests.LocationRequest("Poland", "Gdańsk"),
-                LocalDate.now()
-                , List.of(new BusRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
-        ));
-
-        busService.handle(new BusRequests.CreateBus(UUID.randomUUID().toString(),
-                15,
-                new BusRequests.LocationRequest("Poland", "Gdańsk"),
-                new BusRequests.LocationRequest("Poland", "Warsaw"),
-                LocalDate.now().plusDays(5)
-                , List.of(new BusRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
-        ));
+//        busService.handle(new BusRequests.CreateBus(UUID.randomUUID().toString(),
+//                15,
+//                new BusRequests.LocationRequest("Poland", "Warsaw"),
+//                new BusRequests.LocationRequest("Poland", "Gdańsk"),
+//                LocalDate.now()
+//                , List.of(new BusRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
+//        ));
+//
+//        busService.handle(new BusRequests.CreateBus(UUID.randomUUID().toString(),
+//                15,
+//                new BusRequests.LocationRequest("Poland", "Gdańsk"),
+//                new BusRequests.LocationRequest("Poland", "Warsaw"),
+//                LocalDate.now().plusDays(5)
+//                , List.of(new BusRequests.AgeRangePrice(0, 100, BigDecimal.TEN))
+//        ));
     }
 }

@@ -169,7 +169,7 @@ public class OfferIntegrationEvent {
         if (shouldChangeStatus) {
             findAllOffersWithRoom(event.type(), event.hotelId())
                     .stream()
-                    .map(offer -> map(offer, AvailableOfferStatus.RESERVED))
+                    .map(offer -> map(offer, AvailableOfferStatus.ENDED))
                     .forEach(this::publish);
         }
     }

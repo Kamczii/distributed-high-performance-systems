@@ -1,5 +1,7 @@
 package pl.rsww.touroperator.hotels;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.rsww.touroperator.data.ModesOfTransportSetting;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import pl.rsww.touroperator.locations.AirportLocation;
@@ -8,6 +10,8 @@ import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
 public class Hotel {
     @Id
@@ -19,41 +23,5 @@ public class Hotel {
     @ManyToOne
     private AirportLocation location;
     private ModesOfTransportSetting modeOfTransport;
-
-    public UUID getId() {return id;}
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {return name;}
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<HotelRoom> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<HotelRoom> rooms) {
-        this.rooms = rooms;
-    }
-
-    public AirportLocation getLocation() {
-        return location;
-    }
-
-    public void setLocation(AirportLocation location) {
-        this.location = location;
-    }
-
-    public ModesOfTransportSetting getModeOfTransport() {
-        return modeOfTransport;
-    }
-
-    public void setModeOfTransport(ModesOfTransportSetting modeOfTransport) {
-        this.modeOfTransport = modeOfTransport;
-    }
 
 }

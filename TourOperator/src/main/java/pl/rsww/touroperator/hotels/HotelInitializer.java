@@ -1,18 +1,19 @@
 package pl.rsww.touroperator.hotels;
 
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.rsww.touroperator.data.ModesOfTransportSetting;
-import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItem;
+import pl.rsww.touroperator.price.*;
 import pl.rsww.touroperator.data.PlaneConnectionHolder;
 import pl.rsww.touroperator.data.HotelInfo;
 import pl.rsww.touroperator.flights.lines.FlightLine;
-import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItemRepository;
 import pl.rsww.touroperator.hotels.rooms.HotelRoom;
 import pl.rsww.touroperator.hotels.rooms.HotelRoomRepository;
-import pl.rsww.touroperator.initialization.PriceListGenerator;
 import pl.rsww.touroperator.locations.AirportLocation;
 import pl.rsww.touroperator.locations.AirportLocationRepository;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 public class HotelInitializer {
@@ -20,7 +21,7 @@ public class HotelInitializer {
     private HotelRepository hotelRepository;
     private HotelRoomRepository hotelRoomRepository;
     private AirportLocationRepository airportLocationRepository;
-    private AgeRangePriceItemRepository ageRangePriceItemRepository;
+    private PriceRepository priceRepository;
 
     private HotelInfo info;
     private Hotel hotel;
@@ -30,6 +31,8 @@ public class HotelInitializer {
     private PriceListGenerator priceListGenerator;
     private Set<AgeRangePriceItem> priceList;
     private Random random;
+    @Setter
+    @Getter
     private Map<PlaneConnectionHolder, HashSet<String>> planeConnections;
     private ModesOfTransportSetting modeOfTransport;
 
@@ -47,7 +50,7 @@ public class HotelInitializer {
 
     private List<Integer> generateRandomPersonNumbers(){
         List<Integer> numbers = new ArrayList<>(2);
-        int c = random.nextInt() % 2;
+        int c = random.nextInt() % 3;
         if(c == 0){
             numbers.add(2);
             numbers.add(2);
@@ -95,20 +98,21 @@ public class HotelInitializer {
     }
 
     private void setPriceListForRoom(HotelRoom room){
-        List<AgeRangePriceItem> ranges = priceListGenerator.getNextRoomRanges();
-        priceList = new HashSet<>(ranges);
-        for(AgeRangePriceItem item: priceList){
-            item.setRoom(room);
-        }
-        ageRangePriceItemRepository.saveAll(priceList);
+        BigDecimal priceNumber = priceListGenerator.getNextRoomPrice();
+        Price price = new Price();
+        price.setPrice(priceNumber);
+        price.setHotelRoom(room);
+        priceRepository.save(price);
+        room.setPrice(price);
+        hotelRoomRepository.save(room);
     }
 
     private void initPriceList(){
-        priceListGenerator.startHotel();
+        priceListGenerator.getPrice(this);
         for(HotelRoom room: hotel.getRooms()){
             setPriceListForRoom(room);
-            room.setPriceList(priceList);
         }
+
     }
 
     public void clear(){
@@ -139,23 +143,14 @@ public class HotelInitializer {
     }
 
     public HotelInitializer(HotelRepository hotelRepository, HotelRoomRepository hotelRoomRepository,
-                            AirportLocationRepository airportLocationRepository, AgeRangePriceItemRepository ageRangePriceItemRepository)
+                            AirportLocationRepository airportLocationRepository, PriceRepository priceRepository)
     {
         random = new Random();
         this.hotelRepository = hotelRepository;
         this.hotelRoomRepository = hotelRoomRepository;
         this.airportLocationRepository = airportLocationRepository;
-        this.ageRangePriceItemRepository = ageRangePriceItemRepository;
+        this.priceRepository = priceRepository;
         priceListGenerator = new PriceListGenerator();
-    }
-
-
-    public Map<PlaneConnectionHolder, HashSet<String>> getPlaneConnections() {
-        return planeConnections;
-    }
-
-    public void setPlaneConnections(Map<PlaneConnectionHolder, HashSet<String>> planeConnections) {
-        this.planeConnections = planeConnections;
     }
 
 }

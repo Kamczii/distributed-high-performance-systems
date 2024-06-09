@@ -5,7 +5,7 @@ services:
     build:
       context: Frontend
       dockerfile: ./Dockerfile
-    networks: 
+    networks:
       - rsww-180066-network
   notification:
     container_name: notification
@@ -14,6 +14,7 @@ services:
       dockerfile: ./Notifications/Dockerfile
     environment:
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+      - BROKER_RELAY_HOST=activemq
     ports:
       - "5083:5005"
     networks:
@@ -207,6 +208,8 @@ services:
     image: 'bitnami/kafka:3.5.1'
     container_name: kafka
     hostname: kafka
+    ports:
+      - "9092:9092"
     depends_on:
       - zookeeper
     environment:
@@ -234,6 +237,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - rsww-180066-network
+  activemq:
+    image: k444mczi/rsww_180066_activemq
+    environment:
+      - EUREKA_URI=http://eureka:8761/eureka
+      - BROKER_HOST=0.0.0.0
+    depends_on:
+      - eureka
     networks:
       - rsww-180066-network
 volumes:

@@ -59,9 +59,13 @@
    },
    methods: {
      updateItems(event) {
-       this.items.unshift(event); // Add to the start of the list
+
+       if (this.items.length === 0 || this.items[0].description !== event.description) {
+         this.items.unshift(event);
+       }
+
        if (this.items.length > 10) {
-         this.items.pop(); // Remove the oldest item if the list exceeds 10
+         this.items.pop();
        }
      }
    }

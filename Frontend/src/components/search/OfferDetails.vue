@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <!-- Offer Details -->
   <div class="offer-short-info" v-if="offer">
-    <ConfigurationComponent @update-kids="handleKidsUpdate"/>
+    <ConfigurationComponent @update-persons="handleKidsUpdate" :capacity="offer.hotel.room.capacity"/>
     <h2>Offer Details</h2>
     <h3>Hotel Information</h3>
     <p>Status: {{ offer.status }}</p>
@@ -21,11 +21,13 @@
       <p>End Date: {{ formatDate(offer.end) }}</p>
       <p>Price: {{ offer.price }} zł</p>
 
-      <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage" />
+<!--      <PopupComponent :message="popupMessage" @reset-message="resetPopupMessage" />-->
       <button type="submit" class="buy-now-button" @click="createOrder">Buy now!</button>
 
+    <p>Payment visible: {{ isPaymentModalVisible }}</p>
+    <p>Payment id: {{ paymentId }}</p>
       <PaymentConfirmationModal
-          v-if="isPaymentModalVisible.value"
+          v-if="isPaymentModalVisible"
           :order-id="orderId"
           :payment-id="paymentId"
           @accept="acceptPayment"
@@ -46,16 +48,15 @@
 </template>
 
 <script>
-import { ref, onMounted , onBeforeUnmount} from 'vue';
+import {onBeforeUnmount, onMounted, ref} from 'vue';
 import SockJS from 'sockjs-client';
 import Stomp from 'webstomp-client';
-import PopupComponent from "@/components/PopupComponent.vue";
 import ConfigurationComponent from "@/components/search/ConfigurationComponent.vue";
 import PaymentConfirmationModal from "@/components/PaymentConfirmationModal.vue";
 import {useRoute} from 'vue-router';
+
 export default {
   components: {
-    PopupComponent,
     ConfigurationComponent,
     PaymentConfirmationModal
   },
@@ -78,7 +79,10 @@ export default {
     const offer = ref(null);
     const stompClient = ref(null);
     const route = useRoute();
-    const kids = ref([]);
+    const configuration = ref({
+      persons: [],
+      kids: []
+    });
     const isPaymentModalVisible = ref(false);
     const orderId = ref(null);
     const paymentId = ref(null);
@@ -92,8 +96,8 @@ export default {
           .catch(err => console.error(err));
       connectWebSocket();
     });
-    function handleKidsUpdate(kidsArray) {
-      kids.value = kidsArray;
+    function handleConfigUpdate(persons) {
+      configuration.value = persons;
     }
     onBeforeUnmount(() => {
       if (subscription.value) {
@@ -108,9 +112,9 @@ export default {
       const socket = new SockJS(process.env.VUE_APP_WS_GATEWAY + '/ws');
       stompClient.value = Stomp.over(socket);
       stompClient.value.connect({}, () => {
-        subscription.value = stompClient.value.subscribe(`/topic/notifications/${route.params.id}`, notification => {
+        subscription.value = stompClient.value.subscribe(getOfferTopic(), notification => {
           const event = JSON.parse(notification.body);
-          items.value.unshift(event); // Add to the start of the list
+          addIfDifferent(items.value, event); // Add to the start of the list
           if (items.value.length > 10) {
             items.value.pop(); // Remove the oldest item if the list exceeds 10
           }
@@ -124,7 +128,6 @@ export default {
       });
     }
     function fetchOfferDetails() {
-      console.log('Received message:',route.params.id);
       fetch(process.env.VUE_APP_GATEWAY + `/offers/${route.params.id}`)
         .then(res => res.json())
         .then(data => {
@@ -145,18 +148,22 @@ export default {
     }
     function acceptPayment() {
       isPaymentModalVisible.value = false;
-      createOrder();
     }
     function createOrder() {
-      for (let i = 0; i < kids.value.length; i++) {
-        kids.value[i] = calculateAge(kids.value[i]);
+      const ageOfVisitors = []
+      let kidsCount = configuration.value.kids.length;
+      for (let i = 0; i < kidsCount; i++) {
+        ageOfVisitors.push(calculateAge(configuration.value.kids[i]));
       }
-      console.log('Kids ages:', kids.value);
+      for (let i = 0; i < configuration.value.persons - kidsCount; i++) {
+        ageOfVisitors.push(25)
+      }
+      console.log('Visitors ages:', ageOfVisitors);
       const offerId = route.params.id;
       const url = process.env.VUE_APP_GATEWAY  + `/order/create`;
       const data = {
         offerId: offerId,
-        ageOfVisitors: kids.value
+        ageOfVisitors
       };
       const config = {
         mode: 'cors',
@@ -188,13 +195,26 @@ export default {
         age--;
       }
       console.log(age.toString())
-      return age.toString();
+      return age;
     }
+
+    function getOrderTopic() {
+      return `/topic/orders/${orderId.value}`;
+    }
+
+    function getOfferTopic() {
+      return `/topic/offers/${route.params.id}`;
+    }
+
+    function addIfDifferent(array, event) {
+      if (array.length === 0 || array[0].description !== event.description) {
+        array.unshift(event);
+      }
+    }
+
     function connectPaymentWebSocket(){
-            console.log(orderId.value);
-            subscriptionPayment.value = stompClient.value.subscribe(`/topic/notifications/payment/${orderId.value}`, notification => {
-              const event = JSON.parse(notification.body);
-              paymentId.value = event;
+            subscriptionPayment.value = stompClient.value.subscribe(getOrderTopic(), notification => {
+              paymentId.value = JSON.parse(notification.body).data.paymentId;
               showPaymentConfirmation();
               unsubscribePayment(subscriptionPayment);
             });
@@ -205,7 +225,7 @@ export default {
                  console.log('Unsubscribed from topic successfully.');
                }
              }
-    return { stompClient,formatDate, resetPopupMessage, createOrder, cancelPayment, acceptPayment, popupMessage, offer, isPaymentModalVisible, handleKidsUpdate, paymentId, orderId, items, connectPaymentWebSocket };
+    return { stompClient,formatDate, resetPopupMessage, createOrder, cancelPayment, acceptPayment, popupMessage, offer, isPaymentModalVisible, handleKidsUpdate: handleConfigUpdate, paymentId, orderId, items, connectPaymentWebSocket };
   }
 }
 </script>

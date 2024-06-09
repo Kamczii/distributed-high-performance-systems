@@ -5,6 +5,4 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface HotelRepository extends CrudRepository<Hotel, UUID> {
-    Hotel findByName(String name);
-//    Iterable<Hotel> findAllByCity(String city);
 }

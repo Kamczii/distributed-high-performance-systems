@@ -47,8 +47,7 @@ class HotelTest {
         assertEquals(createHotelRequest.rooms().size(), hotel.getRooms().rooms().size());
         assertTrue(hotel.getActiveReservations().values()
                 .stream()
-                .flatMap(List::stream)
-                .allMatch(Set::isEmpty));
+                .allMatch(List::isEmpty));
     }
 
     @Test
@@ -154,9 +153,7 @@ class HotelTest {
     }
 
     private long getReservationCount(String roomType) {
-        return hotel.getActiveReservations().get(roomType).stream()
-                .mapToLong(Set::size)
-                .sum();
+        return hotel.getActiveReservations().get(roomType).size();
     }
 
 }

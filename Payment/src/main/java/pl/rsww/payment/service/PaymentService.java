@@ -30,7 +30,7 @@ import static pl.rsww.payment.api.PaymentTopics.*;
 public class PaymentService {
 
     private static final Random random = new Random();
-    private static final int SIMULATION_SUCCESS_RATE = 80;
+    private static final int SIMULATION_SUCCESS_RATE = 100;
 
     private final PaymentRepository paymentRepository;
     private final KafkaPublisher kafkaPublisher;

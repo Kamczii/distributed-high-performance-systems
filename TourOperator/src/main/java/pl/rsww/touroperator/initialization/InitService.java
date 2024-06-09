@@ -15,9 +15,9 @@ import pl.rsww.touroperator.flights.FlightRepository;
 import pl.rsww.touroperator.flights.lines.FlightLineRepository;
 import pl.rsww.touroperator.hotels.HotelInitializer;
 import pl.rsww.touroperator.hotels.HotelRepository;
-import pl.rsww.touroperator.hotels.age_ranges.AgeRangePriceItemRepository;
 import pl.rsww.touroperator.hotels.rooms.HotelRoomRepository;
 import pl.rsww.touroperator.locations.AirportLocationRepository;
+import pl.rsww.touroperator.price.PriceRepository;
 
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -42,14 +42,14 @@ public class InitService {
     @Autowired
     private AirportLocationRepository airportLocationRepository;
     @Autowired
-    private AgeRangePriceItemRepository ageRangePriceItemRepository;
+    private PriceRepository priceRepository;
 
     @Async
     public void initialize() {
         log.info("Init startup");
         JsonDataExtractor extractor = new JsonDataExtractor();
         List<HotelInfo> hotelInfoList = extractor.extract();
-        HotelInitializer hotelInitializer = new HotelInitializer(hotelRepository, hotelRoomRepository, airportLocationRepository, ageRangePriceItemRepository);
+        HotelInitializer hotelInitializer = new HotelInitializer(hotelRepository, hotelRoomRepository, airportLocationRepository, priceRepository);
 
         Map<PlaneConnectionHolder, HashSet<String>> connections = new Hashtable<>();
 
@@ -60,11 +60,11 @@ public class InitService {
             hotelInitializer.clear();
         }
 
-        FlightInitializer flightInitializer = new FlightInitializer(flightLineRepository, connections, airportLocationRepository, flightRepository, ageRangePriceItemRepository);
+        FlightInitializer flightInitializer = new FlightInitializer(flightLineRepository, connections, airportLocationRepository, flightRepository, priceRepository);
         flightInitializer.initFlightLines();
         flightInitializer.initFlights();
 
-        BusInitializer busInitializer = new BusInitializer(busLineRepository, connections, airportLocationRepository, busRepository, ageRangePriceItemRepository);
+        BusInitializer busInitializer = new BusInitializer(busLineRepository, connections, airportLocationRepository, busRepository, priceRepository);
         busInitializer.initBusLines();
         busInitializer.initBusses();
 
