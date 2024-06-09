@@ -33,6 +33,7 @@ public class FlightService {
         Iterable<Flight> flights = flightRepository.findAll(Pageable.ofSize(limit));
         for(Flight flight: flights){
             sendRequest(flight);
+            log.info("Sent flight{}", flight.getLine().flightNumber());
         }
         log.info("Finished sending flights");
     }

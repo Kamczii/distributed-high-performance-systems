@@ -48,6 +48,7 @@ public class HotelService {
         Iterable<Hotel> hotels = hotelRepository.findAll();
         for(Hotel hotel: hotels){
             sendRequest(hotel);
+            log.info("Sent hotel{}", hotel.getName());
         }
         log.info("Finished sending hotels");
     }

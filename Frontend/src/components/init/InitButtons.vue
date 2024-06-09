@@ -35,13 +35,13 @@ export default {
           .catch(err => console.error(err));
     },
     start_updating() {
-      fetch(process.env.VUE_APP_GATEWAY + '/update/start')
+      fetch(process.env.VUE_APP_GATEWAY + '/to-update/start')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));
     },
     stop_updating() {
-      fetch(process.env.VUE_APP_GATEWAY + '/update/stop')
+      fetch(process.env.VUE_APP_GATEWAY + '/to-update/stop')
           .then(res => res.text())
           .then(data => this.popupMessage = data)
           .catch(err => console.error(err));

@@ -3,6 +3,7 @@ package pl.rsww.touroperator.updater;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import pl.rsww.tour_operator.api.UpdatePriceListRequests;
 import pl.rsww.touroperator.busses.lines.BusLine;
 import pl.rsww.touroperator.events.EventSender;
@@ -14,6 +15,7 @@ import pl.rsww.touroperator.price.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Slf4j
 @Setter
 public class UpdaterTask extends TimerTask {
     private PriceRepository priceRepository;
@@ -96,12 +98,15 @@ public class UpdaterTask extends TimerTask {
 
         if(hotelRoom != null){
             sendHotelRoomRequest(hotelRoom, price);
+            log.info("Sent updated price for hotel room{}", hotelRoom.getDescription());
         }else if(flightLine != null){
             sendFlightRequest(flightLine, price);
+            log.info("Sent updated price for flight line{}", flightLine.flightNumber());
         }else if(busLine != null){
             sendBusRequest(busLine, price);
+            log.info("Sent updated price for bus line{}", busLine.busNumber());
         }else{
-            System.out.println("Warning: price do not belong to any entity");
+            log.info("Warning: price do not belong to any entity");
         }
     }
 
@@ -111,9 +116,9 @@ public class UpdaterTask extends TimerTask {
     }
 
     public UpdaterTask(PriceRepository priceRepository){
+        this.priceRepository = priceRepository;
         random = new Random();
         this.priceList = makeList();
-        this.priceRepository = priceRepository;
         size = priceList.size();
         eventSender = EventSender.getEventSender();
     }

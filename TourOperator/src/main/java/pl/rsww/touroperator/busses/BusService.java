@@ -28,6 +28,7 @@ public class BusService {
         Iterable<Bus> busses = busRepository.findAll(Pageable.ofSize(limit));
         for(Bus bus: busses){
             sendRequest(bus);
+            log.info("Sent bus{}", bus.getLine().busNumber());
         }
         log.info("Finished sending busses");
     }

@@ -54,7 +54,7 @@ spring:
         - id: TourOperator
           uri: lb://TourOperator
           predicates:
-            - Path=/init, /flights/send, /hotels/send, /busses/send
+            - Path=/init, /flights/send, /hotels/send, /busses/send, /to-update/start, /to-update/stop
 eureka:
   client:
     fetchRegistry: true

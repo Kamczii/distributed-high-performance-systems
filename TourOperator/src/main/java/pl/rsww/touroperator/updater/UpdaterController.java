@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(path="/update")
+@RequestMapping(path="/to-update")
 public class UpdaterController {
     @Autowired
     private UpdaterService updaterService;
