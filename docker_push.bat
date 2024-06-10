@@ -1,9 +1,8 @@
-docker push k444mczi/rsww_180066_eurekaserver
-docker push k444mczi/rsww_180066_frontend
-docker push k444mczi/rsww_180066_gateway
-docker push k444mczi/rsww_180066_notification
-docker push k444mczi/rsww_180066_offerread
-docker push k444mczi/rsww_180066_offerwrite
-docker push k444mczi/rsww_180066_order
-docker push k444mczi/rsww_180066_payment
+docker push k444mczi/rsww_180066_frontend:2.0
+docker push k444mczi/rsww_180066_gateway:2.0
+docker push k444mczi/rsww_180066_notification:2.0
+docker push k444mczi/rsww_180066_offerread:2.0
+docker push k444mczi/rsww_180066_offerwrite:2.0
+docker push k444mczi/rsww_180066_order:2.0
+docker push k444mczi/rsww_180066_payment:2.0
 docker push k444mczi/rsww_180066_touroperator

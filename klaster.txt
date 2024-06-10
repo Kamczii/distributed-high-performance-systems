@@ -1,3 +1,10 @@
 Numer grupy: 180066
 Prefiks: RSWW_180066
 18006
+
+
+level=error msg="task allocation failure" error="failed to allocate network IP for task agamnxqe22sbbm4juikagta5b networ>
+sudo journalctl -u docker.service --since "20 minutes ago"
+
+
+docker images --format "{{.ID}} {{.Repository}}" | grep 'k444mczi' | awk '{print $1}' | xargs docker rmi -f

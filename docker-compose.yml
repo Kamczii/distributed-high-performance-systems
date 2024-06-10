@@ -1,9 +1,7 @@
 version: '3'
 services:
   frontend:
-    build:
-      context: Frontend
-      dockerfile: ./Dockerfile
+    image: k444mczi/rsww_180066_frontend:2.0
     ports:
       - "8080:80"
     networks:
@@ -49,12 +47,10 @@ services:
 #      replicas: 2
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_offer
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      #      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_DATASOURCE_USERNAME=student
+      - SPRING_DATASOURCE_PASSWORD=student
       - ESDB_CONNECTIONSTRING=esdb://eventstore:2113?tls=false
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
 #    ports:
 #      - "5082:5005"
     depends_on:
@@ -74,9 +70,8 @@ services:
       - postgres
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_order
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_DATASOURCE_USERNAME=student
+      - SPRING_DATASOURCE_PASSWORD=student
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
   payment:
     build:
@@ -90,9 +85,8 @@ services:
       - postgres
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_payment
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_DATASOURCE_USERNAME=student
+      - SPRING_DATASOURCE_PASSWORD=student
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
   offer_read:
     build:
@@ -117,9 +111,8 @@ services:
       - "5085:5003"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/rsww_180066_tour_operator
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_DATASOURCE_USERNAME=student
+      - SPRING_DATASOURCE_PASSWORD=student
       - BOOTSTRAP_SERVER=kafka:9092
     depends_on:
       kafka:
@@ -199,11 +192,11 @@ services:
     image: postgres:15.4
     restart: always
     environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: student
+      POSTGRES_USER: student
       POSTGRES_DB: offer
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
