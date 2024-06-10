@@ -6,23 +6,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
+import pl.rsww.payment.api.PaymentEvent;
 
 
 @EnableKafka
 @Configuration
 @RequiredArgsConstructor
 public class MyKafkaConsumerFactory {
-    private final ConsumerFactory<OfferIntegrationEvent> consumerFactory;
+    private final ConsumerFactory<OfferIntegrationEvent> offerConsumerFactory;
+    private final ConsumerFactory<PaymentEvent> paymentConsumerFactory;
 
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, Object> offerEventConsumerFactory() {
-        return consumerFactory.create(OfferIntegrationEvent.class);
+        return offerConsumerFactory.create(OfferIntegrationEvent.class);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> locationEventConsumerFactory() {
-        return consumerFactory.create(OfferIntegrationEvent.class);
+    public ConcurrentKafkaListenerContainerFactory<String, Object> paymentEventConsumerFactory() {
+        return paymentConsumerFactory.create(PaymentEvent.class);
     }
 
 

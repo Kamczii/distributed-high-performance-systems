@@ -12,7 +12,7 @@ import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 import pl.rsww.payment.api.PaymentEvent;
 import pl.rsww.payment.api.PaymentTopics;
 
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,27 +21,38 @@ import java.util.UUID;
 @RestController
 public class NotificationService {
     private static final int MAX_MESSAGES = 10;
-    private final LinkedList<EventMessage> messageQueue = new LinkedList<>();
+//    private final LinkedList<EventMessage> messageQueue = new LinkedList<>();
     @Autowired
     private DescriptionService descriptionService;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @KafkaListener(topics = PaymentTopics.PAYMENT_BASIC_TOPIC, groupId = "payment-notification-group")
+    @KafkaListener(topics = PaymentTopics.PAYMENT_BASIC_TOPIC, groupId = "payment-notification-group", containerFactory = "paymentEventConsumerFactory")
     public void listenToPaymentBasic(PaymentEvent event) {
+        log.info("Received payment event: {}", event);
         if (event instanceof PaymentEvent.Pending pending) {
             final var message = descriptionService.describe(pending);
             final var orderTopic = getOrderTopic(pending.orderId());
             send(message, orderTopic);
-        } else if (event instanceof PaymentEvent.Fail fail) {
+        }
+    }
+
+    @KafkaListener(topics = PaymentTopics.PAYMENT_FAIL_TOPIC, groupId = "payment-notification-group", containerFactory = "paymentEventConsumerFactory")
+    public void listenToPaymentFail(PaymentEvent event) {
+        log.info("Received payment event: {}", event);
+        if (event instanceof PaymentEvent.Fail fail) {
             final var message = descriptionService.describe(fail);
             send(message, getOrderTopic(fail.orderId()));
-            send(message, getAllTopic());
-        } else if (event instanceof PaymentEvent.Success success) {
+        }
+    }
+
+    @KafkaListener(topics = PaymentTopics.PAYMENT_SUCCESS_TOPIC, groupId = "payment-notification-group", containerFactory = "paymentEventConsumerFactory")
+    public void listenToPaymentSuccess(PaymentEvent event) {
+        log.info("Received payment event: {}", event);
+        if (event instanceof PaymentEvent.Success success) {
             final var message = descriptionService.describe(success);
             final var orderTopic = getOrderTopic(success.orderId());
             send(message, orderTopic);
-            send(message, getAllTopic());
         }
     }
 
@@ -50,7 +61,6 @@ public class NotificationService {
         if (event instanceof OfferIntegrationEvent.Created created) {
             log.info(event.toString());
             EventMessage message = descriptionService.describe(created);
-            send(message, getAllTopic());
             final var dedicatedTopic = getOfferTopic(created.offerId());
             send(message, dedicatedTopic);
         } else if (event instanceof OfferIntegrationEvent.StatusChanged statusChanged) {
@@ -62,15 +72,18 @@ public class NotificationService {
     }
 
     private void send(EventMessage message, String topic) {
-        synchronized (messageQueue) {
-            if (messageQueue.size() >= MAX_MESSAGES) {
-                messageQueue.pollLast();
-            }
-            messageQueue.addFirst(message);
-        }
+//        synchronized (messageQueue) {
+//            if (messageQueue.size() >= MAX_MESSAGES) {
+//                messageQueue.pollLast();
+//            }
+//            messageQueue.addFirst(message);
+//        }
         try {
             messagingTemplate.convertAndSend(topic, message);
             log.info("Sending notification to topic \"" + topic + "\"", message);
+
+            messagingTemplate.convertAndSend(getAllTopic(), message);
+            log.info("Sending notification to topic \"" + getAllTopic() + "\"", message);
         } catch (Exception e) {
             log.error("Error sending WebSocket message", e);
         }
@@ -79,9 +92,10 @@ public class NotificationService {
 
     @RequestMapping("/initial")
     public List<EventMessage> getInitialMessages() {
-        synchronized (messageQueue) {
-            return new LinkedList<>(messageQueue);
-        }
+//        synchronized (messageQueue) {
+//            return new LinkedList<>(messageQueue);
+//        }
+        return Collections.emptyList();
     }
 
     private static String getAllTopic() {
