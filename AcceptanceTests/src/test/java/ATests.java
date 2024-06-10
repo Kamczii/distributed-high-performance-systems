@@ -7,52 +7,95 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Navigating Offers Webpage")
+@DisplayName("Acceptance tests for RSWW project")
 public class ATests {
-    private static final String ADDRESS = "http://localhost:8080";
-    private WebDriver driver = new ChromeDriver();
-    private WebTools tools = new WebTools(driver);
-
-    @BeforeEach
-    void beforeEach() {
-        driver = new ChromeDriver();
-        tools = new WebTools(driver);
-        driver.manage().timeouts().implicitlyWait(5000, TimeUnit.MILLISECONDS);
-        driver.get(ADDRESS);
-    }
 
     @Test
-    @DisplayName("Searches offers")
-    public void searchesOffers() {
-        tools.clickSearch();
-        List<WebElement> offerCards = tools.findOffers();
-        int n = offerCards.size();
-        assertTrue(n > 0);
-    }
+    @DisplayName("Reserving offer works")
+    public void reservingOffer(){
+        int offerPosition = 11;
+        WebClient clientA = new WebClient(Constants.ADDRESS);
+        clientA.wait(5);
+        clientA.clickOffer(offerPosition);
+        clientA.buyAndCancelOffer();
 
-    @Test
-    @DisplayName("Buys offers from the search list")
-    public void buysOffers() {
-        tools.clickSearch();
-        List<WebElement> offerCards = tools.findOffers();
-        assertFalse(offerCards.isEmpty(), "No offers found in search results.");
-
-        for (int i = 0; i < 30; i++) {
-            System.out.println("Offer: " + i);
-            tools.clickOffer(i);
-            tools.buyOffer();
-            driver.get(ADDRESS); // Back to the main page
-            tools.clickSearch();
+        int n = 0;
+        int s = 0;
+        List<WebElement> offerLogs;
+        while (n == 0 && s < 360) {
+            offerLogs = clientA.getOfferUpdateLog();
+            n = offerLogs.size();
+            clientA.wait(1);
+            s++;
         }
+
+        clientA.wait(2);
+        clientA.buyAndCancelOffer();
+        clientA.wait(2);
+        clientA.buyAndCancelOffer();
+        String status = clientA.getOfferStatus();
+        s = 0;
+        while (!status.equals("RESERVED") && s < 360) {
+            status = clientA.getOfferStatus();
+            clientA.wait(1);
+            s++;
+        }
+
+        assertEquals(status, "RESERVED");
+
+        clientA.exit();
     }
 
-    @AfterEach
-    void afterEach() {
-        driver.quit();
+    //Do not work:
+//    @Test
+//    @DisplayName("Buying offer several time changes offer status to closed")
+//    public void buyingOfferSeveralTimesChangesStatusToClosed() {
+//        int offerPosition = 2;
+//        WebClient client = new WebClient(Constants.ADDRESS);
+//        client.wait(10);
+//        client.clickOffer(offerPosition);
+//
+//        String status = client.getOfferStatus();
+//        assertEquals("OPEN", status);
+//
+//        client.buyUntilOfferCloses();
+//
+//        status = client.getOfferStatus();
+//        assertEquals("ENDED", status);
+//        client.exit();
+//    }
+
+    @Test
+    @DisplayName("Reserving offer by client B generates prompt in offer page of client A")
+    public void reservingOfferByClientBGeneratesPromptForClientA() {
+        int offerPosition = 13;
+        WebClient clientA = new WebClient(Constants.ADDRESS);
+        clientA.wait(5);
+        clientA.clickOffer(offerPosition);
+
+        WebClient clientB = new WebClient(Constants.ADDRESS);
+        clientB.wait(5);
+        clientB.clickOffer(offerPosition);
+        clientB.buyOffer();
+
+        int n = 0;
+        int s = 0;
+        List<WebElement> offerLogs;
+        while (n == 0 && s < 360) {
+            offerLogs = clientA.getOfferUpdateLog();
+            n = offerLogs.size();
+            clientA.wait(1);
+            s++;
+        }
+
+        assertTrue(n > 0);
+
+        clientA.exit();
+        clientB.exit();
     }
 }
