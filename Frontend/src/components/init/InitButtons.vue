@@ -78,11 +78,11 @@ export default {
   <nav>
     <h3>Tour operator</h3>
     <ul>
-      <li>
-        <label for="limit">Request Limit: </label>
-        <input type="number" v-model="requestLimit" id="limit" />
-      </li>
       <template v-if="isAdmin">
+        <li class="color">
+          <label for="limit">Request Limit: </label>
+          <input type="number" v-model="requestLimit" id="limit" />
+        </li>
         <li class="button" @click="init">Init</li>
         <li class="button" @click="flights">Flight publish</li>
         <li class="button" @click="busses">Bus publish</li>

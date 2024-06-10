@@ -14,7 +14,10 @@ button {
   border: none;
   border-radius: 5px;
 }
-
+.color {
+  background-color: #42b883;
+  color: #f7f7f7;
+}
 .button {
   background-color: #42b883;
   color: #f7f7f7;
