@@ -30,31 +30,37 @@ public class NotificationService {
     @KafkaListener(topics = PaymentTopics.PAYMENT_BASIC_TOPIC, groupId = "payment-notification-group")
     public void listenToPaymentBasic(PaymentEvent event) {
         if (event instanceof PaymentEvent.Pending pending) {
-            log.info(event.toString());
-            EventMessage message = descriptionService.describe(pending);
-
-            synchronized (messageQueue) {
-                if (messageQueue.size() >= MAX_MESSAGES) {
-                    messageQueue.pollLast();
-                }
-                messageQueue.addFirst(message);
-            }
-            try {
-                final var orderTopic = getOrderTopic(pending.orderId());
-                messagingTemplate.convertAndSend(orderTopic, message);
-                log.info("Sent payment notification change to topic \"" + orderTopic + "\"");
-            } catch (Exception e) {
-                log.error("Error sending WebSocket message", e);
-            }
+            final var message = descriptionService.describe(pending);
+            final var orderTopic = getOrderTopic(pending.orderId());
+            send(message, orderTopic);
+        } else if (event instanceof PaymentEvent.Fail fail) {
+            final var message = descriptionService.describe(fail);
+            final var orderTopic = getOrderTopic(fail.orderId());
+            send(message, orderTopic);
+        } else if (event instanceof PaymentEvent.Success success) {
+            final var message = descriptionService.describe(success);
+            final var orderTopic = getOrderTopic(success.orderId());
+            send(message, orderTopic);
         }
     }
+
     @KafkaListener(topics = OfferWriteTopics.OFFER_INTEGRATION_TOPIC, groupId = "notification-group",containerFactory = "offerEventConsumerFactory")
     public void listen(OfferIntegrationEvent event) {
-        log.info("Listener");
         if (event instanceof OfferIntegrationEvent.Created created) {
             log.info(event.toString());
             EventMessage message = descriptionService.describe(created);
+            send(message, getAllTopic());
+            final var dedicatedTopic = getOfferTopic(created.offerId());
+            send(message, dedicatedTopic);
+        } else if (event instanceof OfferIntegrationEvent.StatusChanged statusChanged) {
+            log.info(event.toString());
+            EventMessage message = descriptionService.describe(statusChanged);
+            final var dedicatedTopic = getOfferTopic(statusChanged.offerId());
+            send(message, dedicatedTopic);
+        }
+    }
 
+    private void send(EventMessage message, String topic) {
         synchronized (messageQueue) {
             if (messageQueue.size() >= MAX_MESSAGES) {
                 messageQueue.pollLast();
@@ -62,31 +68,10 @@ public class NotificationService {
             messageQueue.addFirst(message);
         }
         try {
-            messagingTemplate.convertAndSend("/topic/notifications", message);
-            final var dedicatedTopic = getOfferTopic(created.offerId());
-            messagingTemplate.convertAndSend(dedicatedTopic, message);
-            log.info("Sent offer change to topic \"/topic/notifications\"");
+            messagingTemplate.convertAndSend(topic, message);
+            log.info("Sending notification to topic \"" + topic + "\"", message);
         } catch (Exception e) {
             log.error("Error sending WebSocket message", e);
-        }
-    } else if (event instanceof OfferIntegrationEvent.StatusChanged statusChanged) {
-            log.info(event.toString());
-            EventMessage message = descriptionService.describe(statusChanged);
-
-            synchronized (messageQueue) {
-                if (messageQueue.size() >= MAX_MESSAGES) {
-                    messageQueue.pollLast();
-                }
-                messageQueue.addFirst(message);
-            }
-            try {
-                messagingTemplate.convertAndSend("/topic/notifications", message);
-                final var dedicatedTopic = getOfferTopic(statusChanged.offerId());
-                messagingTemplate.convertAndSend(dedicatedTopic, message);
-                log.info("Sent offer change to topic \"" + dedicatedTopic + "\"");
-            } catch (Exception e) {
-                log.error("Error sending WebSocket message", e);
-            }
         }
     }
 
@@ -96,6 +81,10 @@ public class NotificationService {
         synchronized (messageQueue) {
             return new LinkedList<>(messageQueue);
         }
+    }
+
+    private static String getAllTopic() {
+        return "/topic/notifications";
     }
 
     private String getOfferTopic(UUID offerId) {
