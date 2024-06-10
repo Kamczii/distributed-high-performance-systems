@@ -26,17 +26,19 @@ import java.util.UUID;
 public class TestCommandLineRunner {
     private final FlightService flightService;
 
+    private final OfferService offerService;
+    private final OfferRepository offerRepository;
+
     @Bean
     public CommandLineRunner run(HotelService hotelService, FlightService flightService, OfferService offerService,
                                  OfferRepository offerRepository, BusService busService) {
         return args -> {
-            log.info("Init");
-            init(hotelService, flightService, busService);
+            if (offerRepository.findAll().isEmpty()) {
+                log.info("Init");
+                init(hotelService, flightService, busService);
+            }
         };
     }
-
-    private final OfferService offerService;
-    private final OfferRepository offerRepository;
 //    @Scheduled(initialDelay = 7000, fixedRate = 5000)
 //    private void reserve() throws InterruptedException {
 //        reservation(0);

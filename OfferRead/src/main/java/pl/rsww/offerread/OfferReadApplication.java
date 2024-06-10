@@ -23,30 +23,30 @@ public class OfferReadApplication {
         SpringApplication.run(OfferReadApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner run(OfferShortInfoProjection projection, OfferShortInfoRepository shortInfoRepository, ShortInfoService shortInfoService,
-                                 LocationRepository locationRepository) {
-        return args -> {
-            shortInfoRepository.deleteAll();
-            locationRepository.deleteAll();
-            locationRepository.insert(new Location("New York", "USA"));
-            locationRepository.insert(new Location("Paris", "France"));
-
-            OfferIntegrationEvent.Created offerEvent = new OfferIntegrationEvent.Created(
-                    UUID.fromString("b01a4efb-8255-490b-bee6-b0e00c2768df"),  // offerId
-                    new OfferIntegrationEvent.Hotel(
-                            "Ritz Carlton",  // hotel name
-                            new OfferIntegrationEvent.Room("Suite", 2, 2)  // room type, capacity, beds
-                    ),
-                    new OfferIntegrationEvent.Location("New York", "USA"),  // departure location
-                    new OfferIntegrationEvent.Location("Paris", "France"),  // destinationCity location
-                    LocalDate.of(2024, 4, 15),  // start date
-                    LocalDate.of(2024, 4, 25),   // end date,
-                    AvailableOfferStatus.OPEN,
-                    AvailableTransportType.FLIGHT,
-                    Collections.emptyList()
-            );
-            projection.listenOffer(offerEvent);
-        };
-    }
+//    @Bean
+//    public CommandLineRunner run(OfferShortInfoProjection projection, OfferShortInfoRepository shortInfoRepository, ShortInfoService shortInfoService,
+//                                 LocationRepository locationRepository) {
+//        return args -> {
+//            shortInfoRepository.deleteAll();
+//            locationRepository.deleteAll();
+//            locationRepository.insert(new Location("New York", "USA"));
+//            locationRepository.insert(new Location("Paris", "France"));
+//
+//            OfferIntegrationEvent.Created offerEvent = new OfferIntegrationEvent.Created(
+//                    UUID.fromString("b01a4efb-8255-490b-bee6-b0e00c2768df"),  // offerId
+//                    new OfferIntegrationEvent.Hotel(
+//                            "Ritz Carlton",  // hotel name
+//                            new OfferIntegrationEvent.Room("Suite", 2, 2)  // room type, capacity, beds
+//                    ),
+//                    new OfferIntegrationEvent.Location("New York", "USA"),  // departure location
+//                    new OfferIntegrationEvent.Location("Paris", "France"),  // destinationCity location
+//                    LocalDate.of(2024, 4, 15),  // start date
+//                    LocalDate.of(2024, 4, 25),   // end date,
+//                    AvailableOfferStatus.OPEN,
+//                    AvailableTransportType.FLIGHT,
+//                    Collections.emptyList()
+//            );
+//            projection.listenOffer(offerEvent);
+//        };
+//    }
 }
