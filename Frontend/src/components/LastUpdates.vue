@@ -1,6 +1,6 @@
 <template>
    <div class="card-list">
-   <h1>Last 10 updates</h1>
+   <h1>Last 20 updates</h1>
      <div v-for="(item, index) in items" :key="index" class="card">
        <h3>{{ item.title }}</h3>
        <p>OfferId: {{ item.description }}</p>
@@ -12,7 +12,7 @@
  import SockJS from 'sockjs-client';
  import Stomp from 'webstomp-client';
 
- const N_LAST_EVENTS = 10;
+ const N_LAST_EVENTS = 20;
  export default{
   data() {
     return {
