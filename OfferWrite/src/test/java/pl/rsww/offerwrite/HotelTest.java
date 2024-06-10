@@ -2,6 +2,7 @@ package pl.rsww.offerwrite;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pl.rsww.offerwrite.hotels.hotel_rooms.HotelRoom;
 import pl.rsww.tour_operator.api.HotelRequests;
 import pl.rsww.offerwrite.hotels.Hotel;
 
@@ -44,7 +45,7 @@ class HotelTest {
         assertEquals(hotelId, hotel.id());
         assertEquals(name, hotel.getName());
         assertEquals(location.city(), hotel.getLocation().city());
-        assertEquals(createHotelRequest.rooms().size(), hotel.getRooms().rooms().size());
+        assertEquals(createHotelRequest.rooms().size(), hotel.getRooms().rooms().stream().map(HotelRoom::count).reduce(0L, Long::sum));
         assertTrue(hotel.getActiveReservations().values()
                 .stream()
                 .allMatch(List::isEmpty));
