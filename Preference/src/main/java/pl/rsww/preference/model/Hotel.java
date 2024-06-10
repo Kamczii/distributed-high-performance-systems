@@ -20,7 +20,8 @@ public class Hotel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
-    private Long occurrences;
+    @Builder.Default
+    private Integer occurrences = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id", referencedColumnName = "id")

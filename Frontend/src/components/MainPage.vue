@@ -4,6 +4,8 @@
     <div>
       <OfferDebug></OfferDebug>
       <InitButtons></InitButtons>
+      <DestinationPreferences />
+      <HotelsPreferences />
     </div>
     <div><SearchComponent/></div>
     <div><LastUpdates/></div>
@@ -16,6 +18,8 @@ import SearchComponent from "@/components/search/SearchComponent.vue";
 import LastUpdates from "@/components/LastUpdates";
 import InitButtons from "@/components/init/InitButtons.vue";
 import OfferDebug from "@/components/debug/OfferDebug.vue";
+import DestinationPreferences from "@/components/DestinationPreferences.vue";
+import HotelsPreferences from "@/components/HotelsPreferences.vue";
 </script>
 
 <style scoped>

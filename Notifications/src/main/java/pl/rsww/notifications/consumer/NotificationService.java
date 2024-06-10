@@ -11,6 +11,8 @@ import pl.rsww.offerwrite.api.OfferWriteTopics;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 import pl.rsww.payment.api.PaymentEvent;
 import pl.rsww.payment.api.PaymentTopics;
+import pl.rsww.preference.api.PreferenceEvent;
+import pl.rsww.preference.api.PreferenceTopics;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -90,6 +92,48 @@ public class NotificationService {
         }
     }
 
+    @KafkaListener(topics = PreferenceTopics.PREFERENCE_BASIC_TOPIC, groupId = "preference-group")
+    public void listenPreference(PreferenceEvent event) {
+        log.info("PREFERENCE LISTENER");
+        if (event instanceof PreferenceEvent.Hotel hotel) {
+            log.info(event.toString());
+            EventMessage message = descriptionService.describe(hotel);
+
+//        synchronized (messageQueue) {
+//            if (messageQueue.size() >= MAX_MESSAGES) {
+//                messageQueue.pollLast();
+//            }
+//            messageQueue.addFirst(message);
+//        }
+        try {
+            messagingTemplate.convertAndSend("/topic/preferences/hotels", message);
+            final var dedicatedTopic = getPreferenceHotelTopic();
+            messagingTemplate.convertAndSend(dedicatedTopic, message);
+            log.info("Sent hotel preference to topic \"/topic/preferences/hotels\"");
+        } catch (Exception e) {
+            log.error("Error sending WebSocket message", e);
+        }
+    } else if (event instanceof PreferenceEvent.Destination destination) {
+            log.info(event.toString());
+            EventMessage message = descriptionService.describe(destination);
+
+//            synchronized (messageQueue) {
+//                if (messageQueue.size() >= MAX_MESSAGES) {
+//                    messageQueue.pollLast();
+//                }
+//                messageQueue.addFirst(message);
+//            }
+            try {
+                messagingTemplate.convertAndSend("/topic/preferences/destinations", message);
+                final var dedicatedTopic = getPreferenceDestinationTopic();
+                messagingTemplate.convertAndSend(dedicatedTopic, message);
+                log.info("Sent destination preference to topic \"" + dedicatedTopic + "\"");
+            } catch (Exception e) {
+                log.error("Error sending WebSocket message", e);
+            }
+        }
+    }
+
 
     @RequestMapping("/initial")
     public List<EventMessage> getInitialMessages() {
@@ -108,6 +152,14 @@ public class NotificationService {
 
     private String getOrderTopic(UUID orderId) {
         return "/topic/orders/" + orderId;
+    }
+
+    private String getPreferenceHotelTopic() {
+        return "/topic/preferences/hotels";
+    }
+
+    private String getPreferenceDestinationTopic() {
+        return "/topic/preferences/destinations";
     }
 
 }

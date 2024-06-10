@@ -3,6 +3,7 @@ package pl.rsww.notifications.consumer;
 import org.springframework.stereotype.Service;
 import pl.rsww.offerwrite.api.integration.OfferIntegrationEvent;
 import pl.rsww.payment.api.PaymentEvent;
+import pl.rsww.preference.api.PreferenceEvent;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +24,14 @@ public class DescriptionService {
 
     public EventMessage describe(OfferIntegrationEvent.StatusChanged created) {
         return new EventMessage("Status changed", created.offerId().toString() + " updated status to " + created.status(), getTimestamp());
+    }
+
+    public EventMessage describe(PreferenceEvent.Hotel hotel) {
+        return new EventMessage("Hotel Preference", hotel.name() + ", " + hotel.room().type() + " Room, " + hotel.room().capacity() + " Person", getTimestamp());
+    }
+
+    public EventMessage describe(PreferenceEvent.Destination destination) {
+        return new EventMessage("Destination Preference", destination.city() + ", " + destination.country(), getTimestamp());
     }
 
     private static String getTimestamp() {
