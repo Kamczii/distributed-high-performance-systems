@@ -29,16 +29,16 @@ public class TestCommandLineRunner {
     private final OfferService offerService;
     private final OfferRepository offerRepository;
 
-    @Bean
-    public CommandLineRunner run(HotelService hotelService, FlightService flightService, OfferService offerService,
-                                 OfferRepository offerRepository, BusService busService) {
-        return args -> {
-            if (offerRepository.findAll().isEmpty()) {
-                log.info("Init");
-                init(hotelService, flightService, busService);
-            }
-        };
-    }
+//    @Bean
+//    public CommandLineRunner run(HotelService hotelService, FlightService flightService, OfferService offerService,
+//                                 OfferRepository offerRepository, BusService busService) {
+//        return args -> {
+//            if (offerRepository.findAll().isEmpty()) {
+//                log.info("Init");
+//                init(hotelService, flightService, busService);
+//            }
+//        };
+//    }
 //    @Scheduled(initialDelay = 7000, fixedRate = 5000)
 //    private void reserve() throws InterruptedException {
 //        reservation(0);
