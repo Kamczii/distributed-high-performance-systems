@@ -2,6 +2,10 @@
   <div class="search-box">
     <h1>Searchbox</h1>
     <form @submit.prevent="submitSearch">
+
+      <label for="name">Hotel name: {{ name }}</label>
+      <input type="text" id="name" v-model.number="name">
+
       <!-- Persons Range -->
       <label for="persons">Persons: {{ persons }}</label>
       <input type="range" id="persons" min="1" max="6" v-model.number="persons" @input="validateKids">
@@ -71,6 +75,7 @@ export default {
   },
   data() {
     return {
+      name: '',
       persons: 1,
       kids: 0,
       from: {},
@@ -103,6 +108,7 @@ export default {
     submitSearch() {
 
       const params = {
+        name: this.name,
         persons: this.persons,
         kids: this.kidAges,
         destinationCity: this.destination.city,

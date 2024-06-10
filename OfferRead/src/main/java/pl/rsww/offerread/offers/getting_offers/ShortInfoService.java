@@ -77,6 +77,9 @@ public class ShortInfoService {
         Query query = new Query();
         Criteria criteria = new Criteria();
 
+        if (getOffers.name() != null) {
+            criteria.and("hotel.name").regex(".*"+getOffers.name()+".*", "i");
+        }
         if (getOffers.persons() != null) {
             criteria.and("hotel.room.capacity").gte(getOffers.persons());
         }
