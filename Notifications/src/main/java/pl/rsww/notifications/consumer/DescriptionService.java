@@ -13,13 +13,21 @@ public class DescriptionService {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public EventMessage describe(PaymentEvent.Pending pending) {
-        final var payment = new EventMessage("Payment", pending.paymentId().toString(), getTimestamp());
+        final var payment = new EventMessage("Pending payment", "Pending payment for order %s".formatted(pending.orderId()), getTimestamp());
         payment.getData().put("paymentId", pending.paymentId());
         return payment;
     }
 
+    public EventMessage describe(PaymentEvent.Success success) {
+        return new EventMessage("Payment succeed", "Success payment for order %s".formatted(success.orderId()), getTimestamp());
+    }
+
+    public EventMessage describe(PaymentEvent.Fail fail) {
+        return new EventMessage("Payment failed", "Fail payment for order %s".formatted(fail.orderId()), getTimestamp());
+    }
+
     public EventMessage describe(OfferIntegrationEvent.Created created) {
-        return new EventMessage("Created", created.offerId().toString(), getTimestamp());
+        return new EventMessage("New offer", "Offer id %s".formatted(created.offerId()), getTimestamp());
     }
 
     public EventMessage describe(OfferIntegrationEvent.StatusChanged created) {

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 
 public record GetOffers(Integer pageNumber, Integer pageSize, Integer persons, Collection<LocalDate> kids,
-                        String departureCity, String departureCountry, String destinationCity, String destinationCountry, LocalDate startDate, LocalDate endDate, String transport) {
+                        String name, String departureCity, String departureCountry, String destinationCity, String destinationCountry, LocalDate startDate, LocalDate endDate, String transport) {
   public GetOffers {
     if (pageNumber != null && pageNumber < 0)
       throw new IllegalArgumentException("Page number has to be a zero-based number");

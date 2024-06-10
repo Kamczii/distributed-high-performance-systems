@@ -47,11 +47,13 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
     public static Hotel create(HotelRequests.CreateHotel create) {
         var location = new Location(create.location().country(), create.location().city());
         final var counts = create.rooms().stream().collect(Collectors.groupingBy(HotelRequests.RoomRequest::type, counting()));
-
+        //ugly prevent rooms with different price
+        final var collect = create.rooms().stream().collect(Collectors.groupingBy(HotelRequests.RoomRequest::type, Collectors.mapping(HotelRequests.RoomRequest::priceList, toList())));
         var rooms = create.rooms()
                 .stream()
-                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds(), counts.get(roomRequest.type()),
-                        roomRequest.priceList().stream().map(price -> new AgeRangePrice(price.startingRange(), price.endingRange(), price.price())).toList()))
+                .map(roomRequest -> new HotelRoom(roomRequest.type(), roomRequest.capacity(), roomRequest.beds(), counts.get(roomRequest.type()), new ArrayList<>()))
+                .distinct()
+                .map(hotelroom -> new HotelRoom(hotelroom.type(), hotelroom.capacity(), hotelroom.beds(), counts.get(hotelroom.type()), collect.get(hotelroom.type()).stream().findFirst().map(s -> s.stream().map(price -> new AgeRangePrice(price.startingRange(), price.endingRange(), price.price())).toList()).orElseThrow()))
                 .collect(Collectors.collectingAndThen(toList(), HotelRooms::new));
         return new Hotel(create.hotelId(), create.name(), location, rooms);
     }
@@ -118,15 +120,15 @@ public class Hotel extends AbstractAggregate<HotelEvent, UUID> {
     }
 
     public boolean roomAvailable(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {
-        final var availableRoomsOfType = countRoomsOfType(roomType);
+        final var roomsOfType = countRoomsOfType(roomType);
         return getReservationsForRoom(roomType)
                 .stream()
                 .filter(reservation -> isOverlap(reservation.checkInDate(), reservation.checkOutDate(), checkInDate, checkOutDate))
-                .count() < availableRoomsOfType;
+                .count() < roomsOfType;
     }
 
     private long countRoomsOfType(String roomType) {
-        return this.rooms.rooms().stream().filter(room -> room.type().equals(roomType)).count();
+        return this.rooms.rooms().stream().filter(room -> room.type().equals(roomType)).map(HotelRoom::count).reduce(0L, Long::sum);
     }
 
     private Optional<List<ReservationDTO>> getRoomReservations(String roomType, LocalDate checkInDate, LocalDate checkOutDate) {

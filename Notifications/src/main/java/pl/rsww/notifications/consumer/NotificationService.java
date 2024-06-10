@@ -14,7 +14,7 @@ import pl.rsww.payment.api.PaymentTopics;
 import pl.rsww.preference.api.PreferenceEvent;
 import pl.rsww.preference.api.PreferenceTopics;
 
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,72 +23,71 @@ import java.util.UUID;
 @RestController
 public class NotificationService {
     private static final int MAX_MESSAGES = 10;
-    private final LinkedList<EventMessage> messageQueue = new LinkedList<>();
+//    private final LinkedList<EventMessage> messageQueue = new LinkedList<>();
     @Autowired
     private DescriptionService descriptionService;
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @KafkaListener(topics = PaymentTopics.PAYMENT_BASIC_TOPIC, groupId = "payment-notification-group")
+    @KafkaListener(topics = PaymentTopics.PAYMENT_BASIC_TOPIC, groupId = "payment-notification-group", containerFactory = "paymentEventConsumerFactory")
     public void listenToPaymentBasic(PaymentEvent event) {
+        log.info("Received payment event: {}", event);
         if (event instanceof PaymentEvent.Pending pending) {
-            log.info(event.toString());
-            EventMessage message = descriptionService.describe(pending);
-
-            synchronized (messageQueue) {
-                if (messageQueue.size() >= MAX_MESSAGES) {
-                    messageQueue.pollLast();
-                }
-                messageQueue.addFirst(message);
-            }
-            try {
-                final var orderTopic = getOrderTopic(pending.orderId());
-                messagingTemplate.convertAndSend(orderTopic, message);
-                log.info("Sent payment notification change to topic \"" + orderTopic + "\"");
-            } catch (Exception e) {
-                log.error("Error sending WebSocket message", e);
-            }
+            final var message = descriptionService.describe(pending);
+            final var orderTopic = getOrderTopic(pending.orderId());
+            send(message, orderTopic);
         }
     }
+
+    @KafkaListener(topics = PaymentTopics.PAYMENT_FAIL_TOPIC, groupId = "payment-notification-group", containerFactory = "paymentEventConsumerFactory")
+    public void listenToPaymentFail(PaymentEvent event) {
+        log.info("Received payment event: {}", event);
+        if (event instanceof PaymentEvent.Fail fail) {
+            final var message = descriptionService.describe(fail);
+            send(message, getOrderTopic(fail.orderId()));
+        }
+    }
+
+    @KafkaListener(topics = PaymentTopics.PAYMENT_SUCCESS_TOPIC, groupId = "payment-notification-group", containerFactory = "paymentEventConsumerFactory")
+    public void listenToPaymentSuccess(PaymentEvent event) {
+        log.info("Received payment event: {}", event);
+        if (event instanceof PaymentEvent.Success success) {
+            final var message = descriptionService.describe(success);
+            final var orderTopic = getOrderTopic(success.orderId());
+            send(message, orderTopic);
+        }
+    }
+
     @KafkaListener(topics = OfferWriteTopics.OFFER_INTEGRATION_TOPIC, groupId = "notification-group",containerFactory = "offerEventConsumerFactory")
     public void listen(OfferIntegrationEvent event) {
-        log.info("Listener");
         if (event instanceof OfferIntegrationEvent.Created created) {
             log.info(event.toString());
             EventMessage message = descriptionService.describe(created);
-
-        synchronized (messageQueue) {
-            if (messageQueue.size() >= MAX_MESSAGES) {
-                messageQueue.pollLast();
-            }
-            messageQueue.addFirst(message);
-        }
-        try {
-            messagingTemplate.convertAndSend("/topic/notifications", message);
             final var dedicatedTopic = getOfferTopic(created.offerId());
-            messagingTemplate.convertAndSend(dedicatedTopic, message);
-            log.info("Sent offer change to topic \"/topic/notifications\"");
-        } catch (Exception e) {
-            log.error("Error sending WebSocket message", e);
-        }
-    } else if (event instanceof OfferIntegrationEvent.StatusChanged statusChanged) {
+            send(message, dedicatedTopic);
+        } else if (event instanceof OfferIntegrationEvent.StatusChanged statusChanged) {
             log.info(event.toString());
             EventMessage message = descriptionService.describe(statusChanged);
+            final var dedicatedTopic = getOfferTopic(statusChanged.offerId());
+            send(message, dedicatedTopic);
+        }
+    }
 
-            synchronized (messageQueue) {
-                if (messageQueue.size() >= MAX_MESSAGES) {
-                    messageQueue.pollLast();
-                }
-                messageQueue.addFirst(message);
-            }
-            try {
-                messagingTemplate.convertAndSend("/topic/notifications", message);
-                final var dedicatedTopic = getOfferTopic(statusChanged.offerId());
-                messagingTemplate.convertAndSend(dedicatedTopic, message);
-                log.info("Sent offer change to topic \"" + dedicatedTopic + "\"");
-            } catch (Exception e) {
-                log.error("Error sending WebSocket message", e);
-            }
+    private void send(EventMessage message, String topic) {
+//        synchronized (messageQueue) {
+//            if (messageQueue.size() >= MAX_MESSAGES) {
+//                messageQueue.pollLast();
+//            }
+//            messageQueue.addFirst(message);
+//        }
+        try {
+            messagingTemplate.convertAndSend(topic, message);
+            log.info("Sending notification to topic \"" + topic + "\"", message);
+
+            messagingTemplate.convertAndSend(getAllTopic(), message);
+            log.info("Sending notification to topic \"" + getAllTopic() + "\"", message);
+        } catch (Exception e) {
+            log.error("Error sending WebSocket message", e);
         }
     }
 
@@ -137,9 +136,14 @@ public class NotificationService {
 
     @RequestMapping("/initial")
     public List<EventMessage> getInitialMessages() {
-        synchronized (messageQueue) {
-            return new LinkedList<>(messageQueue);
-        }
+//        synchronized (messageQueue) {
+//            return new LinkedList<>(messageQueue);
+//        }
+        return Collections.emptyList();
+    }
+
+    private static String getAllTopic() {
+        return "/topic/notifications";
     }
 
     private String getOfferTopic(UUID offerId) {

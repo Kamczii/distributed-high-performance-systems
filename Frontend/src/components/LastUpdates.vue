@@ -1,6 +1,6 @@
 <template>
    <div class="card-list">
-   <h1>Last 10 updates</h1>
+   <h1>Last 20 updates</h1>
      <div v-for="(item, index) in items" :key="index" class="card">
        <h3>{{ item.title }}</h3>
        <p>OfferId: {{ item.description }}</p>
@@ -11,6 +11,8 @@
  <script>
  import SockJS from 'sockjs-client';
  import Stomp from 'webstomp-client';
+
+ const N_LAST_EVENTS = 20;
  export default{
   data() {
     return {
@@ -43,7 +45,7 @@
          console.error('Error fetching initial messages:', error);
        });
      // Set up WebSocket connection
-     const socket = new SockJS(process.env.VUE_APP_GATEWAY + '/ws');
+     const socket = new SockJS(process.env.VUE_APP_WS_GATEWAY + '/ws');
      this.stompClient = Stomp.over(socket);
      this.stompClient.connect({}, () => {
        this.stompClient.subscribe('/topic/notifications', notification => {
@@ -64,7 +66,7 @@
          this.items.unshift(event);
        }
 
-       if (this.items.length > 10) {
+       if (this.items.length > N_LAST_EVENTS) {
          this.items.pop();
        }
      }
