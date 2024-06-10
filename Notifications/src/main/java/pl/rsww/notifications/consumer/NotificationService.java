@@ -35,12 +35,13 @@ public class NotificationService {
             send(message, orderTopic);
         } else if (event instanceof PaymentEvent.Fail fail) {
             final var message = descriptionService.describe(fail);
-            final var orderTopic = getOrderTopic(fail.orderId());
-            send(message, orderTopic);
+            send(message, getOrderTopic(fail.orderId()));
+            send(message, getAllTopic());
         } else if (event instanceof PaymentEvent.Success success) {
             final var message = descriptionService.describe(success);
             final var orderTopic = getOrderTopic(success.orderId());
             send(message, orderTopic);
+            send(message, getAllTopic());
         }
     }
 

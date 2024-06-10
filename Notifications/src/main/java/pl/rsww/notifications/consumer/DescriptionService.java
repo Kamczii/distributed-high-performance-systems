@@ -26,7 +26,7 @@ public class DescriptionService {
     }
 
     public EventMessage describe(OfferIntegrationEvent.Created created) {
-        return new EventMessage("New offer arrived", "Offer id %s".formatted(created.offerId()), getTimestamp());
+        return new EventMessage("New offer", "Offer id %s".formatted(created.offerId()), getTimestamp());
     }
 
     public EventMessage describe(OfferIntegrationEvent.StatusChanged created) {
