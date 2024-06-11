@@ -34,7 +34,7 @@
  },
  mounted() {
      // Set up WebSocket connection
-     const socket = new SockJS(process.env.VUE_APP_GATEWAY + '/ws');
+     const socket = new SockJS(process.env.VUE_APP_WS_GATEWAY + '/ws');
      this.stompClient = Stomp.over(socket);
      this.stompClient.connect({}, () => {
        this.stompClient.subscribe('/topic/preferences/hotels', hotel => {
