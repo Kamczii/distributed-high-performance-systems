@@ -7,12 +7,15 @@ import pl.rsww.preference.model.Destination;
 import pl.rsww.preference.model.Room;
 import pl.rsww.preference.model.Hotel;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, UUID> {
     @Query("SELECT h FROM Hotel h ORDER BY h.occurrences DESC")
-    Optional<Hotel> findPreferenceHotel();
+    List<Hotel> findPreferenceHotel();
+
     Optional<Hotel> findByNameAndRoom(String name, Room room);
 }
+

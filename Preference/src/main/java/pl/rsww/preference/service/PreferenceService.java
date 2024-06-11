@@ -60,14 +60,14 @@ public class PreferenceService {
     }
 
     public void publishDestinationPreference() {
-        destinationRepository.findPreferenceDestination().ifPresent(destination -> {
+        destinationRepository.findPreferenceDestination().stream().findFirst().ifPresent(destination -> {
             PreferenceEvent.Destination event = new PreferenceEvent.Destination(destination.getCountry(), destination.getCity());
             kafkaPublisher.publish(PreferenceTopics.PREFERENCE_BASIC_TOPIC, event);
         });
     }
 
     public void publishHotelPreference() {
-        hotelRepository.findPreferenceHotel().ifPresent(hotel -> {
+        hotelRepository.findPreferenceHotel().stream().findFirst().ifPresent(hotel -> {
             Room room = hotel.getRoom();
             PreferenceEvent.Hotel event = new PreferenceEvent.Hotel(hotel.getName(), new OfferIntegrationEvent.Room(room.getType(), room.getCapacity(), room.getBeds()));
             kafkaPublisher.publish(PreferenceTopics.PREFERENCE_BASIC_TOPIC, event);

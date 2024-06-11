@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface DestinationRepository extends JpaRepository<Destination, UUID> {
     @Query("SELECT d FROM Destination d ORDER BY d.occurrences DESC")
-    Optional<Destination> findPreferenceDestination();
+    List<Destination> findPreferenceDestination();
 
     Optional<Destination> findByCountryAndCity(String country, String city);
 }
