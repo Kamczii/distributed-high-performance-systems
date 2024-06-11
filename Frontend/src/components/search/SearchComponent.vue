@@ -2,6 +2,10 @@
   <div class="search-box">
     <h1>Searchbox</h1>
     <form @submit.prevent="submitSearch">
+
+      <label for="name">Hotel name: {{ name }}</label>
+      <input type="text" id="name" v-model.number="name">
+
       <!-- Persons Range -->
       <label for="persons">Persons: {{ persons }}</label>
       <input type="range" id="persons" min="1" max="6" v-model.number="persons" @input="validateKids">
@@ -71,6 +75,7 @@ export default {
   },
   data() {
     return {
+      name: '',
       persons: 1,
       kids: 0,
       from: {},
@@ -103,6 +108,7 @@ export default {
     submitSearch() {
 
       const params = {
+        name: this.name,
         persons: this.persons,
         kids: this.kidAges,
         destinationCity: this.destination.city,
@@ -113,15 +119,15 @@ export default {
         endDate: this.endDate,
         transport: this.transport,
         pageNumber: 0,
-        pageSize: 20
+        pageSize: 40
       };
 
       // Filter out empty parameters
       const searchParams = {};
       Object.keys(params).forEach(key => {
-        if (params[key]) searchParams[key] = params[key];
+        const val = params[key]
+        if (val !== null && val !== undefined && val !== '' && !(Array.isArray(val) && val.length === 0) ) searchParams[key] = val;
       });
-
 
       this.$router.push({ name: '', query: searchParams }).catch(err => {
         // Handle duplicate navigation errors or any other router error
