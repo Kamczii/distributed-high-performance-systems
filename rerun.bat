@@ -3,7 +3,7 @@ REM Stop and remove all running containers
 docker-compose down
 
 REM Define the services to build and run
-set SERVICES=notification eureka gateway offer_read offer_write payment order activemq tour_operator frontend nginx
+set SERVICES=notification eureka gateway offer_read offer_write payment order activemq tour_operator frontend preference
 
 REM Remove all Docker volumes except projekt_postgres_data
 for /F "delims=" %%i in ('docker volume ls -q') do (
